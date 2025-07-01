@@ -88,62 +88,72 @@
     <p id="wallet-address"></p>
   </div>
   <script>
-    // Initialize MetaMask SDK
-    const MMSDK = window.MetaMaskSDK.default;
-    const sdk = new MMSDK();
-    const ethereum = sdk.getProvider();
-
-    const loginMenu = document.getElementById('login-menu');
-    const mainMenu = document.getElementById('main-menu');
-    const connectBtn = document.getElementById('connect-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const loginStatus = document.getElementById('login-status');
-    const walletAddress = document.getElementById('wallet-address');
-
-    // Show login or main menu based on connection
-    function updateUI(address) {
-      if (address) {
-        loginMenu.style.display = 'none';
-        mainMenu.style.display = 'block';
-        walletAddress.textContent = 'Connected: ' + address;
-      } else {
-        loginMenu.style.display = 'block';
-        mainMenu.style.display = 'none';
-        walletAddress.textContent = '';
-        loginStatus.textContent = '';
+    document.addEventListener('DOMContentLoaded', function () {
+      // Check if MetaMask SDK is loaded
+      if (!window.MetaMaskSDK) {
+        document.getElementById('login-status').textContent = 'MetaMask SDK not loaded.';
+        document.getElementById('connect-btn').disabled = true;
+        return;
       }
-    }
 
-    // Connect wallet
-    connectBtn.onclick = async () => {
-      try {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        updateUI(accounts[0]);
-      } catch (err) {
-        loginStatus.textContent = 'Connection failed: ' + err.message;
+      const MMSDK = window.MetaMaskSDK;
+      const sdk = new MMSDK();
+      const ethereum = sdk.getProvider();
+
+      const loginMenu = document.getElementById('login-menu');
+      const mainMenu = document.getElementById('main-menu');
+      const connectBtn = document.getElementById('connect-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      const loginStatus = document.getElementById('login-status');
+      const walletAddress = document.getElementById('wallet-address');
+
+      // Show login or main menu based on connection
+      function updateUI(address) {
+        if (address) {
+          loginMenu.style.display = 'none';
+          mainMenu.style.display = 'block';
+          walletAddress.textContent = 'Connected: ' + address;
+        } else {
+          loginMenu.style.display = 'block';
+          mainMenu.style.display = 'none';
+          walletAddress.textContent = '';
+          loginStatus.textContent = '';
+        }
       }
-    };
 
-    // Logout (just hides menu, can't disconnect programmatically)
-    logoutBtn.onclick = () => {
-      updateUI(null);
-    };
+      // Connect wallet
+      connectBtn.onclick = async () => {
+        if (!ethereum) {
+          loginStatus.textContent = 'MetaMask is not installed. Please install MetaMask and refresh.';
+          return;
+        }
+        try {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          updateUI(accounts[0]);
+        } catch (err) {
+          loginStatus.textContent = 'Connection failed: ' + (err.message || err);
+        }
+      };
 
-    // Listen for account changes
-    if (ethereum) {
-      ethereum.on('accountsChanged', (accounts) => {
-        updateUI(accounts[0] || null);
-      });
-    }
+      // Logout (just hides menu, can't disconnect programmatically)
+      logoutBtn.onclick = () => {
+        updateUI(null);
+      };
 
-    // On load
-    window.onload = () => {
+      // Listen for account changes
+      if (ethereum) {
+        ethereum.on('accountsChanged', (accounts) => {
+          updateUI(accounts[0] || null);
+        });
+      }
+
+      // On load
       if (ethereum && ethereum.selectedAddress) {
         updateUI(ethereum.selectedAddress);
       } else {
         updateUI(null);
       }
-    };
+    });
   </script>
 </body>
 </html>
