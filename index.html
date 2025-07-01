@@ -84,76 +84,204 @@
   <div class="container" id="main-menu" style="display: none;">
     <h1>Hello, World 🌍</h1>
     <p>Welcome to your first modern web page.</p>
+    <input type="number" id="matic-amount" min="0" step="0.0001" placeholder="Amount of MATIC" style="margin-top:1.5rem; padding:0.5rem; border-radius:6px; border:1px solid #ccc; width: 80%;">
+    <button id="send-matic-btn">Send MATIC</button>
     <button id="logout-btn">Logout</button>
     <p id="wallet-address"></p>
+    <p id="send-matic-status"></p>
   </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Check if MetaMask SDK is loaded
-      if (!window.MetaMaskSDK) {
-        document.getElementById('login-status').textContent = 'MetaMask SDK not loaded.';
-        document.getElementById('connect-btn').disabled = true;
+
+   <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  const sendBtn = document.getElementById('send-matic-btn');
+  const amountInput = document.getElementById('matic-amount');
+  const statusP = document.getElementById('send-matic-status');
+
+  if (sendBtn) {
+    sendBtn.onclick = async function() {
+      statusP.textContent = '';
+      const amount = parseFloat(amountInput.value);
+      if (isNaN(amount) || amount <= 0) {
+        statusP.textContent = "Please enter a valid amount of MATIC to send.";
         return;
       }
-
-      const MMSDK = window.MetaMaskSDK;
-      const sdk = new MMSDK();
-      const ethereum = sdk.getProvider();
-
-      const loginMenu = document.getElementById('login-menu');
-      const mainMenu = document.getElementById('main-menu');
-      const connectBtn = document.getElementById('connect-btn');
-      const logoutBtn = document.getElementById('logout-btn');
-      const loginStatus = document.getElementById('login-status');
-      const walletAddress = document.getElementById('wallet-address');
-
-      // Show login or main menu based on connection
-      function updateUI(address) {
-        if (address) {
-          loginMenu.style.display = 'none';
-          mainMenu.style.display = 'block';
-          walletAddress.textContent = 'Connected: ' + address;
-        } else {
-          loginMenu.style.display = 'block';
-          mainMenu.style.display = 'none';
-          walletAddress.textContent = '';
-          loginStatus.textContent = '';
-        }
-      }
-
-      // Connect wallet
-      connectBtn.onclick = async () => {
-        if (!ethereum) {
-          loginStatus.textContent = 'MetaMask is not installed. Please install MetaMask and refresh.';
-          return;
-        }
-        try {
-          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-          updateUI(accounts[0]);
-        } catch (err) {
-          loginStatus.textContent = 'Connection failed: ' + (err.message || err);
-        }
-      };
-
-      // Logout (just hides menu, can't disconnect programmatically)
-      logoutBtn.onclick = () => {
-        updateUI(null);
-      };
-
-      // Listen for account changes
-      if (ethereum) {
-        ethereum.on('accountsChanged', (accounts) => {
-          updateUI(accounts[0] || null);
-        });
-      }
-
-      // On load
-      if (ethereum && ethereum.selectedAddress) {
-        updateUI(ethereum.selectedAddress);
+      statusP.textContent = "Sending transaction...";
+      const success = await sendMATIC(amount);
+      if (success) {
+        statusP.textContent = "✅ Transaction sent!";
       } else {
-        updateUI(null);
+        statusP.textContent = "❌ Transaction failed or cancelled.";
       }
+    };
+  }
+});
+
+
+   async function connectWallet() {
+       if (typeof window.ethereum === 'undefined') {
+           showRewardNotification("❌ MetaMask is not installed. Please install MetaMask to connect your wallet.");
+           return;
+       }
+       try {
+           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+           const account = accounts[0];
+
+           // Check network
+           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+           if (chainId !== '0x89') {
+               try {
+                   await window.ethereum.request({
+                       method: 'wallet_switchEthereumChain',
+                       params: [{ chainId: '0x89' }]
+                   });
+                   showRewardNotification("✅ Switched to Polygon network!");
+               } catch (switchError) {
+                   showRewardNotification("❌ Please switch to Polygon network in MetaMask.");
+                   return;
+               }
+           }
+
+           savedGameData.player.wallet = account;
+           saveAllData();
+           await updateWalletBalance();
+           document.getElementById('walletMenu').style.display = 'none';
+           if (!savedGameData.player.username) {
+               document.getElementById('usernameMenu').style.display = 'block';
+               document.getElementById('usernameInput').value = '';
+               document.getElementById('usernameError').textContent = '';
+           } else {
+               goHome();
+           }
+       } catch (err) {
+           showRewardNotification("❌ Wallet connection failed: " + (err.message || err));
+       }
+   }
+    </script>
+
+    <script>
+    function submitUsername() {
+        const input = document.getElementById('usernameInput');
+        const errorDiv = document.getElementById('usernameError');
+        let username = input.value.trim();
+
+        // Basic validation
+        if (username.length < 3) {
+            errorDiv.textContent = "Username must be at least 3 characters.";
+            return;
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            errorDiv.textContent = "Only letters, numbers, and underscores allowed.";
+            return;
+        }
+
+        // Save and continue
+        savedGameData.player.username = username;
+        saveAllData();
+        document.getElementById('usernameMenu').style.display = 'none';
+        goHome();
+    }
+    </script>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', async function() {
+        if (window.ethereum && savedGameData.player.wallet) {
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0 && accounts[0] === savedGameData.player.wallet) {
+                    // Wallet is still connected
+                    updateHomeScreen();
+                } else {
+                    // Wallet is not connected anymore
+                    // Optionally, clear savedGameData.player.wallet here
+                }
+            } catch (e) {
+                // Handle error if needed
+            }
+        }
     });
+    </script>
+
+    <script>
+    function buyPLAI() {
+        // Replace the URL below with your actual buy link if you have one
+        window.open('https://matcha.xyz/tokens/base/0x977ea2dda60c1fdffd4b0377b036d3871f2d01a9', '_blank');
+    }
+    </script>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        if (savedGameData.player.wallet) {
+            updateWalletBalance();
+        }
+    });
+    </script>
+
+    <script>
+    function disconnectWallet() {
+        // Remove wallet from saved data
+        if (savedGameData.player.wallet) {
+            delete savedGameData.player.wallet;
+            saveAllData();
+        }
+        // Optionally, show the wallet connect menu again
+        hideAllMenus();
+        document.getElementById('walletMenu').style.display = 'block';
+        // Optionally, update UI to reflect disconnected state
+        updateHomeScreen();
+        showRewardNotification && showRewardNotification("🔌 Wallet disconnected.");
+    }
+    </script>
+
+    <script>
+    async function sendMATIC(amount) {
+    if (!window.ethereum || !savedGameData.player.wallet) {
+        showRewardNotification("❌ Connect your wallet first.");
+        return false;
+    }
+    try {
+        // Ensure on Polygon
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x89' }]
+        });
+    } catch (switchError) {
+        showRewardNotification("❌ Please switch to Polygon network in MetaMask.");
+        return false;
+    }
+    try {
+        const value = (amount * 1e18).toString(16); // amount in wei, hex
+        const tx = await window.ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [{
+                from: savedGameData.player.wallet,
+                to: "0x455e53cbb86018ac2b8092fdcd39d8444affc3f6", // <-- your provided address
+                value: value
+            }]
+        });
+        showRewardNotification("✅ MATIC sent! <a href='https://polygonscan.com/tx/" + tx + "' target='_blank'>View on PolygonScan</a>");
+        return true;
+    } catch (err) {
+        if (err.code === 4001) {
+            showRewardNotification("❌ Transaction rejected by user.");
+        } else {
+            showRewardNotification("❌ Payment failed: " + (err.message || err));
+        }
+        return false;
+    }
+}
+
+
+    </script>
+
+    <script>
+    if (window.ethereum) {
+        window.ethereum.on('chainChanged', (chainId) => {
+            if (chainId !== '0x89') {
+                showRewardNotification("⚠️ Please switch to Polygon network to play!");
+            }
+        });
+    }
   </script>
 </body>
 </html>
