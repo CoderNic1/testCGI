@@ -1,0 +1,41 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Web Game</title>
+</head>
+<body>
+  <button id="login-button">Login with WAX</button>
+  <div id="login-status"></div>
+  <script src="waxjs.js"></script>
+  <script src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@waxio/waxjs@latest/dist/waxjs.min.js"></script>
+  <script>
+
+const wax = new waxjs.WaxJS({
+  rpcEndpoint: 'https://wax.greymass.com',
+});
+
+// Reusable login function
+async function loginWithWAX() {
+  try {
+    const userAccount = await wax.login();
+    updateLoginStatus(`✅ Successfully logged in as ${userAccount}`);
+    return userAccount;
+  } catch (e) {
+    console.error("Login failed:", e);
+    updateLoginStatus("❌ Login failed.");
+    return null;
+  }
+}
+
+// Optional helper for UI feedback
+function updateLoginStatus(message) {
+  const statusElement = document.getElementById("login-status");
+  if (statusElement) statusElement.innerText = message;
+}
+document.getElementById("login-button").addEventListener("click", loginWithWAX);
+
+  </script>
+</body>
+</html>
