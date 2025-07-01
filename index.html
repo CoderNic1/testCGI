@@ -117,7 +117,38 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Default structure for savedGameData
+let savedGameData = {
+    player: {
+      wallet: null,
+      username: null,
+      // Add more fields as needed (e.g., highScore, settings, etc.)
+    }
+  };
 
+  // Load from localStorage if available
+  function loadAllData() {
+    const data = localStorage.getItem('savedGameData');
+    if (data) {
+      try {
+        savedGameData = JSON.parse(data);
+      } catch (e) {
+        // If corrupted, reset to default
+        savedGameData = {
+          player: { wallet: null, username: null }
+        };
+      }
+    }
+  }
+
+  // Save to localStorage
+  function saveAllData() {
+    localStorage.setItem('savedGameData', JSON.stringify(savedGameData));
+  }
+
+  // Call this on page load
+  loadAllData();
+  
    async function connectWallet() {
        if (typeof window.ethereum === 'undefined') {
            showRewardNotification("❌ MetaMask is not installed. Please install MetaMask to connect your wallet.");
