@@ -87,6 +87,7 @@
     <input type="number" id="matic-amount" min="0" step="0.0001" placeholder="Amount of MATIC" style="margin-top:1.5rem; padding:0.5rem; border-radius:6px; border:1px solid #ccc; width: 80%;">
     <button id="send-matic-btn">Send MATIC</button>
     <button id="logout-btn">Logout</button>
+    <p id="wallet-balance" style="margin-top:1rem;"></p>
     <p id="wallet-address"></p>
     <p id="send-matic-status"></p>
   </div>
@@ -148,6 +149,26 @@ let savedGameData = {
 
   // Call this on page load
   loadAllData();
+
+async function updateWalletBalance() {
+  if (!window.ethereum || !savedGameData.player.wallet) {
+    document.getElementById('wallet-balance').textContent = '';
+    return;
+  }
+  try {
+    // Get balance in wei
+    const balanceWei = await window.ethereum.request({
+      method: 'eth_getBalance',
+      params: [savedGameData.player.wallet, 'latest']
+    });
+    // Convert from hex wei to decimal MATIC
+    const balanceMatic = parseFloat(parseInt(balanceWei, 16) / 1e18).toFixed(4);
+    document.getElementById('wallet-balance').textContent = `Balance: ${balanceMatic} MATIC`;
+  } catch (err) {
+    document.getElementById('wallet-balance').textContent = 'Balance: Error';
+  }
+}
+
   
    async function connectWallet() {
        if (typeof window.ethereum === 'undefined') {
