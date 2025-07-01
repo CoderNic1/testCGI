@@ -1,41 +1,149 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Web Game</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello World</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 3rem 4rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 350px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin: 0;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      opacity: 0.85;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #764ba2;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    button:hover {
+      background: #764ba2;
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 2rem 1rem;
+        max-width: 95vw;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      button {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+  <!-- MetaMask SDK via CDN -->
+  <script src="https://unpkg.com/@metamask/sdk/dist/metamask-sdk.umd.js"></script>
 </head>
 <body>
-  <button id="login-button">Login with WAX</button>
-  <div id="login-status"></div>
-  <script src="waxjs.js"></script>
-  <script src="main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@waxio/waxjs@latest/dist/waxjs.min.js"></script>
+  <div class="container" id="login-menu">
+    <h1>Login</h1>
+    <button id="connect-btn">Connect MetaMask</button>
+    <p id="login-status"></p>
+  </div>
+  <div class="container" id="main-menu" style="display: none;">
+    <h1>Hello, World 🌍</h1>
+    <p>Welcome to your first modern web page.</p>
+    <button id="logout-btn">Logout</button>
+    <p id="wallet-address"></p>
+  </div>
   <script>
+    // Initialize MetaMask SDK
+    const MMSDK = window.MetaMaskSDK.default;
+    const sdk = new MMSDK();
+    const ethereum = sdk.getProvider();
 
-const wax = new waxjs.WaxJS({
-  rpcEndpoint: 'https://wax.greymass.com',
-});
+    const loginMenu = document.getElementById('login-menu');
+    const mainMenu = document.getElementById('main-menu');
+    const connectBtn = document.getElementById('connect-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const loginStatus = document.getElementById('login-status');
+    const walletAddress = document.getElementById('wallet-address');
 
-// Reusable login function
-async function loginWithWAX() {
-  try {
-    const userAccount = await wax.login();
-    updateLoginStatus(`✅ Successfully logged in as ${userAccount}`);
-    return userAccount;
-  } catch (e) {
-    console.error("Login failed:", e);
-    updateLoginStatus("❌ Login failed.");
-    return null;
-  }
-}
+    // Show login or main menu based on connection
+    function updateUI(address) {
+      if (address) {
+        loginMenu.style.display = 'none';
+        mainMenu.style.display = 'block';
+        walletAddress.textContent = 'Connected: ' + address;
+      } else {
+        loginMenu.style.display = 'block';
+        mainMenu.style.display = 'none';
+        walletAddress.textContent = '';
+        loginStatus.textContent = '';
+      }
+    }
 
-// Optional helper for UI feedback
-function updateLoginStatus(message) {
-  const statusElement = document.getElementById("login-status");
-  if (statusElement) statusElement.innerText = message;
-}
-document.getElementById("login-button").addEventListener("click", loginWithWAX);
+    // Connect wallet
+    connectBtn.onclick = async () => {
+      try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        updateUI(accounts[0]);
+      } catch (err) {
+        loginStatus.textContent = 'Connection failed: ' + err.message;
+      }
+    };
 
+    // Logout (just hides menu, can't disconnect programmatically)
+    logoutBtn.onclick = () => {
+      updateUI(null);
+    };
+
+    // Listen for account changes
+    if (ethereum) {
+      ethereum.on('accountsChanged', (accounts) => {
+        updateUI(accounts[0] || null);
+      });
+    }
+
+    // On load
+    window.onload = () => {
+      if (ethereum && ethereum.selectedAddress) {
+        updateUI(ethereum.selectedAddress);
+      } else {
+        updateUI(null);
+      }
+    };
   </script>
 </body>
 </html>
