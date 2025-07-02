@@ -93,8 +93,8 @@
             display: none;
             position: relative;
             width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
@@ -117,6 +117,18 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .balance-display {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .connection-status {
@@ -172,8 +184,20 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            padding-top: 80px;
+            min-height: 100vh;
+            padding: 100px 20px 40px 20px;
+        }
+
+        .menu-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
         }
 
         .menu-title {
@@ -186,8 +210,8 @@
         .menu-buttons {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            width: 300px;
+            gap: 15px;
+            width: 100%;
         }
 
         .menu-btn {
@@ -296,6 +320,28 @@
             to { transform: rotate(360deg); }
         }
 
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
         .error-message {
             background: rgba(231, 76, 60, 0.2);
             border: 1px solid rgba(231, 76, 60, 0.5);
@@ -326,8 +372,10 @@
                 margin: 20px;
             }
             
-            .menu-buttons {
-                width: 250px;
+            .menu-container {
+                padding: 25px;
+                margin: 20px;
+                max-width: none;
             }
             
             .settings-content {
@@ -337,6 +385,25 @@
             
             .wallet-address {
                 font-size: 0.7rem;
+            }
+
+            .balance-display {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+
+            .wallet-info {
+                gap: 10px;
+            }
+
+            .top-bar {
+                padding: 10px 15px;
+                flex-wrap: wrap;
+            }
+
+            .menu-title {
+                font-size: 2rem;
+                margin-bottom: 30px;
             }
         }
     </style>
@@ -361,21 +428,27 @@
                         <div class="status-dot"></div>
                         <span>Connected</span>
                     </div>
+                    <div class="balance-display" id="balanceDisplay">
+                        <span>💎</span>
+                        <span id="polygonBalance">0.00 POL</span>
+                    </div>
                     <div class="wallet-address" id="walletAddress">0x0000...0000</div>
                 </div>
                 <button class="settings-btn" onclick="openSettings()">⚙️</button>
             </div>
 
             <div class="main-menu">
-                <h2 class="menu-title">Game Portal</h2>
-                <div class="menu-buttons">
-                    <button class="menu-btn send-pol-btn" onclick="sendPOL()">
-                        <span id="sendPolText">Send 1 POL</span>
-                    </button>
-                    <button class="menu-btn">Play Game</button>
-                    <button class="menu-btn">Leaderboard</button>
-                    <button class="menu-btn">Inventory</button>
-                    <button class="menu-btn">Marketplace</button>
+                <div class="menu-container">
+                    <h2 class="menu-title">Game Portal</h2>
+                    <div class="menu-buttons">
+                        <button class="menu-btn send-pol-btn" onclick="sendPOL()">
+                            <span id="sendPolText">Send 1 POL</span>
+                        </button>
+                        <button class="menu-btn">Play Game</button>
+                        <button class="menu-btn">Leaderboard</button>
+                        <button class="menu-btn">Inventory</button>
+                        <button class="menu-btn">Marketplace</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -391,17 +464,73 @@
     </div>
 
     <script>
-        let web3;
+        // Universal notification system
+        function showNotification(message, type = 'success') {
+            const colorSchemes = {
+                success: 'linear-gradient(45deg, #4caf50, #45a049)',
+                error: 'linear-gradient(45deg, #f44336, #d32f2f)',
+                warning: 'linear-gradient(45deg, #ff9800, #f57c00)',
+                info: 'linear-gradient(45deg, #2196f3, #1976d2)',
+                purple: 'linear-gradient(45deg, #9c27b0, #7b1fa2)',
+                gold: 'linear-gradient(45deg, #ffd700, #ffb300)',
+                cyan: 'linear-gradient(45deg, #00bcd4, #0097a7)',
+                custom: type // If type is not a predefined color, use it as custom gradient
+            };
+
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colorSchemes[type] || colorSchemes.custom};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 15px;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                max-width: 320px;
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                font-size: 0.9rem;
+                line-height: 1.4;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 4000);
+
+            // Click to dismiss
+            notification.addEventListener('click', () => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            });
+        }
         let userAccount;
         const POLYGON_CHAIN_ID = '0x89'; // Polygon Mainnet
         const RECIPIENT_ADDRESS = '0x4ec27a93525678a0CA3ccF00aff10aEeA4d4332D';
 
-        // Check if MetaMask is installed
+        let web3;
         function isMetaMaskInstalled() {
             return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
         }
 
-        // Connect to MetaMask
+        // Check if MetaMask is installed
         async function connectWallet() {
             if (!isMetaMaskInstalled()) {
                 showError('MetaMask is not installed. Please install MetaMask to continue.');
@@ -426,18 +555,33 @@
 
                 userAccount = accounts[0];
 
-                // Switch to Polygon network
-                await switchToPolygon();
-
-                // Show game menu
-                showGameMenu();
-                
-            } catch (error) {
+                    } catch (error) {
                 console.error('Connection error:', error);
-                showError('Failed to connect: ' + error.message);
+                showNotification('Failed to connect: ' + error.message, 'error');
                 connectText.textContent = 'Connect MetaMask';
                 connectBtn.disabled = false;
             }
+                await switchToPolygon();
+
+                // Get Polygon balance
+        async function getPolygonBalance() {
+            try {
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [userAccount, 'latest']
+                });
+                
+                // Convert from wei to POL
+                const balanceInPOL = parseInt(balance, 16) / 1e18;
+                document.getElementById('polygonBalance').textContent = `${balanceInPOL.toFixed(4)} POL`;
+            } catch (error) {
+                console.error('Balance fetch error:', error);
+                document.getElementById('polygonBalance').textContent = '0.00 POL';
+            }
+        }
+                showGameMenu();
+                
+        // Connect to MetaMask
         }
 
         // Switch to Polygon network
@@ -474,12 +618,8 @@
             }
         }
 
+        // Switch to Polygon network
         // Send 1 POL
-        async function sendPOL() {
-            if (!userAccount) {
-                showError('Please connect your wallet first');
-                return;
-            }
 
             const sendPolText = document.getElementById('sendPolText');
             const originalText = sendPolText.textContent;
@@ -500,14 +640,24 @@
                 const txHash = await window.ethereum.request({
                     method: 'eth_sendTransaction',
                     params: [transactionParameters],
-                });
-
-                showSuccess(`Transaction sent! Hash: ${txHash.substring(0, 10)}...`);
-                
-            } catch (error) {
+                });} catch (error) {
                 console.error('Send error:', error);
-                showError('Transaction failed: ' + error.message);
-            } finally {
+                showNotification('Transaction failed: ' + error.message, 'error');
+                } 
+            {
+
+        async function sendPOL() {
+            if (!userAccount) {
+                showNotification('Please connect your wallet first', 'warning');
+                return;
+            }
+                
+                showNotification(`Transaction sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
+                
+                // Update balance after transaction
+                setTimeout(() => {
+                    getPolygonBalance();
+                }, 2000);
                 sendPolText.textContent = originalText;
             }
         }
@@ -520,6 +670,9 @@
             // Update wallet address display
             const addressElement = document.getElementById('walletAddress');
             addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
+            
+            // Get and display balance
+            getPolygonBalance();
         }
 
         // Open settings modal
@@ -545,27 +698,10 @@
             connectText.textContent = 'Connect MetaMask';
             connectBtn.disabled = false;
             
-            clearMessages();
+            
         }
 
-        // Show error message
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.innerHTML = `<div class="error-message">${message}</div>`;
-            setTimeout(clearMessages, 5000);
-        }
-
-        // Show success message
-        function showSuccess(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.innerHTML = `<div class="success-message">${message}</div>`;
-            setTimeout(clearMessages, 5000);
-        }
-
-        // Clear messages
-        function clearMessages() {
-            document.getElementById('errorMessage').innerHTML = '';
-        }
+            showNotification('Wallet disconnected successfully', 'info');
 
         // Listen for account changes
         if (typeof window.ethereum !== 'undefined') {
@@ -577,6 +713,7 @@
                     if (document.getElementById('gameMenu').style.display !== 'none') {
                         const addressElement = document.getElementById('walletAddress');
                         addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
+                        getPolygonBalance(); // Update balance when account changes
                     }
                 }
             });
