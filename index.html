@@ -412,7 +412,7 @@
     <div class="container">
         <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
-            <h1 class="game-title">NEXUS</h1>
+            <h1 class="game-title">Game</h1>
             <p class="game-subtitle">Enter the Web3 Gaming Universe</p>
             <button class="connect-btn" id="connectBtn" onclick="connectWallet()">
                 <span id="connectText">Connect MetaMask</span>
@@ -618,49 +618,46 @@
             }
         }
 
-        // Switch to Polygon network
-        // Send 1 POL
-
-            const sendPolText = document.getElementById('sendPolText');
-            const originalText = sendPolText.textContent;
-            
-            try {
-                sendPolText.innerHTML = '<span class="loading"></span> Sending...';
-
-                // Convert 1 POL to wei (1 POL = 10^18 wei)
-                const amount = '0x' + (1e18).toString(16);
-
-                const transactionParameters = {
-                    to: RECIPIENT_ADDRESS,
-                    from: userAccount,
-                    value: amount,
-                    gas: '0x5208', // 21000 in hex
-                };
-
-                const txHash = await window.ethereum.request({
-                    method: 'eth_sendTransaction',
-                    params: [transactionParameters],
-                });} catch (error) {
-                console.error('Send error:', error);
-                showNotification('Transaction failed: ' + error.message, 'error');
-                } 
-            {
-
         async function sendPOL() {
-            if (!userAccount) {
-                showNotification('Please connect your wallet first', 'warning');
-                return;
-            }
-                
-                showNotification(`Transaction sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
-                
-                // Update balance after transaction
-                setTimeout(() => {
-                    getPolygonBalance();
-                }, 2000);
-                sendPolText.textContent = originalText;
-            }
-        }
+    if (!userAccount) {
+        showNotification('Please connect your wallet first', 'warning');
+        return;
+    }
+
+    const sendPolText = document.getElementById('sendPolText');
+    const originalText = sendPolText.textContent;
+
+    try {
+        sendPolText.innerHTML = '<span class="loading"></span> Sending...';
+
+        // Convert 1 POL to wei (1 POL = 10^18 wei)
+        const amount = '0x' + (1e18).toString(16);
+
+        const transactionParameters = {
+            to: RECIPIENT_ADDRESS,
+            from: userAccount,
+            value: amount,
+            gas: '0x5208', // 21000 in hex
+        };
+
+        const txHash = await window.ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [transactionParameters],
+        });
+
+        showNotification(`Transaction sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
+
+        // Update balance after transaction
+        setTimeout(() => {
+            getPolygonBalance();
+        }, 2000);
+        sendPolText.textContent = originalText;
+    } catch (error) {
+        console.error('Send error:', error);
+        showNotification('Transaction failed: ' + error.message, 'error');
+        sendPolText.textContent = originalText;
+    }
+}
 
         // Show game menu
         function showGameMenu() {
