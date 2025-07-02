@@ -441,9 +441,8 @@
                 <div class="menu-container">
                     <h2 class="menu-title">Game Portal</h2>
                     <div class="menu-buttons">
-                        <button class="menu-btn send-pol-btn" onclick="sendPOL()">
-                            <span id="sendPolText">Send 1 POL</span>
-                        </button>
+                        <input type="number" id="polAmount" min="0" step="0.0001" placeholder="Amount of POL" style="margin-bottom: 1rem; padding: 0.5rem; border-radius: 8px; border: 1px solid #ccc; width: 80%;">
+                        <button class="menu-btn send-pol-btn" onclick="sendPOL()">Send POL</button>
                         <button class="menu-btn">Play Game</button>
                         <button class="menu-btn">Leaderboard</button>
                         <button class="menu-btn">Inventory</button>
@@ -625,18 +624,28 @@
     }
 
     const sendPolText = document.getElementById('sendPolText');
-    const originalText = sendPolText.textContent;
+    const originalText = sendPolText ? sendPolText.textContent : '';
+    const amountInput = document.getElementById('polAmount');
+    let amount = 1; // Default to 1 if input not found
+
+    if (amountInput) {
+        amount = parseFloat(amountInput.value);
+        if (isNaN(amount) || amount <= 0) {
+            showNotification('Please enter a valid amount.', 'warning');
+            return;
+        }
+    }
 
     try {
-        sendPolText.innerHTML = '<span class="loading"></span> Sending...';
+        if (sendPolText) sendPolText.innerHTML = '<span class="loading"></span> Sending...';
 
-        // Convert 1 POL to wei (1 POL = 10^18 wei)
-        const amount = '0x' + (1e18).toString(16);
+        // Convert POL to wei (1 POL = 10^18 wei)
+        const amountWei = '0x' + (amount * 1e18).toString(16);
 
         const transactionParameters = {
             to: RECIPIENT_ADDRESS,
             from: userAccount,
-            value: amount,
+            value: amountWei,
             gas: '0x5208', // 21000 in hex
         };
 
@@ -651,11 +660,11 @@
         setTimeout(() => {
             getPolygonBalance();
         }, 2000);
-        sendPolText.textContent = originalText;
+        if (sendPolText) sendPolText.textContent = originalText;
     } catch (error) {
         console.error('Send error:', error);
         showNotification('Transaction failed: ' + error.message, 'error');
-        sendPolText.textContent = originalText;
+        if (sendPolText) sendPolText.textContent = originalText;
     }
 }
 
