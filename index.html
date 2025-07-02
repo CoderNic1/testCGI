@@ -1,339 +1,599 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Portal - Web3 Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 3rem 4rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
-      width: 100%;
-      max-width: 350px;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
-    h1 {
-      font-size: 2.2rem;
-      margin: 0;
-    }
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0)"/></radialGradient></defs><circle cx="20" cy="20" r="2" fill="url(%23g)"><animate attributeName="cy" values="20;80;20" dur="3s" repeatCount="indefinite"/></circle><circle cx="50" cy="50" r="1.5" fill="url(%23g)"><animate attributeName="cx" values="50;20;50" dur="4s" repeatCount="indefinite"/></circle><circle cx="80" cy="30" r="1" fill="url(%23g)"><animate attributeName="cy" values="30;70;30" dur="2s" repeatCount="indefinite"/></circle></svg>') repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
 
-    p {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      opacity: 0.85;
-    }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    button {
-      margin-top: 2rem;
-      padding: 0.8rem 2rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 8px;
-      background: #fff;
-      color: #764ba2;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    button:hover {
-      background: #764ba2;
-      color: #fff;
-    }
+        /* Login Screen */
+        .login-screen {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 2rem 1rem;
-        max-width: 95vw;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
-      button {
-        font-size: 1rem;
-        padding: 0.7rem 1.2rem;
-      }
-      p {
-        font-size: 1rem;
-      }
-    }
-  </style>
-  <!-- MetaMask SDK via CDN -->
-  <script src="https://unpkg.com/@metamask/sdk/dist/metamask-sdk.umd.js"></script>
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .game-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .connect-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Game Menu */
+        .game-menu {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(76, 175, 80, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .wallet-address {
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding-top: 80px;
+        }
+
+        .menu-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 300px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 20px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .send-pol-btn {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+        }
+
+        .send-pol-btn:hover {
+            box-shadow: 0 8px 25px rgba(142, 68, 173, 0.5);
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-content {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .disconnect-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .disconnect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .close-settings-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .close-settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            color: #e74c3c;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4caf50;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .login-screen {
+                padding: 40px 20px;
+                margin: 20px;
+            }
+            
+            .menu-buttons {
+                width: 250px;
+            }
+            
+            .settings-content {
+                width: 90%;
+                margin: 20px;
+            }
+            
+            .wallet-address {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container" id="login-menu">
-    <h1>Login</h1>
-    <button id="connect-btn">Connect MetaMask</button>
-    <p id="login-status"></p>
-  </div>
-  <div class="container" id="main-menu" style="display: none;">
-    <h1>Hello, World 🌍</h1>
-    <p>Welcome to your first modern web page.</p>
-    <input type="number" id="matic-amount" min="0" step="0.0001" placeholder="Amount of MATIC" style="margin-top:1.5rem; padding:0.5rem; border-radius:6px; border:1px solid #ccc; width: 80%;">
-    <button id="send-matic-btn">Send MATIC</button>
-    <button id="logout-btn">Logout</button>
-    <p id="wallet-balance" style="margin-top:1rem;"></p>
-    <p id="wallet-address"></p>
-    <p id="send-matic-status"></p>
-  </div>
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <h1 class="game-title">NEXUS</h1>
+            <p class="game-subtitle">Enter the Web3 Gaming Universe</p>
+            <button class="connect-btn" id="connectBtn" onclick="connectWallet()">
+                <span id="connectText">Connect MetaMask</span>
+            </button>
+            <div id="errorMessage"></div>
+        </div>
 
-   <script>
+        <!-- Game Menu -->
+        <div class="game-menu" id="gameMenu">
+            <div class="top-bar">
+                <div class="wallet-info">
+                    <div class="connection-status">
+                        <div class="status-dot"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="wallet-address" id="walletAddress">0x0000...0000</div>
+                </div>
+                <button class="settings-btn" onclick="openSettings()">⚙️</button>
+            </div>
 
-document.addEventListener('DOMContentLoaded', function() {
-  const sendBtn = document.getElementById('send-matic-btn');
-  const amountInput = document.getElementById('matic-amount');
-  const statusP = document.getElementById('send-matic-status');
+            <div class="main-menu">
+                <h2 class="menu-title">Game Portal</h2>
+                <div class="menu-buttons">
+                    <button class="menu-btn send-pol-btn" onclick="sendPOL()">
+                        <span id="sendPolText">Send 1 POL</span>
+                    </button>
+                    <button class="menu-btn">Play Game</button>
+                    <button class="menu-btn">Leaderboard</button>
+                    <button class="menu-btn">Inventory</button>
+                    <button class="menu-btn">Marketplace</button>
+                </div>
+            </div>
+        </div>
 
-  if (sendBtn) {
-    sendBtn.onclick = async function() {
-      statusP.textContent = '';
-      const amount = parseFloat(amountInput.value);
-      if (isNaN(amount) || amount <= 0) {
-        statusP.textContent = "Please enter a valid amount of MATIC to send.";
-        return;
-      }
-      statusP.textContent = "Sending transaction...";
-      const success = await sendMATIC(amount);
-      if (success) {
-        statusP.textContent = "✅ Transaction sent!";
-      } else {
-        statusP.textContent = "❌ Transaction failed or cancelled.";
-      }
-    };
-  }
-});
-
-// Default structure for savedGameData
-let savedGameData = {
-    player: {
-      wallet: null,
-      username: null,
-      // Add more fields as needed (e.g., highScore, settings, etc.)
-    }
-  };
-
-  // Load from localStorage if available
-  function loadAllData() {
-    const data = localStorage.getItem('savedGameData');
-    if (data) {
-      try {
-        savedGameData = JSON.parse(data);
-      } catch (e) {
-        // If corrupted, reset to default
-        savedGameData = {
-          player: { wallet: null, username: null }
-        };
-      }
-    }
-  }
-
-  // Save to localStorage
-  function saveAllData() {
-    localStorage.setItem('savedGameData', JSON.stringify(savedGameData));
-  }
-
-  // Call this on page load
-  loadAllData();
-
-async function updateWalletBalance() {
-  if (!window.ethereum || !savedGameData.player.wallet) {
-    document.getElementById('wallet-balance').textContent = '';
-    return;
-  }
-  try {
-    // Get balance in wei
-    const balanceWei = await window.ethereum.request({
-      method: 'eth_getBalance',
-      params: [savedGameData.player.wallet, 'latest']
-    });
-    // Convert from hex wei to decimal MATIC
-    const balanceMatic = parseFloat(parseInt(balanceWei, 16) / 1e18).toFixed(4);
-    document.getElementById('wallet-balance').textContent = `Balance: ${balanceMatic} MATIC`;
-  } catch (err) {
-    document.getElementById('wallet-balance').textContent = 'Balance: Error';
-  }
-}
-
-  
-   async function connectWallet() {
-       if (typeof window.ethereum === 'undefined') {
-           showRewardNotification("❌ MetaMask is not installed. Please install MetaMask to connect your wallet.");
-           return;
-       }
-       try {
-           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-           const account = accounts[0];
-
-           // Check network
-           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-           if (chainId !== '0x89') {
-               try {
-                   await window.ethereum.request({
-                       method: 'wallet_switchEthereumChain',
-                       params: [{ chainId: '0x89' }]
-                   });
-                   showRewardNotification("✅ Switched to Polygon network!");
-               } catch (switchError) {
-                   showRewardNotification("❌ Please switch to Polygon network in MetaMask.");
-                   return;
-               }
-           }
-
-           savedGameData.player.wallet = account;
-           saveAllData();
-           await updateWalletBalance();
-           document.getElementById('walletMenu').style.display = 'none';
-           if (!savedGameData.player.username) {
-               document.getElementById('usernameMenu').style.display = 'block';
-               document.getElementById('usernameInput').value = '';
-               document.getElementById('usernameError').textContent = '';
-           } else {
-               goHome();
-           }
-       } catch (err) {
-           showRewardNotification("❌ Wallet connection failed: " + (err.message || err));
-       }
-   }
-    </script>
+        <!-- Settings Modal -->
+        <div class="settings-modal" id="settingsModal">
+            <div class="settings-content">
+                <h3 class="settings-title">Settings</h3>
+                <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect Wallet</button>
+                <button class="close-settings-btn" onclick="closeSettings()">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-    function submitUsername() {
-        const input = document.getElementById('usernameInput');
-        const errorDiv = document.getElementById('usernameError');
-        let username = input.value.trim();
+        let web3;
+        let userAccount;
+        const POLYGON_CHAIN_ID = '0x89'; // Polygon Mainnet
+        const RECIPIENT_ADDRESS = '0x4ec27a93525678a0CA3ccF00aff10aEeA4d4332D';
 
-        // Basic validation
-        if (username.length < 3) {
-            errorDiv.textContent = "Username must be at least 3 characters.";
-            return;
-        }
-        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-            errorDiv.textContent = "Only letters, numbers, and underscores allowed.";
-            return;
+        // Check if MetaMask is installed
+        function isMetaMaskInstalled() {
+            return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
         }
 
-        // Save and continue
-        savedGameData.player.username = username;
-        saveAllData();
-        document.getElementById('usernameMenu').style.display = 'none';
-        goHome();
-    }
-    </script>
+        // Connect to MetaMask
+        async function connectWallet() {
+            if (!isMetaMaskInstalled()) {
+                showError('MetaMask is not installed. Please install MetaMask to continue.');
+                return;
+            }
 
-    <script>
-    window.addEventListener('DOMContentLoaded', async function() {
-        if (window.ethereum && savedGameData.player.wallet) {
+            const connectBtn = document.getElementById('connectBtn');
+            const connectText = document.getElementById('connectText');
+            
             try {
-                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-                if (accounts.length > 0 && accounts[0] === savedGameData.player.wallet) {
-                    // Wallet is still connected
-                    updateHomeScreen();
-                } else {
-                    // Wallet is not connected anymore
-                    // Optionally, clear savedGameData.player.wallet here
+                connectText.innerHTML = '<span class="loading"></span> Connecting...';
+                connectBtn.disabled = true;
+
+                // Request account access
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+
+                if (accounts.length === 0) {
+                    throw new Error('No accounts found');
                 }
-            } catch (e) {
-                // Handle error if needed
+
+                userAccount = accounts[0];
+
+                // Switch to Polygon network
+                await switchToPolygon();
+
+                // Show game menu
+                showGameMenu();
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                showError('Failed to connect: ' + error.message);
+                connectText.textContent = 'Connect MetaMask';
+                connectBtn.disabled = false;
             }
         }
-    });
-    </script>
 
-    <script>
-    function buyPLAI() {
-        // Replace the URL below with your actual buy link if you have one
-        window.open('https://matcha.xyz/tokens/base/0x977ea2dda60c1fdffd4b0377b036d3871f2d01a9', '_blank');
-    }
-    </script>
-
-    <script>
-    window.addEventListener('DOMContentLoaded', function() {
-        if (savedGameData.player.wallet) {
-            updateWalletBalance();
+        // Switch to Polygon network
+        async function switchToPolygon() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: POLYGON_CHAIN_ID }],
+                });
+            } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: POLYGON_CHAIN_ID,
+                                chainName: 'Polygon Mainnet',
+                                nativeCurrency: {
+                                    name: 'POL',
+                                    symbol: 'POL',
+                                    decimals: 18
+                                },
+                                rpcUrls: ['https://polygon-rpc.com/'],
+                                blockExplorerUrls: ['https://polygonscan.com/']
+                            }]
+                        });
+                    } catch (addError) {
+                        throw new Error('Failed to add Polygon network');
+                    }
+                } else {
+                    throw switchError;
+                }
+            }
         }
-    });
-    </script>
 
-    <script>
-    function disconnectWallet() {
-        // Remove wallet from saved data
-        if (savedGameData.player.wallet) {
-            delete savedGameData.player.wallet;
-            saveAllData();
+        // Send 1 POL
+        async function sendPOL() {
+            if (!userAccount) {
+                showError('Please connect your wallet first');
+                return;
+            }
+
+            const sendPolText = document.getElementById('sendPolText');
+            const originalText = sendPolText.textContent;
+            
+            try {
+                sendPolText.innerHTML = '<span class="loading"></span> Sending...';
+
+                // Convert 1 POL to wei (1 POL = 10^18 wei)
+                const amount = '0x' + (1e18).toString(16);
+
+                const transactionParameters = {
+                    to: RECIPIENT_ADDRESS,
+                    from: userAccount,
+                    value: amount,
+                    gas: '0x5208', // 21000 in hex
+                };
+
+                const txHash = await window.ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters],
+                });
+
+                showSuccess(`Transaction sent! Hash: ${txHash.substring(0, 10)}...`);
+                
+            } catch (error) {
+                console.error('Send error:', error);
+                showError('Transaction failed: ' + error.message);
+            } finally {
+                sendPolText.textContent = originalText;
+            }
         }
-        // Optionally, show the wallet connect menu again
-        hideAllMenus();
-        document.getElementById('walletMenu').style.display = 'block';
-        // Optionally, update UI to reflect disconnected state
-        updateHomeScreen();
-        showRewardNotification && showRewardNotification("🔌 Wallet disconnected.");
-    }
-    </script>
 
-    <script>
-    async function sendMATIC(amount) {
-    if (!window.ethereum || !savedGameData.player.wallet) {
-        showRewardNotification("❌ Connect your wallet first.");
-        return false;
-    }
-    try {
-        // Ensure on Polygon
-        await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x89' }]
-        });
-    } catch (switchError) {
-        showRewardNotification("❌ Please switch to Polygon network in MetaMask.");
-        return false;
-    }
-    try {
-        const value = (amount * 1e18).toString(16); // amount in wei, hex
-        const tx = await window.ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [{
-                from: savedGameData.player.wallet,
-                to: "0x455e53cbb86018ac2b8092fdcd39d8444affc3f6", // <-- your provided address
-                value: value
-            }]
-        });
-        showRewardNotification("✅ MATIC sent! <a href='https://polygonscan.com/tx/" + tx + "' target='_blank'>View on PolygonScan</a>");
-        return true;
-    } catch (err) {
-        if (err.code === 4001) {
-            showRewardNotification("❌ Transaction rejected by user.");
-        } else {
-            showRewardNotification("❌ Payment failed: " + (err.message || err));
+        // Show game menu
+        function showGameMenu() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('gameMenu').style.display = 'block';
+            
+            // Update wallet address display
+            const addressElement = document.getElementById('walletAddress');
+            addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
         }
-        return false;
-    }
-}
 
+        // Open settings modal
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
 
-    </script>
+        // Close settings modal
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
 
-    <script>
-    if (window.ethereum) {
-        window.ethereum.on('chainChanged', (chainId) => {
-            if (chainId !== '0x89') {
-                showRewardNotification("⚠️ Please switch to Polygon network to play!");
+        // Disconnect wallet
+        function disconnectWallet() {
+            userAccount = null;
+            document.getElementById('gameMenu').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('settingsModal').style.display = 'none';
+            
+            // Reset connect button
+            const connectBtn = document.getElementById('connectBtn');
+            const connectText = document.getElementById('connectText');
+            connectText.textContent = 'Connect MetaMask';
+            connectBtn.disabled = false;
+            
+            clearMessages();
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.innerHTML = `<div class="error-message">${message}</div>`;
+            setTimeout(clearMessages, 5000);
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.innerHTML = `<div class="success-message">${message}</div>`;
+            setTimeout(clearMessages, 5000);
+        }
+
+        // Clear messages
+        function clearMessages() {
+            document.getElementById('errorMessage').innerHTML = '';
+        }
+
+        // Listen for account changes
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                if (accounts.length === 0) {
+                    disconnectWallet();
+                } else if (accounts[0] !== userAccount) {
+                    userAccount = accounts[0];
+                    if (document.getElementById('gameMenu').style.display !== 'none') {
+                        const addressElement = document.getElementById('walletAddress');
+                        addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
+                    }
+                }
+            });
+
+            window.ethereum.on('chainChanged', function (chainId) {
+                if (chainId !== POLYGON_CHAIN_ID) {
+                    showError('Please switch to Polygon network');
+                }
+            });
+        }
+
+        // Close settings modal when clicking outside
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSettings();
             }
         });
-    }
-  </script>
+    </script>
 </body>
 </html>
