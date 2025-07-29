@@ -1090,7 +1090,10 @@
             <button class="btn-primary" style="padding: 10px 25px;" onclick="newSwap()">New Swap</button>
         </div>
     </div>
-    <button onclick="showMenu('mainMenu')" class="menu-btn">🏠 Home</button>
+<!-- Centered Home Button at Bottom -->
+<div class="menu-footer">
+    <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
+</div>
   </div>
 
         <!-- Settings Modal -->
@@ -1353,33 +1356,25 @@ function showMenu(menuId) {
             }
         }
 
-        async function sendPOL() {
+  // Central POL spend function
+async function spendPOL(amount, reason = "POL Spend") {
     if (!userAccount) {
         showNotification('Please connect your wallet first', 'warning');
-        return;
+        throw new Error('Wallet not connected');
+    }
+
+    if (!amount || isNaN(amount) || amount <= 0) {
+        showNotification('Invalid $POL amount.', 'error');
+        throw new Error('Invalid amount');
     }
 
     const sendPolText = document.getElementById('sendPolText');
     const originalText = sendPolText ? sendPolText.textContent : '';
-    const amountInput = document.getElementById('polAmount');
+    if (sendPolText) sendPolText.innerHTML = '<span class="loading"></span> Sending...';
 
-    if (!amountInput) {
-        showNotification('Amount input not found.', 'error');
-        return;
-    }
-
-    const amount = parseFloat(amountInput.value);
-    if (isNaN(amount) || amount <= 0) {
-        showNotification('Please enter a valid amount of POL to send.', 'warning');
-        return;
-    }
-
+    // Prepare transaction (Polygon native transfer)
     try {
-        if (sendPolText) sendPolText.innerHTML = '<span class="loading"></span> Sending...';
-
-        // Convert POL to wei (1 POL = 10^18 wei)
         const amountWei = '0x' + (amount * 1e18).toString(16);
-
         const transactionParameters = {
             to: RECIPIENT_ADDRESS,
             from: userAccount,
@@ -1392,17 +1387,20 @@ function showMenu(menuId) {
             params: [transactionParameters],
         });
 
-        showNotification(`Transaction sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
+        showNotification(`${reason} sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
 
-        // Update balance after transaction
+        // Refresh POL balance after transaction
         setTimeout(() => {
             getPolygonBalance();
         }, 2000);
+
         if (sendPolText) sendPolText.textContent = originalText;
+        return txHash;
     } catch (error) {
         console.error('Send error:', error);
         showNotification('Transaction failed: ' + error.message, 'error');
         if (sendPolText) sendPolText.textContent = originalText;
+        throw error;
     }
 }
 
@@ -1594,13 +1592,15 @@ setInterval(updateMissionUI, 1000); // Update every second
             updateUI();
         }
 
-        function payWithPol(cost) {
-            if (gameData.polTokens >= cost) {
-                gameData.polTokens -= cost;
-                console.log("Paid " + cost + " $POL tokens for mission failure");
-                resetMission();
-            }
-        }
+// Usage for mission failure
+async function payWithPol(cost) {
+    try {
+        await spendPOL(cost, "Mission Fail Payment");
+        resetMission();
+    } catch (error) {
+        // Transaction failed, user notified by spendPOL
+    }
+}
 
         function resetMission() {
             gameData.activeMission = null;
@@ -1719,21 +1719,24 @@ setInterval(updateMissionUI, 1000); // Update every second
             confirmBtn.disabled = gameData.polTokens < hours;
         }
 
-        function applySpeedUp() {
-            var hours = parseInt(document.getElementById("speedUpSlider").value);
-            var timeToSkip = hours * 3600;
-            
-            if (gameData.polTokens >= hours && gameData.swapTimeRemaining > 0) {
-                gameData.polTokens -= hours;
-                gameData.swapTimeRemaining = Math.max(0, gameData.swapTimeRemaining - timeToSkip);
-                hideSpeedUp();
-                updateUI();
-                
-                if (gameData.swapTimeRemaining <= 0) {
-                    completeSwap();
-                }
+        // Usage for swap speed-up
+async function applySpeedUp() {
+    var hours = parseInt(document.getElementById("speedUpSlider").value);
+    var timeToSkip = hours * 3600;
+    if (gameData.swapTimeRemaining > 0) {
+        try {
+            await spendPOL(hours, "Swap Speed Up");
+            gameData.swapTimeRemaining = Math.max(0, gameData.swapTimeRemaining - timeToSkip);
+            hideSpeedUp();
+            updateUI();
+            if (gameData.swapTimeRemaining <= 0) {
+                completeSwap();
             }
+        } catch (error) {
+            // Transaction failed, user notified by spendPOL
         }
+    }
+}
 
         function showHistory() {
             var historyContent = document.getElementById("historyContent");
