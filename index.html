@@ -1421,7 +1421,7 @@
     </div>
 
     <script>
-        let walletAddress = 0xEce1b63218A249708B521E22BbAA7bAC35F6f20f;
+
         // Centralized game data object
         let gameData = {
             gold: 0,
@@ -1438,6 +1438,11 @@
             swapHistory: [],
             walletAddress: null
         };
+        // Initialize userAccount with stored wallet address
+let userAccount = gameData.walletAddress || null;
+        function isWalletConnected() {
+    return userAccount !== null && typeof userAccount === 'string';
+        }
 
         var missions = {
             easy: {
@@ -1476,10 +1481,17 @@
         };
 
         // Load from localStorage if available
-function loadGameData() {
+        
+        function loadGameData() {
     const data = localStorage.getItem('gameData');
     if (data) {
-        try { gameData = JSON.parse(data); } catch (e) {}
+        try { 
+            gameData = JSON.parse(data); 
+            // Initialize userAccount with stored wallet address
+            userAccount = gameData.walletAddress || null;
+        } catch (e) {
+            console.error('Error loading game data:', e);
+        }
     }
 }
 
@@ -1497,9 +1509,17 @@ async function restoreWalletConnection() {
             if (accounts.length > 0 && accounts[0].toLowerCase() === gameData.walletAddress.toLowerCase()) {
                 userAccount = accounts[0];
                 showGameMenu();
+            } else {
+                // Account changed or disconnected
+                userAccount = null;
+                gameData.walletAddress = null;
+                saveGameData();
             }
         } catch (error) {
             console.error('Wallet restoration error:', error);
+            userAccount = null;
+            gameData.walletAddress = null;
+            saveGameData();
         }
     }
 }
@@ -1623,7 +1643,6 @@ function continueSwap() {
     }, 1000);
 }
 
-        let userAccount;
         const POLYGON_CHAIN_ID = '0x89'; // Polygon Mainnet
         const RECIPIENT_ADDRESS = '0x4ec27a93525678a0CA3ccF00aff10aEeA4d4332D';
 
@@ -1636,7 +1655,7 @@ function continueSwap() {
         }
 
         async function getPolygonBalance() {
-    if (!userAccount) {
+    if (!isWalletConnected()) {
         document.getElementById('polygonBalance').textContent = '0.00 POL';
         return;
     }
@@ -1658,41 +1677,41 @@ function continueSwap() {
         
         // Check if MetaMask is installed
         async function connectWallet() {
-            if (!isMetaMaskInstalled()) {
-                showNotification('MetaMask is not installed. Please install MetaMask to continue.', 'error');
-                return;
-            }
+    if (!isMetaMaskInstalled()) {
+        showNotification('MetaMask is not installed. Please install MetaMask to continue.', 'error');
+        return;
+    }
 
-            const connectBtn = document.getElementById('connectBtn');
-            const connectText = document.getElementById('connectText');
-            
-            try {
-                connectText.innerHTML = '<span class="loading"></span> Connecting...';
-                connectBtn.disabled = true;
+    const connectBtn = document.getElementById('connectBtn');
+    const connectText = document.getElementById('connectText');
+    
+    try {
+        connectText.innerHTML = '<span class="loading"></span> Connecting...';
+        connectBtn.disabled = true;
 
-                // Request account access
-                const accounts = await window.ethereum.request({
-                    method: 'eth_requestAccounts'
-                });
+        // Request account access
+        const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts'
+        });
 
-                if (accounts.length === 0) {
-                    throw new Error('No accounts found');
-                }
-
-                userAccount = accounts[0];
-                gameData.walletAddress = userAccount;
-                saveGameData();
-
-                await switchToPolygon();
-                showGameMenu();
-                
-            } catch (error) {
-                console.error('Connection error:', error);
-                showNotification('Failed to connect: ' + error.message, 'error');
-                connectText.textContent = 'Connect MetaMask';
-                connectBtn.disabled = false;
-            }
+        if (accounts.length === 0) {
+            throw new Error('No accounts found');
         }
+
+        userAccount = accounts[0];
+        gameData.walletAddress = userAccount;
+        saveGameData();
+
+        await switchToPolygon();
+        showGameMenu();
+        
+    } catch (error) {
+        console.error('Connection error:', error);
+        showNotification('Failed to connect: ' + error.message, 'error');
+        connectText.textContent = 'Connect MetaMask';
+        connectBtn.disabled = false;
+    }
+}
 
         // Switch to Polygon network
         async function switchToPolygon() {
