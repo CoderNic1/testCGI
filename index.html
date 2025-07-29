@@ -1089,11 +1089,11 @@
             </div>
             <button class="btn-primary" style="padding: 10px 25px;" onclick="newSwap()">New Swap</button>
         </div>
-    </div>
-<!-- Centered Home Button at Bottom -->
+        <!-- Centered Home Button at Bottom -->
 <div class="menu-footer">
     <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
 </div>
+    </div>
   </div>
 
         <!-- Settings Modal -->
@@ -1523,7 +1523,8 @@ setInterval(updateMissionUI, 1000); // Update every second
         });
 
         function updateGoldDisplay() {
-            document.getElementById('gold').textContent = `Gold: ${gameData.gold}`;
+        document.getElementById('userGold').textContent = gameData.gold;
+        document.getElementById('swapGold').textContent = gameData.gold; // Add this if your swap page shows gold here
         }
 
         // all functions related to the missions/swap
@@ -1566,7 +1567,9 @@ setInterval(updateMissionUI, 1000); // Update every second
         // Use centralized gold property!
         gameData.gold += goldWon;
         updateGoldDisplay();
-
+        <div id="resultModal" class="hidden">
+    <div id="resultContent"></div>
+        </div>
         resultContent = "<div style='text-align: center;'>" +
             "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
             "<h3 style='color: #4ade80; font-size: 1.5rem; margin-bottom: 15px;'>Mission Success!</h3>" +
@@ -1614,20 +1617,20 @@ async function payWithPol(cost) {
     }
 }
 
-        function resetMission() {
-            gameData.activeMission = null;
-            gameData.missionProgress = 0;
-            gameData.missionComplete = false;
-            
-            document.getElementById("resultModal").classList.add("hidden");
-            document.getElementById("activeMission").classList.add("hidden");
-            document.getElementById("revealBtn").classList.add("hidden");
-            document.getElementById("missionSelection").classList.remove("hidden");
-            document.getElementById("swapSection").classList.remove("hidden");
-            
-            updateUI();
-        }
-
+function resetMission() {
+    gameData.activeMission = null;
+    gameData.missionProgress = 0;
+    gameData.missionComplete = false;
+    document.getElementById("resultModal").classList.add("hidden");
+    document.getElementById("activeMission").classList.add("hidden");
+    document.getElementById("revealBtn").classList.add("hidden");
+    document.getElementById("missionSelection").classList.remove("hidden");
+    // Show swap menu
+    document.getElementById("swapSection").style.display = "block";
+    // Or, if using craftingMenu modal:
+    document.getElementById("craftingMenu").classList.remove("hidden");
+    updateUI();
+}
         function updateSwapAmount() {
             gameData.swapAmount = parseInt(document.getElementById("swapSlider").value);
             document.getElementById("swapAmount").textContent = gameData.swapAmount;
