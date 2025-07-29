@@ -905,7 +905,7 @@
                 <div class="resources-bar" id="resourcesBar" style="display: flex; gap: 16px; margin-top: 10px; justify-content: flex-start;">
                     <div class="resource-item" id="goldResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
                         <span>🪙</span>
-                        <span id="userGold">0</span>
+                        <span id="gold">0</span>
                         <span style="opacity:0.7;">Gold</span>
                     </div>
                 </div>
@@ -1184,20 +1184,24 @@ function openGamePass() {
 }
 
 function showMenu(menuId) {
-    // Hide all menus
-    document.querySelectorAll('.main-menu, #missionsMenu, #craftingMenu').forEach(el => {
-        el.style.display = 'none';
-        el.classList.add('hidden');
-    });
-    // Show the requested menu
-    if (menuId === 'mainMenu') {
-        document.querySelector('.main-menu').style.display = 'flex';
-        document.querySelector('.main-menu').classList.remove('hidden');
-    } else {
-        document.getElementById(menuId).style.display = 'flex';
-        document.getElementById(menuId).classList.remove('hidden');
+        // Hide all menus
+        document.getElementById("gameMenu").style.display = "none";
+        document.getElementById("swapSection").style.display = "none";
+        document.getElementById("missionSelection").classList.add("hidden");
+        document.getElementById("activeMission").classList.add("hidden");
+        // Show requested menu
+        if (menuId === "mainMenu") {
+            document.getElementById("gameMenu").style.display = "block";
+            updateUI();
+        } else if (menuId === "swapMenu") {
+            document.getElementById("swapSection").style.display = "block";
+            updateUI();
+        } else if (menuId === "missionMenu") {
+            document.getElementById("missionSelection").classList.remove("hidden");
+            updateUI();
+        }
     }
-}
+
 
 
         // Universal notification system
@@ -1519,7 +1523,7 @@ setInterval(updateMissionUI, 1000); // Update every second
         });
 
         function updateGoldDisplay() {
-            document.getElementById('userGold').textContent = `Gold: ${gameData.gold}`;
+            document.getElementById('gold').textContent = `Gold: ${gameData.gold}`;
         }
 
         // all functions related to the missions/swap
@@ -1553,44 +1557,52 @@ setInterval(updateMissionUI, 1000); // Update every second
         }
 
         function revealResult() {
-            var mission = gameData.activeMission;
-            var isSuccess = Math.random() * 100 < mission.successRate;
-            var resultContent = "";
-            
-            if (isSuccess) {
-                var goldWon = Math.floor(Math.random() * (mission.maxReward - mission.baseReward + 1)) + mission.baseReward;
-                gameData.userGold += goldWon;
-                
-                resultContent = "<div style='text-align: center;'>" +
-                    "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
-                    "<h3 style='color: #4ade80; font-size: 1.5rem; margin-bottom: 15px;'>Mission Success!</h3>" +
-                    "<p style='margin-bottom: 15px;'>Victory! You completed the " + mission.name + "!</p>" +
-                    "<div class='result-success'>" +
-                        "<div style='color: #fbbf24; font-size: 1.3rem; font-weight: bold;'>💰 +" + goldWon + " Gold</div>" +
-                    "</div>" +
-                    "<button class='btn btn-primary' onclick='resetMission()' style='margin-top: 15px;'>Continue</button>" +
-                "</div>";
-            } else {
-                var disabledAttr = gameData.polTokens < mission.failCost ? "disabled" : "";
-                resultContent = "<div style='text-align: center;'>" +
-                    "<div style='font-size: 4rem; margin-bottom: 15px;'>⚠️</div>" +
-                    "<h3 style='color: #f87171; font-size: 1.5rem; margin-bottom: 15px;'>Mission Failed!</h3>" +
-                    "<p style='margin-bottom: 15px;'>The " + mission.name + " was too dangerous this time.</p>" +
-                    "<div class='result-failure'>" +
-                        "<div style='color: #f87171; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;'>❌ Mission Failed</div>" +
-                        "<p style='font-size: 0.9rem;'>Pay " + mission.failCost + " $POL tokens to cover losses</p>" +
-                    "</div>" +
-                    "<div class='btn-group'>" +
-                        "<button class='btn btn-primary' onclick='payWithPol(" + mission.failCost + ")' " + disabledAttr + ">Pay " + mission.failCost + " $POL</button>" +
-                        "<button class='btn btn-secondary' onclick='resetMission()'>Skip Payment</button>" +
-                    "</div>" +
-                "</div>";
-            }
-            
-            document.getElementById("resultContent").innerHTML = resultContent;
-            document.getElementById("resultModal").classList.remove("hidden");
-            updateUI();
-        }
+    var mission = gameData.activeMission;
+    var isSuccess = Math.random() * 100 < mission.successRate;
+    var resultContent = "";
+    
+    if (isSuccess) {
+        var goldWon = Math.floor(Math.random() * (mission.maxReward - mission.baseReward + 1)) + mission.baseReward;
+        // Use centralized gold property!
+        gameData.gold += goldWon;
+        updateGoldDisplay();
+
+        resultContent = "<div style='text-align: center;'>" +
+            "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
+            "<h3 style='color: #4ade80; font-size: 1.5rem; margin-bottom: 15px;'>Mission Success!</h3>" +
+            "<p style='margin-bottom: 15px;'>Victory! You completed the " + mission.name + "!</p>" +
+            "<div class='result-success'>" +
+                "<div style='color: #fbbf24; font-size: 1.3rem; font-weight: bold;'>💰 +" + goldWon + " Gold</div>" +
+            "</div>" +
+            "<button class='btn btn-primary' onclick='resetMission()' style='margin-top: 15px;'>Continue</button>" +
+        "</div>";
+    } else {
+        var disabledAttr = gameData.polTokens < mission.failCost ? "disabled" : "";
+        resultContent = "<div style='text-align: center;'>" +
+            "<div style='font-size: 4rem; margin-bottom: 15px;'>⚠️</div>" +
+            "<h3 style='color: #f87171; font-size: 1.5rem; margin-bottom: 15px;'>Mission Failed!</h3>" +
+            "<p style='margin-bottom: 15px;'>The " + mission.name + " was too dangerous this time.</p>" +
+            "<div class='result-failure'>" +
+                "<div style='color: #f87171; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;'>❌ Mission Failed</div>" +
+                "<p style='font-size: 0.9rem;'>Pay " + mission.failCost + " $POL tokens to cover losses</p>" +
+            "</div>" +
+            "<div class='btn-group'>" +
+                "<button class='btn btn-primary' onclick='payWithPol(" + mission.failCost + ")' " + disabledAttr + ">Pay " + mission.failCost + " $POL</button>" +
+                "<button class='btn btn-secondary' onclick='resetMission()'>Skip Payment</button>" +
+            "</div>" +
+        "</div>";
+    }
+    
+    // PATCH: Only set innerHTML if element exists
+    var resultContentEl = document.getElementById("resultContent");
+    if (resultContentEl) {
+        resultContentEl.innerHTML = resultContent;
+        document.getElementById("resultModal").classList.remove("hidden");
+    } else {
+        console.warn("Missing #resultContent element");
+    }
+    updateUI();
+}
 
 // Usage for mission failure
 async function payWithPol(cost) {
@@ -1623,13 +1635,13 @@ async function payWithPol(cost) {
             document.getElementById("processingTime").textContent = formatTime(gameData.swapAmount * 3);
             
             var startBtn = document.getElementById("startSwapBtn");
-            startBtn.disabled = gameData.swapAmount <= 0 || gameData.swapAmount > gameData.userGold;
+            startBtn.disabled = gameData.swapAmount <= 0 || gameData.swapAmount > gameData.gold;
         }
 
         function startSwap() {
-            if (gameData.swapAmount <= 0 || gameData.swapAmount > gameData.userGold) return;
+            if (gameData.swapAmount <= 0 || gameData.swapAmount > gameData.gold) return;
             
-            gameData.userGold -= gameData.swapAmount;
+            gameData.gold -= gameData.swapAmount;
             gameData.isSwapping = true;
             gameData.swapTimeRemaining = gameData.swapAmount * 3;
             gameData.swapProgress = 0;
@@ -1737,6 +1749,9 @@ async function applySpeedUp() {
         }
     }
 }
+        function updateUI() {
+            updateGoldDisplay();
+        }
 
         function showHistory() {
             var historyContent = document.getElementById("historyContent");
