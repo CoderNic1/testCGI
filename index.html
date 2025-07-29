@@ -930,6 +930,195 @@
     color: white;
     text-align: center;
 }
+
+/* Speed Up Modal Styling */
+.speedup-modal-content {
+    background: linear-gradient(135deg, #1f2937, #374151);
+    border-radius: 20px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid #4b5563;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.speedup-header {
+    background: linear-gradient(45deg, #059669, #10b981);
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #047857;
+}
+
+.speedup-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.close-speedup-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-speedup-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.speedup-info {
+    padding: 20px 25px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #374151;
+}
+
+.current-time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.speedup-controls {
+    padding: 25px;
+}
+
+.speedup-slider-container {
+    margin-bottom: 25px;
+}
+
+.speedup-slider-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #d1d5db;
+}
+
+.speedup-slider-container input[type="range"] {
+    width: 100%;
+    height: 8px;
+    background: #374151;
+    border-radius: 10px;
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.speedup-slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(45deg, #059669, #10b981);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.4);
+}
+
+.speedup-slider-container .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #9ca3af;
+}
+
+.speedup-details {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #374151;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.detail-row:last-child {
+    margin-bottom: 0;
+}
+
+.cost-row {
+    border-top: 1px solid #374151;
+    padding-top: 12px;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.speedup-actions {
+    padding: 20px 25px;
+    background: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #374151;
+    display: flex;
+    gap: 15px;
+}
+
+.confirm-speedup-btn {
+    flex: 1;
+    background: linear-gradient(45deg, #059669, #10b981);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.confirm-speedup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+}
+
+.confirm-speedup-btn:disabled {
+    background: #4b5563;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.cost-display {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.cancel-speedup-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-speedup-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
     </style>
 </head>
 <body>
@@ -1171,17 +1360,55 @@
         </div>
 
         <!-- Speed Up Modal -->
-        <div id="speedUpModal" class="modal hidden">
-            <div class="menu-container">
-                <h3>Speed Up Swap</h3>
-                <input type="range" id="speedUpSlider" min="0" max="0" value="0" oninput="updateSpeedUp()">
-                <p>Speed up by <span id="speedUpHours">0</span> hours for <span id="speedUpCost">0</span> $POL</p>
-                <p>Time saved: <span id="timeSaved">0</span></p>
-                <p>New time remaining: <span id="newTimeRemaining">0</span></p>
-                <button id="confirmSpeedUp" onclick="applySpeedUp()">Confirm Speed Up</button>
-                <button onclick="hideSpeedUp()">Cancel</button>
+<div id="speedUpModal" class="modal hidden">
+    <div class="speedup-modal-content">
+        <div class="speedup-header">
+            <h3>⚡ Speed Up Swap</h3>
+            <button class="close-speedup-btn" onclick="hideSpeedUp()">×</button>
+        </div>
+        
+        <div class="speedup-info">
+            <div class="current-time">
+                <span>Current time remaining:</span>
+                <span id="currentTimeRemaining" style="color: #60a5fa; font-weight: bold;">0s</span>
             </div>
         </div>
+        
+        <div class="speedup-controls">
+            <div class="speedup-slider-container">
+                <label>Speed up by:</label>
+                <input type="range" id="speedUpSlider" min="0" max="0" value="0" oninput="updateSpeedUp()">
+                <div class="slider-labels">
+                    <span>0 hours</span>
+                    <span id="maxSpeedUp">0 hours</span>
+                </div>
+            </div>
+            
+            <div class="speedup-details">
+                <div class="detail-row">
+                    <span>Time saved:</span>
+                    <span id="timeSaved" style="color: #10b981;">0 hours</span>
+                </div>
+                <div class="detail-row">
+                    <span>New time remaining:</span>
+                    <span id="newTimeRemaining" style="color: #60a5fa;">0s</span>
+                </div>
+                <div class="detail-row cost-row">
+                    <span>Cost:</span>
+                    <span id="speedUpCost" style="color: #fbbf24; font-weight: bold;">0 $POL</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="speedup-actions">
+            <button id="confirmSpeedUp" class="confirm-speedup-btn" onclick="applySpeedUp()">
+                <span>⚡ Speed Up</span>
+                <span class="cost-display">Cost: <span id="confirmCost">0</span> $POL</span>
+            </button>
+            <button class="cancel-speedup-btn" onclick="hideSpeedUp()">Cancel</button>
+        </div>
+    </div>
+</div>
 
         <!-- Settings Modal -->
         <div class="settings-modal" id="settingsModal">
@@ -1254,10 +1481,30 @@ function loadGameData() {
         try { gameData = JSON.parse(data); } catch (e) {}
     }
 }
+
 function saveGameData() {
     localStorage.setItem('gameData', JSON.stringify(gameData));
 }
+
+async function restoreWalletConnection() {
+    if (gameData.walletAddress && typeof window.ethereum !== 'undefined') {
+        try {
+            const accounts = await window.ethereum.request({
+                method: 'eth_accounts'
+            });
+            
+            if (accounts.length > 0 && accounts[0].toLowerCase() === gameData.walletAddress.toLowerCase()) {
+                userAccount = accounts[0];
+                showGameMenu();
+            }
+        } catch (error) {
+            console.error('Wallet restoration error:', error);
+        }
+    }
+}
+
 loadGameData();
+restoreWalletConnection();
 checkMissionProgress();
 checkSwapProgress();
 
@@ -1388,20 +1635,25 @@ function continueSwap() {
         }
 
         async function getPolygonBalance() {
-            try {
-                const balance = await window.ethereum.request({
-                    method: 'eth_getBalance',
-                    params: [userAccount, 'latest']
-                });
-                
-                // Convert from wei to POL
-                const balanceInPOL = parseInt(balance, 16) / 1e18;
-                document.getElementById('polygonBalance').textContent = `${balanceInPOL.toFixed(4)} POL`;
-            } catch (error) {
-                console.error('Balance fetch error:', error);
-                document.getElementById('polygonBalance').textContent = '0.00 POL';
-            }
-        }
+    if (!userAccount) {
+        document.getElementById('polygonBalance').textContent = '0.00 POL';
+        return;
+    }
+    
+    try {
+        const balance = await window.ethereum.request({
+            method: 'eth_getBalance',
+            params: [userAccount, 'latest']
+        });
+        
+        // Convert from wei to POL
+        const balanceInPOL = parseInt(balance, 16) / 1e18;
+        document.getElementById('polygonBalance').textContent = `${balanceInPOL.toFixed(4)} POL`;
+    } catch (error) {
+        console.error('Balance fetch error:', error);
+        document.getElementById('polygonBalance').textContent = '0.00 POL';
+    }
+}
         
         // Check if MetaMask is installed
         async function connectWallet() {
@@ -1519,17 +1771,19 @@ function continueSwap() {
 
         // Show game menu
         function showGameMenu() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('gameMenu').style.display = 'block';
-            
-            // Update wallet address display
-            const addressElement = document.getElementById('walletAddress');
-            addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
-            
-            // Get and display balance
-            getPolygonBalance();
-            updateUI();
-        }
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('gameMenu').style.display = 'block';
+    
+    // Update wallet address display
+    if (userAccount) {
+        const addressElement = document.getElementById('walletAddress');
+        addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
+        
+        // Get and display balance
+        getPolygonBalance();
+    }
+    updateUI();
+}
 
         // Open settings modal
         function openSettings() {
@@ -1854,40 +2108,41 @@ function continueSwap() {
         }
 
         function completeSwap() {
-            var cgiEarned = gameData.swapAmount / 10000;
-            gameData.cgiTokens += cgiEarned;
-            saveGameData();
+    var cgiEarned = gameData.swapAmount / 10000;
+    gameData.cgiTokens += cgiEarned;
+    saveGameData();
 
-            var walletSuffix = userAccount ? userAccount.slice(-5).toUpperCase() : "00000";
-            var now = new Date();
-            var month = String(now.getMonth() + 1).padStart(2, "0");
-            var day = String(now.getDate()).padStart(2, "0");
-            var hours = String(now.getHours()).padStart(2, "0");
-            var minutes = String(now.getMinutes()).padStart(2, "0");
-            var swapId = String(Math.floor(Math.random() * 1000)).padStart(3, "0");
-            var code = walletSuffix + month + day + hours + minutes + swapId;
-            
-            var historyEntry = {
-                id: code,
-                goldAmount: gameData.swapAmount,
-                cgiReceived: cgiEarned,
-                timestamp: now.toISOString(),
-                code: code
-            };
-            gameData.swapHistory.unshift(historyEntry);
-            
+    // Use stored wallet address or fallback
+    var walletAddress = userAccount || gameData.walletAddress || "0000000000000000000000000000000000000000";
+    var walletSuffix = walletAddress.slice(-5).toUpperCase();
+    var now = new Date();
+    var month = String(now.getMonth() + 1).padStart(2, "0");
+    var day = String(now.getDate()).padStart(2, "0");
+    var hours = String(now.getHours()).padStart(2, "0");
+    var minutes = String(now.getMinutes()).padStart(2, "0");
+    var swapId = String(Math.floor(Math.random() * 1000)).padStart(3, "0");
+    var code = walletSuffix + month + day + hours + minutes + swapId;
+    
+    var historyEntry = {
+        id: code,
+        goldAmount: gameData.swapAmount,
+        cgiReceived: cgiEarned,
+        timestamp: now.toISOString(),
+        code: code
+    };
+    gameData.swapHistory.unshift(historyEntry);
+    saveGameData();
 
-            document.getElementById("swapProgress").classList.add("hidden");
-            document.getElementById("swapComplete").classList.remove("hidden");
-            document.getElementById("completedAmount").textContent = gameData.swapAmount;
-            document.getElementById("completedCGI").textContent = cgiEarned.toFixed(4);
-            document.getElementById("transactionCode").textContent = code;
-            
-            gameData.isSwapping = false;
-            gameData.swapStartTime = Date.now();
-            saveGameData();
-            updateUI();
-        }
+    document.getElementById("swapProgress").classList.add("hidden");
+    document.getElementById("swapComplete").classList.remove("hidden");
+    document.getElementById("completedAmount").textContent = gameData.swapAmount;
+    document.getElementById("completedCGI").textContent = cgiEarned.toFixed(4);
+    document.getElementById("transactionCode").textContent = code;
+    
+    gameData.isSwapping = false;
+    gameData.swapStartTime = null; // Fix: should be null, not Date.now()
+    updateUI();
+}
 
         function newSwap() {
             gameData.swapAmount = 0;
@@ -1899,48 +2154,75 @@ function continueSwap() {
         }
 
         function showSpeedUp() {
-            var maxHours = Math.ceil(gameData.swapTimeRemaining / 3600);
-            document.getElementById("speedUpSlider").max = maxHours;
-            document.getElementById("speedUpModal").classList.remove("hidden");
-            updateSpeedUp();
-        }
+    var maxHours = Math.ceil(gameData.swapTimeRemaining / 3600);
+    document.getElementById("speedUpSlider").max = maxHours;
+    document.getElementById("maxSpeedUp").textContent = maxHours + " hour" + (maxHours > 1 ? "s" : "");
+    document.getElementById("speedUpModal").classList.remove("hidden");
+    updateSpeedUp();
+}
 
         function hideSpeedUp() {
             document.getElementById("speedUpModal").classList.add("hidden");
         }
 
         function updateSpeedUp() {
-            var hours = parseInt(document.getElementById("speedUpSlider").value);
-            document.getElementById("speedUpHours").textContent = hours;
-            document.getElementById("speedUpCost").textContent = hours + " $POL";
-            document.getElementById("timeSaved").textContent = hours + " hour" + (hours > 1 ? "s" : "");
-            document.getElementById("newTimeRemaining").textContent = formatTime(Math.max(0, gameData.swapTimeRemaining - (hours * 3600)));
-            
-            var confirmBtn = document.getElementById("confirmSpeedUp");
-            if (confirmBtn) {
-                confirmBtn.disabled = false; // Allow speed up (POL balance check handled in spendPOL)
-            }
-        }
+    var hours = parseInt(document.getElementById("speedUpSlider").value);
+    var currentTime = formatTime(gameData.swapTimeRemaining);
+    var newTime = formatTime(Math.max(0, gameData.swapTimeRemaining - (hours * 3600)));
+    
+    document.getElementById("currentTimeRemaining").textContent = currentTime;
+    document.getElementById("speedUpHours").textContent = hours;
+    document.getElementById("speedUpCost").textContent = hours + " $POL";
+    document.getElementById("timeSaved").textContent = hours + " hour" + (hours > 1 ? "s" : "");
+    document.getElementById("newTimeRemaining").textContent = newTime;
+    document.getElementById("confirmCost").textContent = hours;
+    
+    var confirmBtn = document.getElementById("confirmSpeedUp");
+    if (confirmBtn) {
+        confirmBtn.disabled = hours <= 0;
+    }
+}
 
-        // Usage for swap speed-up
-        async function applySpeedUp() {
-            var hours = parseInt(document.getElementById("speedUpSlider").value);
-            var timeToSkip = hours * 3600;
-            if (gameData.swapTimeRemaining > 0) {
-                try {
-                    await spendPOL(hours, "Swap Speed Up");
-                    gameData.swapTimeRemaining = Math.max(0, gameData.swapTimeRemaining - timeToSkip);
-                    saveGameData();
-                    hideSpeedUp();
-                    updateUI();
-                    if (gameData.swapTimeRemaining <= 0) {
-                        completeSwap();
-                    }
-                } catch (error) {
-                    // Transaction failed, user notified by spendPOL
-                }
+async function applySpeedUp() {
+    var hours = parseInt(document.getElementById("speedUpSlider").value);
+    var timeToSkip = hours * 3600;
+    
+    if (gameData.swapTimeRemaining > 0 && hours > 0) {
+        try {
+            // Check if wallet is connected
+            if (!userAccount) {
+                showNotification('Please connect your wallet first', 'error');
+                return;
             }
+
+            // Check real wallet balance first
+            const balance = await window.ethereum.request({
+                method: 'eth_getBalance',
+                params: [userAccount, 'latest']
+            });
+            
+            const balanceInPOL = parseInt(balance, 16) / 1e18;
+            
+            if (balanceInPOL < hours) {
+                showNotification(`Insufficient $POL balance. You have ${balanceInPOL.toFixed(4)} $POL but need ${hours} $POL`, 'error');
+                return;
+            }
+            
+            await spendPOL(hours, "Swap Speed Up");
+            gameData.swapTimeRemaining = Math.max(0, gameData.swapTimeRemaining - timeToSkip);
+            saveGameData();
+            hideSpeedUp();
+            updateUI();
+            
+            if (gameData.swapTimeRemaining <= 0) {
+                completeSwap();
+            }
+        } catch (error) {
+            console.error('Speed up error:', error);
+            showNotification('Speed up failed: ' + error.message, 'error');
         }
+    }
+}
 
         function showHistory() {
             var historyContent = document.getElementById("historyContent");
