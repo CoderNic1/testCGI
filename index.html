@@ -877,6 +877,13 @@
     </style>
 </head>
 <body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web3 Game Portal</title>
+</head>
+<body>
     <div class="container">
         <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
@@ -889,7 +896,7 @@
         </div>
 
         <!-- Game Menu -->
-        <div class="game-menu" id="gameMenu">
+        <div class="game-menu" id="gameMenu" style="display:none;">
             <div class="top-bar">
                 <div class="wallet-info">
                     <div class="connection-status">
@@ -911,7 +918,6 @@
                 </div>
                 <button class="settings-btn" onclick="openSettings()">⚙️</button>
             </div>
-
             <div class="main-menu">
                 <div class="menu-container">
                     <h2 class="menu-title">Game Portal</h2>
@@ -927,87 +933,23 @@
         </div>
 
         <!-- Missions Menu -->
-        <div id="missionsMenu" class="modal hidden">
+        <div id="missionsMenu" class="modal hidden" style="display:none;">
             <div id="menuback" class="menu-container">
                 <div class="missions-content">
                     <div id="missionSelection" class="missions-grid">
                         <div class="mission-card">
-                            <div class="mission-difficulty difficulty-easy"></div>
                             <h3 class="mission-title">Scout Mission</h3>
-                            <p class="mission-description">Quick reconnaissance of nearby areas</p>
-                            <div class="mission-stats">
-                                <div class="mission-stat">
-                                    <span>Duration:</span>
-                                    <span>3s</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Success Rate:</span>
-                                    <span style="color: #4ade80;">85%</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Reward:</span>
-                                    <span style="color: #fbbf24;">50-75 Gold</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Fail Cost:</span>
-                                    <span style="color: #f87171;">10 $POL</span>
-                                </div>
-                            </div>
                             <button class="mission-btn btn-easy" onclick="startMission('easy')">Start Mission</button>
                         </div>
-        
                         <div class="mission-card">
-                            <div class="mission-difficulty difficulty-medium"></div>
                             <h3 class="mission-title">Resource Raid</h3>
-                            <p class="mission-description">Medium-risk expedition for valuable resources</p>
-                            <div class="mission-stats">
-                                <div class="mission-stat">
-                                    <span>Duration:</span>
-                                    <span>6s</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Success Rate:</span>
-                                    <span style="color: #4ade80;">65%</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Reward:</span>
-                                    <span style="color: #fbbf24;">120-180 Gold</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Fail Cost:</span>
-                                    <span style="color: #f87171;">25 $POL</span>
-                                </div>
-                            </div>
                             <button class="mission-btn btn-medium" onclick="startMission('medium')">Start Mission</button>
                         </div>
-        
                         <div class="mission-card">
-                            <div class="mission-difficulty difficulty-hard"></div>
                             <h3 class="mission-title">Dragons Hoard</h3>
-                            <p class="mission-description">High-stakes assault on ancient treasure</p>
-                            <div class="mission-stats">
-                                <div class="mission-stat">
-                                    <span>Duration:</span>
-                                    <span>10s</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Success Rate:</span>
-                                    <span style="color: #4ade80;">40%</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Reward:</span>
-                                    <span style="color: #fbbf24;">300-500 Gold</span>
-                                </div>
-                                <div class="mission-stat">
-                                    <span>Fail Cost:</span>
-                                    <span style="color: #f87171;">50 $POL</span>
-                                </div>
-                            </div>
                             <button class="mission-btn btn-hard" onclick="startMission('hard')">Start Mission</button>
                         </div>
                     </div>
-        
-                    <!-- Active Mission -->
                     <div id="activeMission" class="active-mission hidden">
                         <h2 id="missionName"></h2>
                         <p id="missionDesc"></p>
@@ -1024,80 +966,75 @@
                         <button id="revealBtn" class="reveal-btn hidden" onclick="revealResult()">Reveal Result</button>
                     </div>
                 </div>
-                
-                <!-- Centered Home Button at Bottom -->
                 <div class="menu-footer">
                     <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
                 </div>
             </div>
         </div>
 
-  <div id="craftingMenu" class="modal hidden">
-    <div class="menu-bottom-center">
-    </div>
-     <!-- Swap Section -->
-     <div id="swapSection" class="swap-section">
-        <div class="swap-header">
-            <h2 class="swap-title">Gold → $CGI Exchange</h2>
-            <button class="history-btn" onclick="showHistory()">History</button>
-        </div>
-        <p class="swap-info">1 $CGI = 10,000 Gold | 1 Gold = 3 seconds processing time</p>
-        
-        <div id="swapControls">
-            <div class="swap-amount-info">
-                <span>Amount to swap: <span id="swapAmount">0</span> Gold</span>
-                <span style="color: #60a5fa;">Will receive: <span id="cgiAmount">0.0000</span> $CGI</span>
-            </div>
-            <input type="range" id="swapSlider" class="slider" min="0" max="250" value="0" oninput="updateSwapAmount()">
-            <div class="slider-labels">
-                <span>0</span>
-                <span id="maxGold">250 Gold</span>
-            </div>
-            <div style="text-align: center;">
-                <p>Processing time: <span id="processingTime">0s</span></p>
-                <button id="startSwapBtn" class="start-swap-btn" onclick="startSwap()">Start Swap</button>
+        <!-- Swap Menu -->
+        <div id="craftingMenu" class="modal hidden" style="display:none;">
+            <div id="swapSection" class="swap-section">
+                <div class="swap-header">
+                    <h2 class="swap-title">Gold → $CGI Exchange</h2>
+                </div>
+                <p class="swap-info">1 $CGI = 10,000 Gold | 1 Gold = 3 seconds processing time</p>
+                <div id="swapControls">
+                    <div class="swap-amount-info">
+                        <span>Amount to swap: <span id="swapAmount">0</span> Gold</span>
+                        <span style="color: #60a5fa;">Will receive: <span id="cgiAmount">0.0000</span> $CGI</span>
+                    </div>
+                    <input type="range" id="swapSlider" class="slider" min="0" max="0" value="0" oninput="updateSwapAmount()">
+                    <div class="slider-labels">
+                        <span>0</span>
+                        <span id="maxGold">0 Gold</span>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>Processing time: <span id="processingTime">0s</span></p>
+                        <button id="startSwapBtn" class="start-swap-btn" onclick="startSwap()">Start Swap</button>
+                    </div>
+                </div>
+                <div id="swapProgress" class="hidden" style="text-align: center;">
+                    <h3>Swapping <span id="swappingAmount"></span> Gold → <span id="swappingCGI"></span> $CGI</h3>
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>Progress</span>
+                            <span id="swapProgressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="swapProgressFill" class="progress-fill" style="background: #3b82f6;"></div>
+                        </div>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        Time remaining: <span id="timeRemaining" style="color: #60a5fa; font-weight: bold;">0s</span>
+                    </div>
+                    <button class="speed-up-btn" onclick="showSpeedUp()">Speed Up with $POL</button>
+                </div>
+                <div id="swapComplete" class="hidden" style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 15px;">🏆</div>
+                    <h3 style="color: #60a5fa; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">Swap Complete!</h3>
+                    <div class="result-success">
+                        <p style="margin-bottom: 10px;">Successfully swapped <span id="completedAmount"></span> Gold for <span id="completedCGI"></span> $CGI</p>
+                        <div class="transaction-code">
+                            <p style="color: #d1d5db; font-size: 0.9rem; margin-bottom: 5px;">Transaction Code:</p>
+                            <p id="transactionCode" class="code-display"></p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="padding: 10px 25px;" onclick="newSwap()">New Swap</button>
+                </div>
+                <div class="menu-footer">
+                    <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
+                </div>
             </div>
         </div>
 
-        <div id="swapProgress" class="hidden" style="text-align: center;">
-            <h3>Swapping <span id="swappingAmount"></span> Gold → <span id="swappingCGI"></span> $CGI</h3>
-            <div class="progress-container">
-                <div class="progress-header">
-                    <span>Progress</span>
-                    <span id="swapProgressPercent">0%</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="swapProgressFill" class="progress-fill" style="background: #3b82f6;"></div>
-                </div>
-            </div>
-            <div style="margin: 15px 0;">
-                Time remaining: <span id="timeRemaining" style="color: #60a5fa; font-weight: bold;">0s</span>
-            </div>
-            <button class="speed-up-btn" onclick="showSpeedUp()">Speed Up with $POL</button>
+        <!-- Result Modal -->
+        <div id="resultModal" class="hidden">
+            <div id="resultContent"></div>
         </div>
-
-        <div id="swapComplete" class="hidden" style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 15px;">🏆</div>
-            <h3 style="color: #60a5fa; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">Swap Complete!</h3>
-            <div class="result-success">
-                <p style="margin-bottom: 10px;">Successfully swapped <span id="completedAmount"></span> Gold for <span id="completedCGI"></span> $CGI</p>
-                <div class="transaction-code">
-                    <p style="color: #d1d5db; font-size: 0.9rem; margin-bottom: 5px;">Transaction Code:</p>
-                    <p id="transactionCode" class="code-display"></p>
-                    <p style="color: #9ca3af; font-size: 0.8rem; margin-top: 5px;">Format: Wallet + Date + Time + SwapID</p>
-                </div>
-            </div>
-            <button class="btn-primary" style="padding: 10px 25px;" onclick="newSwap()">New Swap</button>
-        </div>
-        <!-- Centered Home Button at Bottom -->
-<div class="menu-footer">
-    <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
-</div>
-    </div>
-  </div>
 
         <!-- Settings Modal -->
-        <div class="settings-modal" id="settingsModal">
+        <div class="settings-modal" id="settingsModal" style="display:none;">
             <div class="settings-content">
                 <h3 class="settings-title">Settings</h3>
                 <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect Wallet</button>
@@ -1106,104 +1043,255 @@
         </div>
     </div>
 
+    <!-- GAME LOGIC SCRIPTS -->
     <script>
+    // Centralized game data object
+    let gameData = {
+        gold: 0,
+        cgiTokens: 0,
+        activeMission: null,
+        missionProgress: 0,
+        missionComplete: false,
+        swapAmount: 0,
+        isSwapping: false,
+        swapProgress: 0,
+        swapTimeRemaining: 0,
+        swapHistory: [],
+        polTokens: 0
+    };
 
-        // Centralized game data object
-let gameData = {
-    gold: 0,
-    cgiTokens: 0,
-    activeMission: null,
-    missionProgress: 0,
-    missionComplete: false,
-    swapAmount: 0,
-    isSwapping: false,
-    swapProgress: 0,
-    swapTimeRemaining: 0,
-    swapHistory: [],
-    // Add more resources as needed (e.g., gems, items, etc.)
-};
+    var missions = {
+        easy: {id:"easy",name:"Scout Mission",duration:3000,successRate:85,baseReward:50,maxReward:75,failCost:10,description:"Quick reconnaissance of nearby areas",color:"#10b981"},
+        medium: {id:"medium",name:"Resource Raid",duration:6000,successRate:65,baseReward:120,maxReward:180,failCost:25,description:"Medium-risk expedition for valuable resources",color:"#f59e0b"},
+        hard: {id:"hard",name:"Dragons Hoard",duration:10000,successRate:40,baseReward:300,maxReward:500,failCost:50,description:"High-stakes assault on ancient treasure",color:"#ef4444"}
+    };
 
-var missions = {
-            easy: {
-                id: "easy",
-                name: "Scout Mission",
-                duration: 3000,
-                successRate: 85,
-                baseReward: 50,
-                maxReward: 75,
-                failCost: 10,
-                description: "Quick reconnaissance of nearby areas",
-                color: "#10b981"
-            },
-            medium: {
-                id: "medium",
-                name: "Resource Raid",
-                duration: 6000,
-                successRate: 65,
-                baseReward: 120,
-                maxReward: 180,
-                failCost: 25,
-                description: "Medium-risk expedition for valuable resources",
-                color: "#f59e0b"
-            },
-            hard: {
-                id: "hard",
-                name: "Dragons Hoard",
-                duration: 10000,
-                successRate: 40,
-                baseReward: 300,
-                maxReward: 500,
-                failCost: 50,
-                description: "High-stakes assault on ancient treasure",
-                color: "#ef4444"
+    // Load/save
+    function loadGameData() {
+        const data = localStorage.getItem('gameData');
+        if (data) { try { gameData = JSON.parse(data); } catch (e) {} }
+    }
+    function saveGameData() {
+        localStorage.setItem('gameData', JSON.stringify(gameData));
+    }
+    loadGameData();
+
+    // Show/hide menus
+    function showMenu(menuId) {
+        document.getElementById("gameMenu").style.display = "none";
+        document.getElementById("missionsMenu").style.display = "none";
+        document.getElementById("craftingMenu").style.display = "none";
+        document.getElementById("resultModal").classList.add("hidden");
+        document.getElementById("activeMission").classList.add("hidden");
+        document.getElementById("missionSelection").classList.remove("hidden");
+
+        if (menuId === "mainMenu") {
+            document.getElementById("gameMenu").style.display = "block";
+        } else if (menuId === "missionsMenu") {
+            document.getElementById("missionsMenu").style.display = "block";
+        } else if (menuId === "craftingMenu") {
+            document.getElementById("craftingMenu").style.display = "block";
+            updateSwapSliderMax();
+        }
+        updateGoldDisplay();
+    }
+
+    // Gold display everywhere
+    function updateGoldDisplay() {
+        document.getElementById('gold').textContent = gameData.gold;
+        document.getElementById('maxGold').textContent = gameData.gold + " Gold";
+        document.getElementById('swapAmount').textContent = gameData.swapAmount;
+    }
+
+    function updateSwapSliderMax() {
+        var slider = document.getElementById("swapSlider");
+        slider.max = gameData.gold;
+        document.getElementById("maxGold").textContent = gameData.gold + " Gold";
+        if (gameData.swapAmount > gameData.gold) {
+            gameData.swapAmount = gameData.gold;
+            slider.value = gameData.gold;
+            updateSwapAmount();
+        }
+    }
+
+    function updateSwapAmount() {
+        var slider = document.getElementById("swapSlider");
+        gameData.swapAmount = parseInt(slider.value) || 0;
+        document.getElementById("swapAmount").textContent = gameData.swapAmount;
+        document.getElementById("cgiAmount").textContent = (gameData.swapAmount / 10000).toFixed(4);
+        document.getElementById("processingTime").textContent = formatTime(gameData.swapAmount * 3);
+
+        var startBtn = document.getElementById("startSwapBtn");
+        startBtn.disabled = gameData.swapAmount <= 0 || gameData.swapAmount > gameData.gold;
+    }
+
+    function startSwap() {
+        if (gameData.swapAmount <= 0 || gameData.swapAmount > gameData.gold) return;
+        gameData.gold -= gameData.swapAmount;
+        gameData.isSwapping = true;
+        gameData.swapTimeRemaining = gameData.swapAmount * 3;
+        gameData.swapProgress = 0;
+        document.getElementById("swapControls").classList.add("hidden");
+        document.getElementById("swapProgress").classList.remove("hidden");
+        document.getElementById("swappingAmount").textContent = gameData.swapAmount;
+        document.getElementById("swappingCGI").textContent = (gameData.swapAmount / 10000).toFixed(4);
+        updateGoldDisplay();
+
+        var swapInterval = setInterval(function() {
+            gameData.swapTimeRemaining--;
+            gameData.swapProgress = ((gameData.swapAmount * 3 - gameData.swapTimeRemaining) / (gameData.swapAmount * 3)) * 100;
+            document.getElementById("swapProgressPercent").textContent = gameData.swapProgress.toFixed(1) + "%";
+            document.getElementById("swapProgressFill").style.width = gameData.swapProgress + "%";
+            document.getElementById("timeRemaining").textContent = formatTime(gameData.swapTimeRemaining);
+
+            if (gameData.swapTimeRemaining <= 0) {
+                completeSwap();
+                clearInterval(swapInterval);
             }
-        };
-
-// Load from localStorage if available
-function loadGameData() {
-    const data = localStorage.getItem('gameData');
-    if (data) {
-        try { gameData = JSON.parse(data); } catch (e) {}
+        }, 1000);
     }
-}
-function saveGameData() {
-    localStorage.setItem('gameData', JSON.stringify(gameData));
-}
-loadGameData();
-checkMissionProgress();
 
-// all open functions
-function openEvents() {
-    showNotification('Events menu will open here.', 'info');
-}
-function openShop() {
-    showNotification('Shop menu will open here.', 'info');
-}
-function openGamePass() {
-    showNotification('Game Pass menu will open here.', 'info');
-}
-
-function showMenu(menuId) {
-    // Hide all menus
-    document.getElementById("gameMenu").style.display = "none";
-    document.getElementById("missionsMenu").classList.add("hidden");
-    document.getElementById("craftingMenu").classList.add("hidden");
-
-    // Show requested menu
-    if (menuId === "mainMenu") {
-        document.getElementById("gameMenu").style.display = "block";
-        updateUI();
-    } else if (menuId === "missionsMenu") {
-        document.getElementById("missionsMenu").classList.remove("hidden");
-        updateUI();
-    } else if (menuId === "craftingMenu") {
-        document.getElementById("craftingMenu").classList.remove("hidden");
-        updateUI();
+    function completeSwap() {
+        var cgiEarned = gameData.swapAmount / 10000;
+        gameData.cgiTokens += cgiEarned;
+        document.getElementById("swapProgress").classList.add("hidden");
+        document.getElementById("swapComplete").classList.remove("hidden");
+        document.getElementById("completedAmount").textContent = gameData.swapAmount;
+        document.getElementById("completedCGI").textContent = cgiEarned.toFixed(4);
+        document.getElementById("transactionCode").textContent = "TX-" + Date.now();
+        gameData.isSwapping = false;
+        updateGoldDisplay();
     }
-}
 
+    function newSwap() {
+        gameData.swapAmount = 0;
+        document.getElementById("swapSlider").value = 0;
+        document.getElementById("swapComplete").classList.add("hidden");
+        document.getElementById("swapControls").classList.remove("hidden");
+        updateSwapAmount();
+    }
 
+    // Missions logic
+    function startMission(missionId) {
+        gameData.activeMission = missions[missionId];
+        gameData.missionProgress = 0;
+        gameData.missionComplete = false;
+        document.getElementById("missionSelection").classList.add("hidden");
+        document.getElementById("activeMission").classList.remove("hidden");
+        document.getElementById("missionName").textContent = gameData.activeMission.name;
+        document.getElementById("missionDesc").textContent = gameData.activeMission.description;
+        document.getElementById("progressFill").style.background = gameData.activeMission.color;
+        document.getElementById("revealBtn").classList.add("hidden");
 
+        var progressInterval = setInterval(function() {
+            gameData.missionProgress += 100 / (gameData.activeMission.duration / 100);
+            if (gameData.missionProgress >= 100) {
+                gameData.missionProgress = 100;
+                gameData.missionComplete = true;
+                document.getElementById("revealBtn").classList.remove("hidden");
+                clearInterval(progressInterval);
+            }
+            document.getElementById("progressPercent").textContent = Math.round(gameData.missionProgress) + "%";
+            document.getElementById("progressFill").style.width = gameData.missionProgress + "%";
+        }, 100);
+    }
+
+    function revealResult() {
+        var mission = gameData.activeMission;
+        var isSuccess = Math.random() * 100 < mission.successRate;
+        var resultContent = "";
+        if (isSuccess) {
+            var goldWon = Math.floor(Math.random() * (mission.maxReward - mission.baseReward + 1)) + mission.baseReward;
+            gameData.gold += goldWon;
+            updateGoldDisplay();
+            resultContent = "<div style='text-align: center;'>" +
+                "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
+                "<h3 style='color: #4ade80; font-size: 1.5rem; margin-bottom: 15px;'>Mission Success!</h3>" +
+                "<p style='margin-bottom: 15px;'>Victory! You completed the " + mission.name + "!</p>" +
+                "<div class='result-success'>" +
+                "<div style='color: #fbbf24; font-size: 1.3rem; font-weight: bold;'>💰 +" + goldWon + " Gold</div>" +
+                "</div>" +
+                "<button class='btn btn-primary' onclick='resetMission()' style='margin-top: 15px;'>Continue</button>" +
+                "</div>";
+        } else {
+            var payDisabled = gameData.polTokens < mission.failCost ? "disabled" : "";
+            resultContent = "<div style='text-align: center;'>" +
+                "<div style='font-size: 4rem; margin-bottom: 15px;'>⚠️</div>" +
+                "<h3 style='color: #f87171; font-size: 1.5rem; margin-bottom: 15px;'>Mission Failed!</h3>" +
+                "<p style='margin-bottom: 15px;'>The " + mission.name + " was too dangerous this time.</p>" +
+                "<div class='result-failure'>" +
+                "<div style='color: #f87171; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;'>❌ Mission Failed</div>" +
+                "<p style='font-size: 0.9rem;'>Pay " + mission.failCost + " $POL tokens to cover losses</p>" +
+                "</div>" +
+                "<div class='btn-group'>" +
+                "<button class='btn btn-primary' onclick='payWithPol(" + mission.failCost + ")' " + payDisabled + ">Pay " + mission.failCost + " $POL</button>" +
+                "<button class='btn btn-secondary' onclick='resetMission()'>Skip Payment</button>" +
+                "</div>" +
+                "</div>";
+        }
+        var resultContentEl = document.getElementById("resultContent");
+        if (resultContentEl) {
+            resultContentEl.innerHTML = resultContent;
+            document.getElementById("resultModal").classList.remove("hidden");
+        } else {
+            console.warn("Missing #resultContent element");
+        }
+        updateGoldDisplay();
+    }
+
+    async function payWithPol(cost) {
+        if (gameData.polTokens < cost) {
+            alert("Not enough $POL!");
+            return;
+        }
+        gameData.polTokens -= cost;
+        resetMission();
+    }
+
+    function resetMission() {
+        gameData.activeMission = null;
+        gameData.missionProgress = 0;
+        gameData.missionComplete = false;
+        document.getElementById("resultModal").classList.add("hidden");
+        document.getElementById("activeMission").classList.add("hidden");
+        document.getElementById("revealBtn").classList.add("hidden");
+        document.getElementById("missionSelection").classList.remove("hidden");
+        updateGoldDisplay();
+    }
+
+    function openSettings() {
+        document.getElementById('settingsModal').style.display = 'flex';
+    }
+    function closeSettings() {
+        document.getElementById('settingsModal').style.display = 'none';
+    }
+    function disconnectWallet() {
+        userAccount = null;
+        document.getElementById('gameMenu').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'block';
+        document.getElementById('settingsModal').style.display = 'none';
+        document.getElementById('connectText').textContent = 'Connect MetaMask';
+        document.getElementById('connectBtn').disabled = false;
+    }
+    function openEvents() { alert("Events menu coming soon!"); }
+    function openShop() { alert("Shop menu coming soon!"); }
+    function openGamePass() { alert("Game Pass menu coming soon!"); }
+    function formatTime(seconds) {
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var secs = seconds % 60;
+        if (hours > 0) return hours + "h " + minutes + "m " + secs + "s";
+        else if (minutes > 0) return minutes + "m " + secs + "s";
+        else return secs + "s";
+    }
+    window.onload = function() {
+        showMenu('mainMenu');
+        updateGoldDisplay();
+    }
+    </script>
+
+    <!-- CRYPTO SCRIPTS: MetaMask, POL, spendPOL, wallet, etc. (UNCHANGED) -->
+    <script>
         // Universal notification system
         function showNotification(message, type = 'success') {
             const colorSchemes = {
@@ -1214,9 +1302,8 @@ function showMenu(menuId) {
                 purple: 'linear-gradient(45deg, #9c27b0, #7b1fa2)',
                 gold: 'linear-gradient(45deg, #ffd700, #ffb300)',
                 cyan: 'linear-gradient(45deg, #00bcd4, #0097a7)',
-                custom: type // If type is not a predefined color, use it as custom gradient
+                custom: type
             };
-
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -1238,46 +1325,29 @@ function showMenu(menuId) {
                 line-height: 1.4;
             `;
             notification.textContent = message;
-            
             document.body.appendChild(notification);
-            
-            // Auto-remove after 4 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 300);
+                setTimeout(() => { if (notification.parentNode) { notification.remove(); } }, 300);
             }, 4000);
-
-            // Click to dismiss
             notification.addEventListener('click', () => {
                 notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 300);
+                setTimeout(() => { if (notification.parentNode) { notification.remove(); } }, 300);
             });
         }
         let userAccount;
         const POLYGON_CHAIN_ID = '0x89'; // Polygon Mainnet
         const RECIPIENT_ADDRESS = '0x4ec27a93525678a0CA3ccF00aff10aEeA4d4332D';
-
         let web3;
         function isMetaMaskInstalled() {
             return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
         }
-
         async function getPolygonBalance() {
             try {
                 const balance = await window.ethereum.request({
                     method: 'eth_getBalance',
                     params: [userAccount, 'latest']
                 });
-                
-                // Convert from wei to POL
                 const balanceInPOL = parseInt(balance, 16) / 1e18;
                 document.getElementById('polygonBalance').textContent = `${balanceInPOL.toFixed(4)} POL`;
             } catch (error) {
@@ -1285,48 +1355,31 @@ function showMenu(menuId) {
                 document.getElementById('polygonBalance').textContent = '0.00 POL';
             }
         }
-        
-        // Check if MetaMask is installed
         async function connectWallet() {
             if (!isMetaMaskInstalled()) {
-                showError('MetaMask is not installed. Please install MetaMask to continue.');
+                showNotification('MetaMask is not installed. Please install MetaMask to continue.', 'error');
                 return;
             }
-
             const connectBtn = document.getElementById('connectBtn');
             const connectText = document.getElementById('connectText');
-            
             try {
                 connectText.innerHTML = '<span class="loading"></span> Connecting...';
                 connectBtn.disabled = true;
-
-                // Request account access
                 const accounts = await window.ethereum.request({
                     method: 'eth_requestAccounts'
                 });
-
-                if (accounts.length === 0) {
-                    throw new Error('No accounts found');
-                }
-
+                if (accounts.length === 0) { throw new Error('No accounts found'); }
                 userAccount = accounts[0];
-
-                    } catch (error) {
+            } catch (error) {
                 console.error('Connection error:', error);
                 showNotification('Failed to connect: ' + error.message, 'error');
                 connectText.textContent = 'Connect MetaMask';
                 connectBtn.disabled = false;
+                return;
             }
-                await switchToPolygon();
-
-                // Get Polygon balance
-
-                showGameMenu();
-                
-        // Connect to MetaMask
+            await switchToPolygon();
+            showGameMenu();
         }
-
-        // Switch to Polygon network
         async function switchToPolygon() {
             try {
                 await window.ethereum.request({
@@ -1334,7 +1387,6 @@ function showMenu(menuId) {
                     params: [{ chainId: POLYGON_CHAIN_ID }],
                 });
             } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask
                 if (switchError.code === 4902) {
                     try {
                         await window.ethereum.request({
@@ -1342,11 +1394,7 @@ function showMenu(menuId) {
                             params: [{
                                 chainId: POLYGON_CHAIN_ID,
                                 chainName: 'Polygon Mainnet',
-                                nativeCurrency: {
-                                    name: 'POL',
-                                    symbol: 'POL',
-                                    decimals: 18
-                                },
+                                nativeCurrency: { name: 'POL', symbol: 'POL', decimals: 18 },
                                 rpcUrls: ['https://polygon-rpc.com/'],
                                 blockExplorerUrls: ['https://polygonscan.com/']
                             }]
@@ -1359,141 +1407,48 @@ function showMenu(menuId) {
                 }
             }
         }
-
-  // Central POL spend function
-async function spendPOL(amount, reason = "POL Spend") {
-    if (!userAccount) {
-        showNotification('Please connect your wallet first', 'warning');
-        throw new Error('Wallet not connected');
-    }
-
-    if (!amount || isNaN(amount) || amount <= 0) {
-        showNotification('Invalid $POL amount.', 'error');
-        throw new Error('Invalid amount');
-    }
-
-    const sendPolText = document.getElementById('sendPolText');
-    const originalText = sendPolText ? sendPolText.textContent : '';
-    if (sendPolText) sendPolText.innerHTML = '<span class="loading"></span> Sending...';
-
-    // Prepare transaction (Polygon native transfer)
-    try {
-        const amountWei = '0x' + (amount * 1e18).toString(16);
-        const transactionParameters = {
-            to: RECIPIENT_ADDRESS,
-            from: userAccount,
-            value: amountWei,
-            gas: '0x5208', // 21000 in hex
-        };
-
-        const txHash = await window.ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [transactionParameters],
-        });
-
-        showNotification(`${reason} sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
-
-        // Refresh POL balance after transaction
-        setTimeout(() => {
-            getPolygonBalance();
-        }, 2000);
-
-        if (sendPolText) sendPolText.textContent = originalText;
-        return txHash;
-    } catch (error) {
-        console.error('Send error:', error);
-        showNotification('Transaction failed: ' + error.message, 'error');
-        if (sendPolText) sendPolText.textContent = originalText;
-        throw error;
-    }
-}
-
-function startMission(missionId) {
-    const mission = missions[missionId];
-    const now = Date.now();
-    gameData.activeMission = {
-        id: missionId,
-        name: mission.name,
-        startTime: now,
-        endTime: now + mission.duration,
-        // ...other mission data
-    };
-    saveGameData();
-    updateMissionUI();
-}
-
-function checkMissionProgress() {
-    if (!gameData.activeMission) return;
-    const now = Date.now();
-    const { startTime, endTime } = gameData.activeMission;
-    if (now >= endTime) {
-        // Mission complete
-        // Show result, allow claim, etc.
-    } else {
-        // Calculate progress
-        const progress = ((now - startTime) / (endTime - startTime)) * 100;
-        // Update progress bar, timer, etc.
-    }
-}
-
-function updateMissionUI() {
-    if (!gameData.activeMission) {
-        // Show mission selection
-        // Hide active mission UI
-        return;
-    }
-    // Show active mission UI
-    const now = Date.now();
-    const { startTime, endTime } = gameData.activeMission;
-    const total = endTime - startTime;
-    const elapsed = Math.min(now - startTime, total);
-    const percent = Math.min((elapsed / total) * 100, 100);
-    // Update progress bar, timer, etc.
-    // If complete, show "Reveal Result" button
-}
-setInterval(updateMissionUI, 1000); // Update every second
-        // Show game menu
+        async function spendPOL(amount, reason = "POL Spend") {
+            if (!userAccount) {
+                showNotification('Please connect your wallet first', 'warning');
+                throw new Error('Wallet not connected');
+            }
+            if (!amount || isNaN(amount) || amount <= 0) {
+                showNotification('Invalid $POL amount.', 'error');
+                throw new Error('Invalid amount');
+            }
+            const sendPolText = document.getElementById('sendPolText');
+            const originalText = sendPolText ? sendPolText.textContent : '';
+            if (sendPolText) sendPolText.innerHTML = '<span class="loading"></span> Sending...';
+            try {
+                const amountWei = '0x' + (amount * 1e18).toString(16);
+                const transactionParameters = {
+                    to: RECIPIENT_ADDRESS,
+                    from: userAccount,
+                    value: amountWei,
+                    gas: '0x5208',
+                };
+                const txHash = await window.ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters],
+                });
+                showNotification(`${reason} sent! Hash: ${txHash.substring(0, 10)}...`, 'success');
+                setTimeout(() => { getPolygonBalance(); }, 2000);
+                if (sendPolText) sendPolText.textContent = originalText;
+                return txHash;
+            } catch (error) {
+                console.error('Send error:', error);
+                showNotification('Transaction failed: ' + error.message, 'error');
+                if (sendPolText) sendPolText.textContent = originalText;
+                throw error;
+            }
+        }
         function showGameMenu() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('gameMenu').style.display = 'block';
-            
-            // Update wallet address display
             const addressElement = document.getElementById('walletAddress');
             addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
-            
-            // Get and display balance
             getPolygonBalance();
         }
-
-        // Open settings modal
-        function openSettings() {
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
-
-        // Close settings modal
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
-        }
-
-        // Disconnect wallet
-        function disconnectWallet() {
-            userAccount = null;
-            document.getElementById('gameMenu').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'block';
-            document.getElementById('settingsModal').style.display = 'none';
-            
-            // Reset connect button
-            const connectBtn = document.getElementById('connectBtn');
-            const connectText = document.getElementById('connectText');
-            connectText.textContent = 'Connect MetaMask';
-            connectBtn.disabled = false;
-            
-            
-        }
-
-            showNotification('Wallet disconnected successfully', 'info');
-
-        // Listen for account changes
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum.on('accountsChanged', function (accounts) {
                 if (accounts.length === 0) {
@@ -1503,329 +1458,21 @@ setInterval(updateMissionUI, 1000); // Update every second
                     if (document.getElementById('gameMenu').style.display !== 'none') {
                         const addressElement = document.getElementById('walletAddress');
                         addressElement.textContent = `${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
-                        getPolygonBalance(); // Update balance when account changes
+                        getPolygonBalance();
                     }
                 }
             });
-
             window.ethereum.on('chainChanged', function (chainId) {
                 if (chainId !== POLYGON_CHAIN_ID) {
-                    showError('Please switch to Polygon network');
+                    showNotification('Please switch to Polygon network', 'error');
                 }
             });
         }
-
-        // Close settings modal when clicking outside
         document.getElementById('settingsModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSettings();
-            }
+            if (e.target === this) { closeSettings(); }
         });
-
-        function updateGoldDisplay() {
-        document.getElementById('userGold').textContent = gameData.gold;
-        document.getElementById('swapGold').textContent = gameData.gold; // Add this if your swap page shows gold here
-        }
-
-        // all functions related to the missions/swap
-
-        function startMission(missionId) {
-            gameData.activeMission = missions[missionId];
-            gameData.missionProgress = 0;
-            gameData.missionComplete = false;
-
-            document.getElementById("missionSelection").classList.add("hidden");
-            document.getElementById("swapSection").classList.add("hidden");
-            document.getElementById("activeMission").classList.remove("hidden");
-
-            document.getElementById("missionName").textContent = gameData.activeMission.name;
-            document.getElementById("missionDesc").textContent = gameData.activeMission.description;
-            document.getElementById("progressFill").style.background = gameData.activeMission.color;
-
-            var progressInterval = setInterval(function() {
-                gameData.missionProgress += 100 / (gameData.activeMission.duration / 100);
-                
-                if (gameData.missionProgress >= 100) {
-                    gameData.missionProgress = 100;
-                    gameData.missionComplete = true;
-                    document.getElementById("revealBtn").classList.remove("hidden");
-                    clearInterval(progressInterval);
-                }
-
-                document.getElementById("progressPercent").textContent = Math.round(gameData.missionProgress) + "%";
-                document.getElementById("progressFill").style.width = gameData.missionProgress + "%";
-            }, 100);
-        }
-
-        function revealResult() {
-    var mission = gameData.activeMission;
-    var isSuccess = Math.random() * 100 < mission.successRate;
-    var resultContent = "";
-    
-    if (isSuccess) {
-        var goldWon = Math.floor(Math.random() * (mission.maxReward - mission.baseReward + 1)) + mission.baseReward;
-        // Use centralized gold property!
-        gameData.gold += goldWon;
-        updateGoldDisplay();
-        <div id="resultModal" class="hidden">
-    <div id="resultContent"></div>
-        </div>
-        resultContent = "<div style='text-align: center;'>" +
-            "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
-            "<h3 style='color: #4ade80; font-size: 1.5rem; margin-bottom: 15px;'>Mission Success!</h3>" +
-            "<p style='margin-bottom: 15px;'>Victory! You completed the " + mission.name + "!</p>" +
-            "<div class='result-success'>" +
-                "<div style='color: #fbbf24; font-size: 1.3rem; font-weight: bold;'>💰 +" + goldWon + " Gold</div>" +
-            "</div>" +
-            "<button class='btn btn-primary' onclick='resetMission()' style='margin-top: 15px;'>Continue</button>" +
-        "</div>";
-    } else {
-        var disabledAttr = gameData.polTokens < mission.failCost ? "disabled" : "";
-        resultContent = "<div style='text-align: center;'>" +
-            "<div style='font-size: 4rem; margin-bottom: 15px;'>⚠️</div>" +
-            "<h3 style='color: #f87171; font-size: 1.5rem; margin-bottom: 15px;'>Mission Failed!</h3>" +
-            "<p style='margin-bottom: 15px;'>The " + mission.name + " was too dangerous this time.</p>" +
-            "<div class='result-failure'>" +
-                "<div style='color: #f87171; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;'>❌ Mission Failed</div>" +
-                "<p style='font-size: 0.9rem;'>Pay " + mission.failCost + " $POL tokens to cover losses</p>" +
-            "</div>" +
-            "<div class='btn-group'>" +
-                "<button class='btn btn-primary' onclick='payWithPol(" + mission.failCost + ")' " + disabledAttr + ">Pay " + mission.failCost + " $POL</button>" +
-                "<button class='btn btn-secondary' onclick='resetMission()'>Skip Payment</button>" +
-            "</div>" +
-        "</div>";
-    }
-    
-    // PATCH: Only set innerHTML if element exists
-    var resultContentEl = document.getElementById("resultContent");
-    if (resultContentEl) {
-        resultContentEl.innerHTML = resultContent;
-        document.getElementById("resultModal").classList.remove("hidden");
-    } else {
-        console.warn("Missing #resultContent element");
-    }
-    updateUI();
-}
-
-// Usage for mission failure
-async function payWithPol(cost) {
-    try {
-        await spendPOL(cost, "Mission Fail Payment");
-        resetMission();
-    } catch (error) {
-        // Transaction failed, user notified by spendPOL
-    }
-}
-
-function resetMission() {
-    gameData.activeMission = null;
-    gameData.missionProgress = 0;
-    gameData.missionComplete = false;
-    document.getElementById("resultModal").classList.add("hidden");
-    document.getElementById("activeMission").classList.add("hidden");
-    document.getElementById("revealBtn").classList.add("hidden");
-    document.getElementById("missionSelection").classList.remove("hidden");
-    // Show swap menu
-    document.getElementById("swapSection").style.display = "block";
-    // Or, if using craftingMenu modal:
-    document.getElementById("craftingMenu").classList.remove("hidden");
-    updateUI();
-}
-        function updateSwapAmount() {
-            gameData.swapAmount = parseInt(document.getElementById("swapSlider").value);
-            document.getElementById("swapAmount").textContent = gameData.swapAmount;
-            document.getElementById("cgiAmount").textContent = (gameData.swapAmount / 10000).toFixed(4);
-            document.getElementById("processingTime").textContent = formatTime(gameData.swapAmount * 3);
-            
-            var startBtn = document.getElementById("startSwapBtn");
-            startBtn.disabled = gameData.swapAmount <= 0 || gameData.swapAmount > gameData.gold;
-        }
-
-        function startSwap() {
-            if (gameData.swapAmount <= 0 || gameData.swapAmount > gameData.gold) return;
-            
-            gameData.gold -= gameData.swapAmount;
-            gameData.isSwapping = true;
-            gameData.swapTimeRemaining = gameData.swapAmount * 3;
-            gameData.swapProgress = 0;
-            
-            document.getElementById("swapControls").classList.add("hidden");
-            document.getElementById("swapProgress").classList.remove("hidden");
-            document.getElementById("swappingAmount").textContent = gameData.swapAmount;
-            document.getElementById("swappingCGI").textContent = (gameData.swapAmount / 10000).toFixed(4);
-            
-            updateUI();
-            
-            var swapInterval = setInterval(function() {
-                gameData.swapTimeRemaining--;
-                gameData.swapProgress = ((gameData.swapAmount * 3 - gameData.swapTimeRemaining) / (gameData.swapAmount * 3)) * 100;
-                
-                document.getElementById("swapProgressPercent").textContent = gameData.swapProgress.toFixed(1) + "%";
-                document.getElementById("swapProgressFill").style.width = gameData.swapProgress + "%";
-                document.getElementById("timeRemaining").textContent = formatTime(gameData.swapTimeRemaining);
-                
-                if (gameData.swapTimeRemaining <= 0) {
-                    completeSwap();
-                    clearInterval(swapInterval);
-                }
-            }, 1000);
-        }
-
-        function completeSwap() {
-            var cgiEarned = gameData.swapAmount / 10000;
-            gameData.cgiTokens += cgiEarned;
-            
-            var walletSuffix = gameData.walletAddress.slice(-5).toUpperCase();
-            var now = new Date();
-            var month = String(now.getMonth() + 1).padStart(2, "0");
-            var day = String(now.getDate()).padStart(2, "0");
-            var hours = String(now.getHours()).padStart(2, "0");
-            var minutes = String(now.getMinutes()).padStart(2, "0");
-            var swapId = String(Math.floor(Math.random() * 1000)).padStart(3, "0");
-            var code = walletSuffix + month + day + hours + minutes + swapId;
-            
-            var historyEntry = {
-                id: code,
-                goldAmount: gameData.swapAmount,
-                cgiReceived: cgiEarned,
-                timestamp: now.toISOString(),
-                code: code
-            };
-            gameData.swapHistory.unshift(historyEntry);
-            
-            document.getElementById("swapProgress").classList.add("hidden");
-            document.getElementById("swapComplete").classList.remove("hidden");
-            document.getElementById("completedAmount").textContent = gameData.swapAmount;
-            document.getElementById("completedCGI").textContent = cgiEarned.toFixed(4);
-            document.getElementById("transactionCode").textContent = code;
-            
-            gameData.isSwapping = false;
-            updateUI();
-        }
-
-        function newSwap() {
-            gameData.swapAmount = 0;
-            document.getElementById("swapSlider").value = 0;
-            document.getElementById("swapComplete").classList.add("hidden");
-            document.getElementById("swapControls").classList.remove("hidden");
-            updateSwapAmount();
-        }
-
-        function showSpeedUp() {
-            var maxHours = Math.min(gameData.polTokens, Math.ceil(gameData.swapTimeRemaining / 3600));
-            document.getElementById("speedUpSlider").max = maxHours;
-            document.getElementById("maxSpeedUp").textContent = maxHours + "h";
-            document.getElementById("speedUpModal").classList.remove("hidden");
-            updateSpeedUp();
-        }
-
-        function hideSpeedUp() {
-            document.getElementById("speedUpModal").classList.add("hidden");
-        }
-
-        function updateSpeedUp() {
-            var hours = parseInt(document.getElementById("speedUpSlider").value);
-            document.getElementById("speedUpHours").textContent = hours;
-            document.getElementById("speedUpCost").textContent = hours + " $POL";
-            document.getElementById("timeSaved").textContent = hours + " hour" + (hours > 1 ? "s" : "");
-            document.getElementById("newTimeRemaining").textContent = formatTime(Math.max(0, gameData.swapTimeRemaining - (hours * 3600)));
-            
-            var confirmBtn = document.getElementById("confirmSpeedUp");
-            confirmBtn.disabled = gameData.polTokens < hours;
-        }
-
-        // Usage for swap speed-up
-async function applySpeedUp() {
-    var hours = parseInt(document.getElementById("speedUpSlider").value);
-    var timeToSkip = hours * 3600;
-    if (gameData.swapTimeRemaining > 0) {
-        try {
-            await spendPOL(hours, "Swap Speed Up");
-            gameData.swapTimeRemaining = Math.max(0, gameData.swapTimeRemaining - timeToSkip);
-            hideSpeedUp();
-            updateUI();
-            if (gameData.swapTimeRemaining <= 0) {
-                completeSwap();
-            }
-        } catch (error) {
-            // Transaction failed, user notified by spendPOL
-        }
-    }
-}
-        function updateUI() {
-            updateGoldDisplay();
-        }
-
-        function showHistory() {
-            var historyContent = document.getElementById("historyContent");
-            
-            if (gameData.swapHistory.length === 0) {
-                historyContent.innerHTML = "<div class='empty-history'>" +
-                    "<div style='font-size: 1.2rem; margin-bottom: 10px;'>No swap history yet</div>" +
-                    "<div style='font-size: 0.9rem;'>Your completed swaps will appear here</div>" +
-                "</div>";
-            } else {
-                var historyHTML = "";
-                for (var i = 0; i < gameData.swapHistory.length; i++) {
-                    var swap = gameData.swapHistory[i];
-                    var swapNumber = gameData.swapHistory.length - i;
-                    historyHTML += "<div class='history-item'>" +
-                        "<div class='history-number'>#" + swapNumber + "</div>" +
-                        "<div class='history-grid'>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>Date & Time</div>" +
-                                "<div class='history-value'>" + formatHistoryDate(swap.timestamp) + "</div>" +
-                            "</div>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>Amount Swapped</div>" +
-                                "<div class='history-value' style='color: #fbbf24;'>" + swap.goldAmount.toLocaleString() + " Gold</div>" +
-                            "</div>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>CGI Received</div>" +
-                                "<div class='history-value' style='color: #60a5fa;'>" + swap.cgiReceived.toFixed(4) + " $CGI</div>" +
-                            "</div>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>Transaction Code</div>" +
-                                "<div class='history-value' style='color: #4ade80; font-family: monospace; font-size: 0.9rem; word-break: break-all;'>" + swap.code + "</div>" +
-                            "</div>" +
-                        "</div>" +
-                    "</div>";
-                }
-                historyContent.innerHTML = historyHTML;
-            }
-            
-            document.getElementById("historyModal").classList.remove("hidden");
-        }
-
-        function hideHistory() {
-            document.getElementById("historyModal").classList.add("hidden");
-        }
-
-        function formatTime(seconds) {
-            var hours = Math.floor(seconds / 3600);
-            var minutes = Math.floor((seconds % 3600) / 60);
-            var secs = seconds % 60;
-            
-            if (hours > 0) {
-                return hours + "h " + minutes + "m " + secs + "s";
-            } else if (minutes > 0) {
-                return minutes + "m " + secs + "s";
-            } else {
-                return secs + "s";
-            }
-        }
-
-        function formatHistoryDate(isoString) {
-            var date = new Date(isoString);
-            return date.toLocaleString("en-US", {
-                month: "2-digit",
-                day: "2-digit",
-                year: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false
-            });
-        }
     </script>
+</body>
+</html>
 </body>
 </html>
