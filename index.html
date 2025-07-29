@@ -854,6 +854,7 @@
 
         <!-- Missions Menu -->
 <div id="missionsMenu" class="modal hidden">
+
     <div id="missionSelection" class="missions-grid">
         <div class="mission-card">
             <div class="mission-difficulty difficulty-easy"></div>
@@ -946,7 +947,6 @@
         </div>
         <div>🕐 Mission in progress...</div>
         <button id="revealBtn" class="reveal-btn hidden" onclick="revealResult()">Reveal Result</button>
-        <button onclick="showMenu('mainMenu')" class="menu-btn">🏠 Home</button>
     </div>
     <button onclick="showMenu('mainMenu')" class="menu-btn">🏠 Home</button>
   </div>
@@ -1088,12 +1088,6 @@ loadGameData();
 checkMissionProgress();
 
 // all open functions
-function openMissionMenu() {
-    showNotification('Play Game menu will open here.', 'info');
-}
-function openCrafting() {
-    showNotification('Crafting  menu will open here.', 'info');
-}
 function openEvents() {
     showNotification('Events menu will open here.', 'info');
 }
@@ -1451,41 +1445,41 @@ setInterval(updateMissionUI, 1000); // Update every second
         // all functions related to the missions/swap
 
         function startMission(missionId) {
-            gameState.activeMission = missions[missionId];
-            gameState.missionProgress = 0;
-            gameState.missionComplete = false;
+            gameData.activeMission = missions[missionId];
+            gameData.missionProgress = 0;
+            gameData.missionComplete = false;
 
             document.getElementById("missionSelection").classList.add("hidden");
             document.getElementById("swapSection").classList.add("hidden");
             document.getElementById("activeMission").classList.remove("hidden");
 
-            document.getElementById("missionName").textContent = gameState.activeMission.name;
-            document.getElementById("missionDesc").textContent = gameState.activeMission.description;
-            document.getElementById("progressFill").style.background = gameState.activeMission.color;
+            document.getElementById("missionName").textContent = gameData.activeMission.name;
+            document.getElementById("missionDesc").textContent = gameData.activeMission.description;
+            document.getElementById("progressFill").style.background = gameData.activeMission.color;
 
             var progressInterval = setInterval(function() {
-                gameState.missionProgress += 100 / (gameState.activeMission.duration / 100);
+                gameData.missionProgress += 100 / (gameData.activeMission.duration / 100);
                 
-                if (gameState.missionProgress >= 100) {
-                    gameState.missionProgress = 100;
-                    gameState.missionComplete = true;
+                if (gameData.missionProgress >= 100) {
+                    gameData.missionProgress = 100;
+                    gameData.missionComplete = true;
                     document.getElementById("revealBtn").classList.remove("hidden");
                     clearInterval(progressInterval);
                 }
 
-                document.getElementById("progressPercent").textContent = Math.round(gameState.missionProgress) + "%";
-                document.getElementById("progressFill").style.width = gameState.missionProgress + "%";
+                document.getElementById("progressPercent").textContent = Math.round(gameData.missionProgress) + "%";
+                document.getElementById("progressFill").style.width = gameData.missionProgress + "%";
             }, 100);
         }
 
         function revealResult() {
-            var mission = gameState.activeMission;
+            var mission = gameData.activeMission;
             var isSuccess = Math.random() * 100 < mission.successRate;
             var resultContent = "";
             
             if (isSuccess) {
                 var goldWon = Math.floor(Math.random() * (mission.maxReward - mission.baseReward + 1)) + mission.baseReward;
-                gameState.userGold += goldWon;
+                gameData.userGold += goldWon;
                 
                 resultContent = "<div style='text-align: center;'>" +
                     "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
@@ -1497,7 +1491,7 @@ setInterval(updateMissionUI, 1000); // Update every second
                     "<button class='btn btn-primary' onclick='resetMission()' style='margin-top: 15px;'>Continue</button>" +
                 "</div>";
             } else {
-                var disabledAttr = gameState.polTokens < mission.failCost ? "disabled" : "";
+                var disabledAttr = gameData.polTokens < mission.failCost ? "disabled" : "";
                 resultContent = "<div style='text-align: center;'>" +
                     "<div style='font-size: 4rem; margin-bottom: 15px;'>⚠️</div>" +
                     "<h3 style='color: #f87171; font-size: 1.5rem; margin-bottom: 15px;'>Mission Failed!</h3>" +
@@ -1519,17 +1513,17 @@ setInterval(updateMissionUI, 1000); // Update every second
         }
 
         function payWithPol(cost) {
-            if (gameState.polTokens >= cost) {
-                gameState.polTokens -= cost;
+            if (gameData.polTokens >= cost) {
+                gameData.polTokens -= cost;
                 console.log("Paid " + cost + " $POL tokens for mission failure");
                 resetMission();
             }
         }
 
         function resetMission() {
-            gameState.activeMission = null;
-            gameState.missionProgress = 0;
-            gameState.missionComplete = false;
+            gameData.activeMission = null;
+            gameData.missionProgress = 0;
+            gameData.missionComplete = false;
             
             document.getElementById("resultModal").classList.add("hidden");
             document.getElementById("activeMission").classList.add("hidden");
@@ -1541,39 +1535,39 @@ setInterval(updateMissionUI, 1000); // Update every second
         }
 
         function updateSwapAmount() {
-            gameState.swapAmount = parseInt(document.getElementById("swapSlider").value);
-            document.getElementById("swapAmount").textContent = gameState.swapAmount;
-            document.getElementById("cgiAmount").textContent = (gameState.swapAmount / 10000).toFixed(4);
-            document.getElementById("processingTime").textContent = formatTime(gameState.swapAmount * 3);
+            gameData.swapAmount = parseInt(document.getElementById("swapSlider").value);
+            document.getElementById("swapAmount").textContent = gameData.swapAmount;
+            document.getElementById("cgiAmount").textContent = (gameData.swapAmount / 10000).toFixed(4);
+            document.getElementById("processingTime").textContent = formatTime(gameData.swapAmount * 3);
             
             var startBtn = document.getElementById("startSwapBtn");
-            startBtn.disabled = gameState.swapAmount <= 0 || gameState.swapAmount > gameState.userGold;
+            startBtn.disabled = gameData.swapAmount <= 0 || gameData.swapAmount > gameData.userGold;
         }
 
         function startSwap() {
-            if (gameState.swapAmount <= 0 || gameState.swapAmount > gameState.userGold) return;
+            if (gameData.swapAmount <= 0 || gameData.swapAmount > gameData.userGold) return;
             
-            gameState.userGold -= gameState.swapAmount;
-            gameState.isSwapping = true;
-            gameState.swapTimeRemaining = gameState.swapAmount * 3;
-            gameState.swapProgress = 0;
+            gameData.userGold -= gameData.swapAmount;
+            gameData.isSwapping = true;
+            gameData.swapTimeRemaining = gameData.swapAmount * 3;
+            gameData.swapProgress = 0;
             
             document.getElementById("swapControls").classList.add("hidden");
             document.getElementById("swapProgress").classList.remove("hidden");
-            document.getElementById("swappingAmount").textContent = gameState.swapAmount;
-            document.getElementById("swappingCGI").textContent = (gameState.swapAmount / 10000).toFixed(4);
+            document.getElementById("swappingAmount").textContent = gameData.swapAmount;
+            document.getElementById("swappingCGI").textContent = (gameData.swapAmount / 10000).toFixed(4);
             
             updateUI();
             
             var swapInterval = setInterval(function() {
-                gameState.swapTimeRemaining--;
-                gameState.swapProgress = ((gameState.swapAmount * 3 - gameState.swapTimeRemaining) / (gameState.swapAmount * 3)) * 100;
+                gameData.swapTimeRemaining--;
+                gameData.swapProgress = ((gameData.swapAmount * 3 - gameData.swapTimeRemaining) / (gameData.swapAmount * 3)) * 100;
                 
-                document.getElementById("swapProgressPercent").textContent = gameState.swapProgress.toFixed(1) + "%";
-                document.getElementById("swapProgressFill").style.width = gameState.swapProgress + "%";
-                document.getElementById("timeRemaining").textContent = formatTime(gameState.swapTimeRemaining);
+                document.getElementById("swapProgressPercent").textContent = gameData.swapProgress.toFixed(1) + "%";
+                document.getElementById("swapProgressFill").style.width = gameData.swapProgress + "%";
+                document.getElementById("timeRemaining").textContent = formatTime(gameData.swapTimeRemaining);
                 
-                if (gameState.swapTimeRemaining <= 0) {
+                if (gameData.swapTimeRemaining <= 0) {
                     completeSwap();
                     clearInterval(swapInterval);
                 }
@@ -1581,10 +1575,10 @@ setInterval(updateMissionUI, 1000); // Update every second
         }
 
         function completeSwap() {
-            var cgiEarned = gameState.swapAmount / 10000;
-            gameState.cgiTokens += cgiEarned;
+            var cgiEarned = gameData.swapAmount / 10000;
+            gameData.cgiTokens += cgiEarned;
             
-            var walletSuffix = gameState.walletAddress.slice(-5).toUpperCase();
+            var walletSuffix = gameData.walletAddress.slice(-5).toUpperCase();
             var now = new Date();
             var month = String(now.getMonth() + 1).padStart(2, "0");
             var day = String(now.getDate()).padStart(2, "0");
@@ -1595,25 +1589,25 @@ setInterval(updateMissionUI, 1000); // Update every second
             
             var historyEntry = {
                 id: code,
-                goldAmount: gameState.swapAmount,
+                goldAmount: gameData.swapAmount,
                 cgiReceived: cgiEarned,
                 timestamp: now.toISOString(),
                 code: code
             };
-            gameState.swapHistory.unshift(historyEntry);
+            gameData.swapHistory.unshift(historyEntry);
             
             document.getElementById("swapProgress").classList.add("hidden");
             document.getElementById("swapComplete").classList.remove("hidden");
-            document.getElementById("completedAmount").textContent = gameState.swapAmount;
+            document.getElementById("completedAmount").textContent = gameData.swapAmount;
             document.getElementById("completedCGI").textContent = cgiEarned.toFixed(4);
             document.getElementById("transactionCode").textContent = code;
             
-            gameState.isSwapping = false;
+            gameData.isSwapping = false;
             updateUI();
         }
 
         function newSwap() {
-            gameState.swapAmount = 0;
+            gameData.swapAmount = 0;
             document.getElementById("swapSlider").value = 0;
             document.getElementById("swapComplete").classList.add("hidden");
             document.getElementById("swapControls").classList.remove("hidden");
@@ -1621,7 +1615,7 @@ setInterval(updateMissionUI, 1000); // Update every second
         }
 
         function showSpeedUp() {
-            var maxHours = Math.min(gameState.polTokens, Math.ceil(gameState.swapTimeRemaining / 3600));
+            var maxHours = Math.min(gameData.polTokens, Math.ceil(gameData.swapTimeRemaining / 3600));
             document.getElementById("speedUpSlider").max = maxHours;
             document.getElementById("maxSpeedUp").textContent = maxHours + "h";
             document.getElementById("speedUpModal").classList.remove("hidden");
@@ -1637,23 +1631,23 @@ setInterval(updateMissionUI, 1000); // Update every second
             document.getElementById("speedUpHours").textContent = hours;
             document.getElementById("speedUpCost").textContent = hours + " $POL";
             document.getElementById("timeSaved").textContent = hours + " hour" + (hours > 1 ? "s" : "");
-            document.getElementById("newTimeRemaining").textContent = formatTime(Math.max(0, gameState.swapTimeRemaining - (hours * 3600)));
+            document.getElementById("newTimeRemaining").textContent = formatTime(Math.max(0, gameData.swapTimeRemaining - (hours * 3600)));
             
             var confirmBtn = document.getElementById("confirmSpeedUp");
-            confirmBtn.disabled = gameState.polTokens < hours;
+            confirmBtn.disabled = gameData.polTokens < hours;
         }
 
         function applySpeedUp() {
             var hours = parseInt(document.getElementById("speedUpSlider").value);
             var timeToSkip = hours * 3600;
             
-            if (gameState.polTokens >= hours && gameState.swapTimeRemaining > 0) {
-                gameState.polTokens -= hours;
-                gameState.swapTimeRemaining = Math.max(0, gameState.swapTimeRemaining - timeToSkip);
+            if (gameData.polTokens >= hours && gameData.swapTimeRemaining > 0) {
+                gameData.polTokens -= hours;
+                gameData.swapTimeRemaining = Math.max(0, gameData.swapTimeRemaining - timeToSkip);
                 hideSpeedUp();
                 updateUI();
                 
-                if (gameState.swapTimeRemaining <= 0) {
+                if (gameData.swapTimeRemaining <= 0) {
                     completeSwap();
                 }
             }
@@ -1662,16 +1656,16 @@ setInterval(updateMissionUI, 1000); // Update every second
         function showHistory() {
             var historyContent = document.getElementById("historyContent");
             
-            if (gameState.swapHistory.length === 0) {
+            if (gameData.swapHistory.length === 0) {
                 historyContent.innerHTML = "<div class='empty-history'>" +
                     "<div style='font-size: 1.2rem; margin-bottom: 10px;'>No swap history yet</div>" +
                     "<div style='font-size: 0.9rem;'>Your completed swaps will appear here</div>" +
                 "</div>";
             } else {
                 var historyHTML = "";
-                for (var i = 0; i < gameState.swapHistory.length; i++) {
-                    var swap = gameState.swapHistory[i];
-                    var swapNumber = gameState.swapHistory.length - i;
+                for (var i = 0; i < gameData.swapHistory.length; i++) {
+                    var swap = gameData.swapHistory[i];
+                    var swapNumber = gameData.swapHistory.length - i;
                     historyHTML += "<div class='history-item'>" +
                         "<div class='history-number'>#" + swapNumber + "</div>" +
                         "<div class='history-grid'>" +
