@@ -1119,6 +1119,152 @@
 .cancel-speedup-btn:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+
+.history-modal {
+    max-width: 800px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #1f2937, #374151);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid #4b5563;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.history-content {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.history-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.history-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 10px;
+}
+
+.history-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #5a67d8, #6b46c1);
+}
+
+.history-item {
+    background: rgba(55, 65, 81, 0.8);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #4b5563;
+    position: relative;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.history-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-label {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.history-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.history-number {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.empty-history {
+    text-align: center;
+    padding: 40px;
+    color: #9ca3af;
+    background: rgba(55, 65, 81, 0.5);
+    border-radius: 12px;
+    border: 1px dashed #4b5563;
+}
+
+.history-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #4b5563;
+}
+
+.history-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.history-subtitle {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments for history modal */
+@media (max-width: 768px) {
+    .history-modal {
+        max-width: 95%;
+        max-height: 80vh;
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .history-content {
+        max-height: 60vh;
+    }
+    
+    .history-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .history-item {
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+    
+    .history-number {
+        top: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+}
     </style>
 </head>
 <body>
@@ -1350,14 +1496,21 @@
             </div>
         </div>
 
-        <!-- History Modal -->
-        <div id="historyModal" class="modal hidden">
-            <div class="menu-container">
-                <h3>Swap History</h3>
-                <div id="historyContent"></div>
-                <button onclick="hideHistory()" class="menu-btn">Close</button>
-            </div>
+<!-- History Modal -->
+<div id="historyModal" class="modal hidden">
+    <div class="history-modal">
+        <div class="history-header">
+            <h3 class="history-title">Swap History</h3>
+            <p class="history-subtitle">Your recent swap transactions</p>
         </div>
+        <div class="history-content" id="historyContent">
+            <!-- History items will be inserted here -->
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="hideHistory()" class="menu-btn home-btn">Close</button>
+        </div>
+    </div>
+</div>
 
         <!-- Speed Up Modal -->
 <div id="speedUpModal" class="modal hidden">
@@ -2151,6 +2304,7 @@ function continueSwap() {
         code: code
     };
     gameData.swapHistory.unshift(historyEntry);
+    limitSwapHistory();
     saveGameData();
 
     document.getElementById("swapProgress").classList.add("hidden");
@@ -2244,46 +2398,65 @@ async function applySpeedUp() {
     }
 }
 
-        function showHistory() {
-            var historyContent = document.getElementById("historyContent");
-            
-            if (gameData.swapHistory.length === 0) {
-                historyContent.innerHTML = "<div class='empty-history'>" +
-                    "<div style='font-size: 1.2rem; margin-bottom: 10px;'>No swap history yet</div>" +
-                    "<div style='font-size: 0.9rem;'>Your completed swaps will appear here</div>" +
-                "</div>";
-            } else {
-                var historyHTML = "";
-                for (var i = 0; i < gameData.swapHistory.length; i++) {
-                    var swap = gameData.swapHistory[i];
-                    var swapNumber = gameData.swapHistory.length - i;
-                    historyHTML += "<div class='history-item'>" +
-                        "<div class='history-number'>#" + swapNumber + "</div>" +
-                        "<div class='history-grid'>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>Date & Time</div>" +
-                                "<div class='history-value'>" + formatHistoryDate(swap.timestamp) + "</div>" +
-                            "</div>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>Amount Swapped</div>" +
-                                "<div class='history-value' style='color: #fbbf24;'>" + swap.goldAmount.toLocaleString() + " Gold</div>" +
-                            "</div>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>CGI Received</div>" +
-                                "<div class='history-value' style='color: #60a5fa;'>" + swap.cgiReceived.toFixed(4) + " $CGI</div>" +
-                            "</div>" +
-                            "<div class='history-field'>" +
-                                "<div class='history-label'>Transaction Code</div>" +
-                                "<div class='history-value' style='color: #4ade80; font-family: monospace; font-size: 0.9rem; word-break: break-all;'>" + swap.code + "</div>" +
-                            "</div>" +
-                        "</div>" +
-                    "</div>";
-                }
-                historyContent.innerHTML = historyHTML;
-            }
-            
-            document.getElementById("historyModal").classList.remove("hidden");
+function showHistory() {
+    var historyContent = document.getElementById("historyContent");
+    
+    if (gameData.swapHistory.length === 0) {
+        historyContent.innerHTML = "<div class='empty-history'>" +
+            "<div style='font-size: 1.2rem; margin-bottom: 10px;'>📋 No swap history yet</div>" +
+            "<div style='font-size: 0.9rem;'>Your completed swaps will appear here</div>" +
+        "</div>";
+    } else {
+        var historyHTML = "";
+        // Limit to last 10 items
+        var recentHistory = gameData.swapHistory.slice(0, 10);
+        
+        for (var i = 0; i < recentHistory.length; i++) {
+            var swap = recentHistory[i];
+            var swapNumber = recentHistory.length - i;
+            historyHTML += "<div class='history-item'>" +
+                "<div class='history-number'>#" + swapNumber + "</div>" +
+                "<div class='history-grid'>" +
+                    "<div class='history-field'>" +
+                        "<div class='history-label'>�� Date & Time</div>" +
+                        "<div class='history-value'>" + formatHistoryDate(swap.timestamp) + "</div>" +
+                    "</div>" +
+                    "<div class='history-field'>" +
+                        "<div class='history-label'>🪙 Amount Swapped</div>" +
+                        "<div class='history-value' style='color: #fbbf24;'>" + swap.goldAmount.toLocaleString() + " Gold</div>" +
+                    "</div>" +
+                    "<div class='history-field'>" +
+                        "<div class='history-label'>💎 CGI Received</div>" +
+                        "<div class='history-value' style='color: #60a5fa;'>" + swap.cgiReceived.toFixed(4) + " $CGI</div>" +
+                    "</div>" +
+                    "<div class='history-field'>" +
+                        "<div class='history-label'>�� Transaction Code</div>" +
+                        "<div class='history-value' style='color: #4ade80; font-family: monospace; font-size: 0.9rem; word-break: break-all;'>" + swap.code + "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
         }
+        
+        // Add info about history limit if there are more than 10 items
+        if (gameData.swapHistory.length > 10) {
+            historyHTML += "<div style='text-align: center; padding: 15px; color: #9ca3af; font-size: 0.9rem; background: rgba(55, 65, 81, 0.5); border-radius: 8px; margin-top: 15px;'>" +
+                "Showing last 10 swaps. Total swaps: " + gameData.swapHistory.length +
+            "</div>";
+        }
+        
+        historyContent.innerHTML = historyHTML;
+    }
+    
+    document.getElementById("historyModal").classList.remove("hidden");
+}
+
+function limitSwapHistory() {
+    // Keep only the last 10 swap history items
+    if (gameData.swapHistory.length > 10) {
+        gameData.swapHistory = gameData.swapHistory.slice(0, 10);
+        saveGameData();
+    }
+}
 
         function hideHistory() {
             document.getElementById("historyModal").classList.add("hidden");
