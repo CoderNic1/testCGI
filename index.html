@@ -854,7 +854,6 @@
 
         <!-- Missions Menu -->
 <div id="missionsMenu" class="modal hidden">
-    <button onclick="showMenu('mainMenu')" class="menu-btn">🏠 Home</button>
     <div id="missionSelection" class="missions-grid">
         <div class="mission-card">
             <div class="mission-difficulty difficulty-easy"></div>
@@ -1038,6 +1037,42 @@ let gameData = {
     swapHistory: [],
     // Add more resources as needed (e.g., gems, items, etc.)
 };
+
+var missions = {
+            easy: {
+                id: "easy",
+                name: "Scout Mission",
+                duration: 3000,
+                successRate: 85,
+                baseReward: 50,
+                maxReward: 75,
+                failCost: 10,
+                description: "Quick reconnaissance of nearby areas",
+                color: "#10b981"
+            },
+            medium: {
+                id: "medium",
+                name: "Resource Raid",
+                duration: 6000,
+                successRate: 65,
+                baseReward: 120,
+                maxReward: 180,
+                failCost: 25,
+                description: "Medium-risk expedition for valuable resources",
+                color: "#f59e0b"
+            },
+            hard: {
+                id: "hard",
+                name: "Dragons Hoard",
+                duration: 10000,
+                successRate: 40,
+                baseReward: 300,
+                maxReward: 500,
+                failCost: 50,
+                description: "High-stakes assault on ancient treasure",
+                color: "#ef4444"
+            }
+        };
 
 // Load from localStorage if available
 function loadGameData() {
@@ -1411,6 +1446,288 @@ setInterval(updateMissionUI, 1000); // Update every second
 
         function updateGoldDisplay() {
             document.getElementById('userGold').textContent = `Gold: ${gameData.gold}`;
+        }
+
+        // all functions related to the missions/swap
+
+        function startMission(missionId) {
+            gameState.activeMission = missions[missionId];
+            gameState.missionProgress = 0;
+            gameState.missionComplete = false;
+
+            document.getElementById("missionSelection").classList.add("hidden");
+            document.getElementById("swapSection").classList.add("hidden");
+            document.getElementById("activeMission").classList.remove("hidden");
+
+            document.getElementById("missionName").textContent = gameState.activeMission.name;
+            document.getElementById("missionDesc").textContent = gameState.activeMission.description;
+            document.getElementById("progressFill").style.background = gameState.activeMission.color;
+
+            var progressInterval = setInterval(function() {
+                gameState.missionProgress += 100 / (gameState.activeMission.duration / 100);
+                
+                if (gameState.missionProgress >= 100) {
+                    gameState.missionProgress = 100;
+                    gameState.missionComplete = true;
+                    document.getElementById("revealBtn").classList.remove("hidden");
+                    clearInterval(progressInterval);
+                }
+
+                document.getElementById("progressPercent").textContent = Math.round(gameState.missionProgress) + "%";
+                document.getElementById("progressFill").style.width = gameState.missionProgress + "%";
+            }, 100);
+        }
+
+        function revealResult() {
+            var mission = gameState.activeMission;
+            var isSuccess = Math.random() * 100 < mission.successRate;
+            var resultContent = "";
+            
+            if (isSuccess) {
+                var goldWon = Math.floor(Math.random() * (mission.maxReward - mission.baseReward + 1)) + mission.baseReward;
+                gameState.userGold += goldWon;
+                
+                resultContent = "<div style='text-align: center;'>" +
+                    "<div style='font-size: 4rem; margin-bottom: 15px;'>🏆</div>" +
+                    "<h3 style='color: #4ade80; font-size: 1.5rem; margin-bottom: 15px;'>Mission Success!</h3>" +
+                    "<p style='margin-bottom: 15px;'>Victory! You completed the " + mission.name + "!</p>" +
+                    "<div class='result-success'>" +
+                        "<div style='color: #fbbf24; font-size: 1.3rem; font-weight: bold;'>💰 +" + goldWon + " Gold</div>" +
+                    "</div>" +
+                    "<button class='btn btn-primary' onclick='resetMission()' style='margin-top: 15px;'>Continue</button>" +
+                "</div>";
+            } else {
+                var disabledAttr = gameState.polTokens < mission.failCost ? "disabled" : "";
+                resultContent = "<div style='text-align: center;'>" +
+                    "<div style='font-size: 4rem; margin-bottom: 15px;'>⚠️</div>" +
+                    "<h3 style='color: #f87171; font-size: 1.5rem; margin-bottom: 15px;'>Mission Failed!</h3>" +
+                    "<p style='margin-bottom: 15px;'>The " + mission.name + " was too dangerous this time.</p>" +
+                    "<div class='result-failure'>" +
+                        "<div style='color: #f87171; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;'>❌ Mission Failed</div>" +
+                        "<p style='font-size: 0.9rem;'>Pay " + mission.failCost + " $POL tokens to cover losses</p>" +
+                    "</div>" +
+                    "<div class='btn-group'>" +
+                        "<button class='btn btn-primary' onclick='payWithPol(" + mission.failCost + ")' " + disabledAttr + ">Pay " + mission.failCost + " $POL</button>" +
+                        "<button class='btn btn-secondary' onclick='resetMission()'>Skip Payment</button>" +
+                    "</div>" +
+                "</div>";
+            }
+            
+            document.getElementById("resultContent").innerHTML = resultContent;
+            document.getElementById("resultModal").classList.remove("hidden");
+            updateUI();
+        }
+
+        function payWithPol(cost) {
+            if (gameState.polTokens >= cost) {
+                gameState.polTokens -= cost;
+                console.log("Paid " + cost + " $POL tokens for mission failure");
+                resetMission();
+            }
+        }
+
+        function resetMission() {
+            gameState.activeMission = null;
+            gameState.missionProgress = 0;
+            gameState.missionComplete = false;
+            
+            document.getElementById("resultModal").classList.add("hidden");
+            document.getElementById("activeMission").classList.add("hidden");
+            document.getElementById("revealBtn").classList.add("hidden");
+            document.getElementById("missionSelection").classList.remove("hidden");
+            document.getElementById("swapSection").classList.remove("hidden");
+            
+            updateUI();
+        }
+
+        function updateSwapAmount() {
+            gameState.swapAmount = parseInt(document.getElementById("swapSlider").value);
+            document.getElementById("swapAmount").textContent = gameState.swapAmount;
+            document.getElementById("cgiAmount").textContent = (gameState.swapAmount / 10000).toFixed(4);
+            document.getElementById("processingTime").textContent = formatTime(gameState.swapAmount * 3);
+            
+            var startBtn = document.getElementById("startSwapBtn");
+            startBtn.disabled = gameState.swapAmount <= 0 || gameState.swapAmount > gameState.userGold;
+        }
+
+        function startSwap() {
+            if (gameState.swapAmount <= 0 || gameState.swapAmount > gameState.userGold) return;
+            
+            gameState.userGold -= gameState.swapAmount;
+            gameState.isSwapping = true;
+            gameState.swapTimeRemaining = gameState.swapAmount * 3;
+            gameState.swapProgress = 0;
+            
+            document.getElementById("swapControls").classList.add("hidden");
+            document.getElementById("swapProgress").classList.remove("hidden");
+            document.getElementById("swappingAmount").textContent = gameState.swapAmount;
+            document.getElementById("swappingCGI").textContent = (gameState.swapAmount / 10000).toFixed(4);
+            
+            updateUI();
+            
+            var swapInterval = setInterval(function() {
+                gameState.swapTimeRemaining--;
+                gameState.swapProgress = ((gameState.swapAmount * 3 - gameState.swapTimeRemaining) / (gameState.swapAmount * 3)) * 100;
+                
+                document.getElementById("swapProgressPercent").textContent = gameState.swapProgress.toFixed(1) + "%";
+                document.getElementById("swapProgressFill").style.width = gameState.swapProgress + "%";
+                document.getElementById("timeRemaining").textContent = formatTime(gameState.swapTimeRemaining);
+                
+                if (gameState.swapTimeRemaining <= 0) {
+                    completeSwap();
+                    clearInterval(swapInterval);
+                }
+            }, 1000);
+        }
+
+        function completeSwap() {
+            var cgiEarned = gameState.swapAmount / 10000;
+            gameState.cgiTokens += cgiEarned;
+            
+            var walletSuffix = gameState.walletAddress.slice(-5).toUpperCase();
+            var now = new Date();
+            var month = String(now.getMonth() + 1).padStart(2, "0");
+            var day = String(now.getDate()).padStart(2, "0");
+            var hours = String(now.getHours()).padStart(2, "0");
+            var minutes = String(now.getMinutes()).padStart(2, "0");
+            var swapId = String(Math.floor(Math.random() * 1000)).padStart(3, "0");
+            var code = walletSuffix + month + day + hours + minutes + swapId;
+            
+            var historyEntry = {
+                id: code,
+                goldAmount: gameState.swapAmount,
+                cgiReceived: cgiEarned,
+                timestamp: now.toISOString(),
+                code: code
+            };
+            gameState.swapHistory.unshift(historyEntry);
+            
+            document.getElementById("swapProgress").classList.add("hidden");
+            document.getElementById("swapComplete").classList.remove("hidden");
+            document.getElementById("completedAmount").textContent = gameState.swapAmount;
+            document.getElementById("completedCGI").textContent = cgiEarned.toFixed(4);
+            document.getElementById("transactionCode").textContent = code;
+            
+            gameState.isSwapping = false;
+            updateUI();
+        }
+
+        function newSwap() {
+            gameState.swapAmount = 0;
+            document.getElementById("swapSlider").value = 0;
+            document.getElementById("swapComplete").classList.add("hidden");
+            document.getElementById("swapControls").classList.remove("hidden");
+            updateSwapAmount();
+        }
+
+        function showSpeedUp() {
+            var maxHours = Math.min(gameState.polTokens, Math.ceil(gameState.swapTimeRemaining / 3600));
+            document.getElementById("speedUpSlider").max = maxHours;
+            document.getElementById("maxSpeedUp").textContent = maxHours + "h";
+            document.getElementById("speedUpModal").classList.remove("hidden");
+            updateSpeedUp();
+        }
+
+        function hideSpeedUp() {
+            document.getElementById("speedUpModal").classList.add("hidden");
+        }
+
+        function updateSpeedUp() {
+            var hours = parseInt(document.getElementById("speedUpSlider").value);
+            document.getElementById("speedUpHours").textContent = hours;
+            document.getElementById("speedUpCost").textContent = hours + " $POL";
+            document.getElementById("timeSaved").textContent = hours + " hour" + (hours > 1 ? "s" : "");
+            document.getElementById("newTimeRemaining").textContent = formatTime(Math.max(0, gameState.swapTimeRemaining - (hours * 3600)));
+            
+            var confirmBtn = document.getElementById("confirmSpeedUp");
+            confirmBtn.disabled = gameState.polTokens < hours;
+        }
+
+        function applySpeedUp() {
+            var hours = parseInt(document.getElementById("speedUpSlider").value);
+            var timeToSkip = hours * 3600;
+            
+            if (gameState.polTokens >= hours && gameState.swapTimeRemaining > 0) {
+                gameState.polTokens -= hours;
+                gameState.swapTimeRemaining = Math.max(0, gameState.swapTimeRemaining - timeToSkip);
+                hideSpeedUp();
+                updateUI();
+                
+                if (gameState.swapTimeRemaining <= 0) {
+                    completeSwap();
+                }
+            }
+        }
+
+        function showHistory() {
+            var historyContent = document.getElementById("historyContent");
+            
+            if (gameState.swapHistory.length === 0) {
+                historyContent.innerHTML = "<div class='empty-history'>" +
+                    "<div style='font-size: 1.2rem; margin-bottom: 10px;'>No swap history yet</div>" +
+                    "<div style='font-size: 0.9rem;'>Your completed swaps will appear here</div>" +
+                "</div>";
+            } else {
+                var historyHTML = "";
+                for (var i = 0; i < gameState.swapHistory.length; i++) {
+                    var swap = gameState.swapHistory[i];
+                    var swapNumber = gameState.swapHistory.length - i;
+                    historyHTML += "<div class='history-item'>" +
+                        "<div class='history-number'>#" + swapNumber + "</div>" +
+                        "<div class='history-grid'>" +
+                            "<div class='history-field'>" +
+                                "<div class='history-label'>Date & Time</div>" +
+                                "<div class='history-value'>" + formatHistoryDate(swap.timestamp) + "</div>" +
+                            "</div>" +
+                            "<div class='history-field'>" +
+                                "<div class='history-label'>Amount Swapped</div>" +
+                                "<div class='history-value' style='color: #fbbf24;'>" + swap.goldAmount.toLocaleString() + " Gold</div>" +
+                            "</div>" +
+                            "<div class='history-field'>" +
+                                "<div class='history-label'>CGI Received</div>" +
+                                "<div class='history-value' style='color: #60a5fa;'>" + swap.cgiReceived.toFixed(4) + " $CGI</div>" +
+                            "</div>" +
+                            "<div class='history-field'>" +
+                                "<div class='history-label'>Transaction Code</div>" +
+                                "<div class='history-value' style='color: #4ade80; font-family: monospace; font-size: 0.9rem; word-break: break-all;'>" + swap.code + "</div>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>";
+                }
+                historyContent.innerHTML = historyHTML;
+            }
+            
+            document.getElementById("historyModal").classList.remove("hidden");
+        }
+
+        function hideHistory() {
+            document.getElementById("historyModal").classList.add("hidden");
+        }
+
+        function formatTime(seconds) {
+            var hours = Math.floor(seconds / 3600);
+            var minutes = Math.floor((seconds % 3600) / 60);
+            var secs = seconds % 60;
+            
+            if (hours > 0) {
+                return hours + "h " + minutes + "m " + secs + "s";
+            } else if (minutes > 0) {
+                return minutes + "m " + secs + "s";
+            } else {
+                return secs + "s";
+            }
+        }
+
+        function formatHistoryDate(isoString) {
+            var date = new Date(isoString);
+            return date.toLocaleString("en-US", {
+                month: "2-digit",
+                day: "2-digit",
+                year: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            });
         }
     </script>
 </body>
