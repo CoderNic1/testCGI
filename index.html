@@ -1184,23 +1184,23 @@ function openGamePass() {
 }
 
 function showMenu(menuId) {
-        // Hide all menus
-        document.getElementById("gameMenu").style.display = "none";
-        document.getElementById("swapSection").style.display = "none";
-        document.getElementById("missionSelection").classList.add("hidden");
-        document.getElementById("activeMission").classList.add("hidden");
-        // Show requested menu
-        if (menuId === "mainMenu") {
-            document.getElementById("gameMenu").style.display = "block";
-            updateUI();
-        } else if (menuId === "swapMenu") {
-            document.getElementById("swapSection").style.display = "block";
-            updateUI();
-        } else if (menuId === "missionMenu") {
-            document.getElementById("missionSelection").classList.remove("hidden");
-            updateUI();
-        }
+    // Hide all menus
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("missionsMenu").classList.add("hidden");
+    document.getElementById("craftingMenu").classList.add("hidden");
+
+    // Show requested menu
+    if (menuId === "mainMenu") {
+        document.getElementById("gameMenu").style.display = "block";
+        updateUI();
+    } else if (menuId === "missionsMenu") {
+        document.getElementById("missionsMenu").classList.remove("hidden");
+        updateUI();
+    } else if (menuId === "craftingMenu") {
+        document.getElementById("craftingMenu").classList.remove("hidden");
+        updateUI();
     }
+}
 
 
 
