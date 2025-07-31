@@ -1695,6 +1695,32 @@
 
         <!-- Missions Menu -->
         <div id="missionsMenu" class="modal hidden">
+            <div class="top-bar">
+                <div class="wallet-info">
+                    <div class="connection-status">
+                        <div class="status-dot"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="balance-display" id="balanceDisplay">
+                        <span>💎</span>
+                        <span id="polygonBalance">0.00 POL</span>
+                    </div>
+                    <div class="wallet-address" id="walletAddress">0x0000...0000</div>
+                </div>
+                <div class="resources-bar" id="resourcesBar" style="display: flex; gap: 16px; margin-top: 10px; justify-content: flex-start;">
+                    <div class="resource-item" id="goldResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
+                        <span>🪙</span>
+                        <span id="gold">0</span>
+                        <span style="opacity:0.7;">Gold</span>
+                    </div>
+                    <div class="resource-item" id="shardsResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
+                        <span>💎</span>
+                        <span id="shards">0</span>
+                        <span style="opacity:0.7;">Shards</span>
+                      </div>
+                </div>
+                <button class="settings-btn" onclick="openSettings()">⚙️</button>
+            </div>
             <div id="menuback" class="menu-container">
                 <div class="missions-content">
                     <div id="missionSelection" class="missions-grid">
@@ -1776,6 +1802,32 @@
         
                     <!-- Active Mission -->
                     <div id="activeMission" class="active-mission hidden">
+                        <div class="top-bar">
+                            <div class="wallet-info">
+                                <div class="connection-status">
+                                    <div class="status-dot"></div>
+                                    <span>Connected</span>
+                                </div>
+                                <div class="balance-display" id="balanceDisplay">
+                                    <span>💎</span>
+                                    <span id="polygonBalance">0.00 POL</span>
+                                </div>
+                                <div class="wallet-address" id="walletAddress">0x0000...0000</div>
+                            </div>
+                            <div class="resources-bar" id="resourcesBar" style="display: flex; gap: 16px; margin-top: 10px; justify-content: flex-start;">
+                                <div class="resource-item" id="goldResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
+                                    <span>🪙</span>
+                                    <span id="gold">0</span>
+                                    <span style="opacity:0.7;">Gold</span>
+                                </div>
+                                <div class="resource-item" id="shardsResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
+                                    <span>💎</span>
+                                    <span id="shards">0</span>
+                                    <span style="opacity:0.7;">Shards</span>
+                                  </div>
+                            </div>
+                            <button class="settings-btn" onclick="openSettings()">⚙️</button>
+                        </div>
                         <h2 id="missionName"></h2>
                         <p id="missionDesc"></p>
                         <div class="progress-container">
