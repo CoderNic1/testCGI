@@ -179,16 +179,13 @@
             transform: rotate(90deg);
         }
 
-        .main-menu,
-    .missions-content,
-    .crafting-content{
+        .main-menu {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 100px 20px 40px 20px;
-            padding-top: 70px;
         }
 
         .menu-container {
@@ -877,6 +874,376 @@
                 margin-bottom: 30px;
             }
         }
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .resources {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .resource {
+            text-align: center;
+            padding: 5px 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .resource-value {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+        }
+        
+        .resource-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #e9ecef;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: #007bff;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .battle-arena {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .enemy {
+            margin-bottom: 20px;
+        }
+        
+        .enemy-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .health-bar {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            height: 25px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4757, #ff3838);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .health-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        
+        .tap-button {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border: none;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            font-size: 2em;
+            font-weight: bold;
+            color: #d63031;
+            cursor: pointer;
+            margin: 20px;
+            transition: all 0.1s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tap-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .tap-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+        
+        .tap-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .upgrade-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .upgrade-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .upgrade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .upgrade-info {
+            flex: 1;
+        }
+        
+        .upgrade-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .upgrade-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .upgrade-cost {
+            margin: 0 20px;
+            text-align: center;
+            color: #495057;
+            font-weight: 600;
+        }
+        
+        .upgrade-btn {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(9,132,227,0.3);
+        }
+        
+        .upgrade-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .damage-popup {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff4757;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            animation: damageFloat 1s ease-out forwards;
+        }
+        
+        @keyframes damageFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) scale(1.2);
+    }
+}
+
+        
+        .victory-message, .defeat-message {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .victory-message {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+        }
+        
+        .defeat-message {
+            background: linear-gradient(135deg, #e17055, #d63031);
+            color: white;
+        }
+        
+        .pet-section {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .pet-status {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .food-bar {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .food-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fdcb6e, #e84393);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .status-message {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .battle-log {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .battle-log h3 {
+            color: white;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .log-entry {
+            background: rgba(255,255,255,0.9);
+            padding: 8px;
+            margin: 3px 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #333;
+            border-left: 3px solid;
+            font-weight: 500;
+        }
+        
+        .log-player {
+            border-left-color: #00b894;
+            background: rgba(0, 184, 148, 0.1);
+        }
+        
+        .log-pet {
+            border-left-color: #a29bfe;
+            background: rgba(162, 155, 254, 0.1);
+        }
+        
+        .log-enemy {
+            border-left-color: #e17055;
+            background: rgba(225, 112, 85, 0.1);
+        }
 
         /* Crafting Menu Container - Updated Structure */
 #craftingMenu .menu-container {
@@ -1268,402 +1635,6 @@
         padding: 4px 8px;
     }
 }
-
-/* Battle System Styles - Add to your existing CSS */
-
-/* Battle Menu Container */
-#battleMenu .menu-container {
-    width: 100%;
-    height: 100vh;
-    background: rgba(30, 41, 59, 0.95);
-    backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    box-sizing: border-box;
-    max-width: none;
-    border-radius: 0;
-    margin: 0;
-}
-
-/* Battle Content Area */
-.battle-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    padding: 20px 0;
-}
-
-/* Battle Arena Styles */
-.battle-arena {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    border-radius: 15px;
-    color: white;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 600px;
-}
-
-.enemy {
-    margin-bottom: 20px;
-}
-
-.enemy-name {
-    font-size: 1.8em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.health-bar {
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    height: 25px;
-    margin: 10px 0;
-    overflow: hidden;
-    position: relative;
-}
-
-.health-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #ff4757, #ff3838);
-    border-radius: 10px;
-    transition: width 0.3s ease;
-    position: relative;
-}
-
-.health-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    z-index: 2;
-}
-
-.tap-button {
-    background: linear-gradient(135deg, #ffecd2, #fcb69f);
-    border: none;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    font-size: 2em;
-    font-weight: bold;
-    color: #d63031;
-    cursor: pointer;
-    margin: 20px;
-    transition: all 0.1s ease;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-}
-
-.tap-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-.tap-button:active {
-    transform: scale(0.95);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-}
-
-.tap-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.timer {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 10px 0;
-    color: #ffeb3b;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-/* Battle Tabs */
-.battle-tabs {
-    display: flex;
-    margin-bottom: 20px;
-    background: #e9ecef;
-    border-radius: 10px;
-    overflow: hidden;
-    width: 100%;
-    max-width: 600px;
-}
-
-.battle-tab {
-    flex: 1;
-    padding: 15px;
-    text-align: center;
-    background: #e9ecef;
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
-    color: #495057;
-    transition: all 0.3s ease;
-}
-
-.battle-tab.active {
-    background: #007bff;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,123,255,0.3);
-}
-
-.battle-tab-content {
-    display: none;
-    animation: fadeIn 0.3s ease;
-    width: 100%;
-    max-width: 600px;
-}
-
-.battle-tab-content.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Upgrade Section */
-.upgrade-section {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 15px;
-    border: 2px solid #e9ecef;
-    width: 100%;
-}
-
-.upgrade-title {
-    font-size: 1.4em;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.upgrade-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 15px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.upgrade-info {
-    flex: 1;
-}
-
-.upgrade-name {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.upgrade-description {
-    color: #666;
-    font-size: 0.9em;
-}
-
-.upgrade-cost {
-    margin: 0 20px;
-    text-align: center;
-    color: #495057;
-    font-weight: 600;
-}
-
-.upgrade-btn {
-    background: linear-gradient(135deg, #74b9ff, #0984e3);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.upgrade-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(9,132,227,0.3);
-}
-
-.upgrade-btn:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Damage Popup Animation */
-.damage-popup {
-    position: absolute;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #ff4757;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    pointer-events: none;
-    animation: damageFloat 1s ease-out forwards;
-}
-
-@keyframes damageFloat {
-    0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-50px) scale(1.2);
-    }
-}
-
-/* Battle Messages */
-.victory-message, .defeat-message {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px 0;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.victory-message {
-    background: linear-gradient(135deg, #00b894, #00a085);
-    color: white;
-}
-
-.defeat-message {
-    background: linear-gradient(135deg, #e17055, #d63031);
-    color: white;
-}
-
-/* Pet Section */
-.pet-section {
-    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
-    color: white;
-    border-radius: 10px;
-    padding: 20px;
-    width: 100%;
-}
-
-.pet-status {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.food-bar {
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    height: 20px;
-    margin: 10px 0;
-    overflow: hidden;
-}
-
-.food-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #fdcb6e, #e84393);
-    border-radius: 10px;
-    transition: width 0.3s ease;
-}
-
-.status-message {
-    background: rgba(255,255,255,0.9);
-    color: #333;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
-    text-align: center;
-    font-weight: 600;
-}
-
-/* Battle Log */
-.battle-log {
-    background: rgba(0,0,0,0.1);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 20px;
-    max-height: 200px;
-    overflow-y: auto;
-    width: 100%;
-    max-width: 600px;
-}
-
-.battle-log h3 {
-    color: white;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.log-entry {
-    background: rgba(255,255,255,0.9);
-    padding: 8px;
-    margin: 3px 0;
-    border-radius: 5px;
-    font-size: 0.9em;
-    color: #333;
-    border-left: 3px solid;
-    font-weight: 500;
-}
-
-.log-player {
-    border-left-color: #00b894;
-    background: rgba(0, 184, 148, 0.1);
-}
-
-.log-pet {
-    border-left-color: #a29bfe;
-    background: rgba(162, 155, 254, 0.1);
-}
-
-.log-enemy {
-    border-left-color: #e17055;
-    background: rgba(225, 112, 85, 0.1);
-}
-
-/* Responsive adjustments for battle system */
-@media (max-width: 768px) {
-    .battle-arena {
-        padding: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .tap-button {
-        width: 100px;
-        height: 100px;
-        font-size: 1.5em;
-    }
-    
-    .battle-tabs {
-        flex-direction: column;
-    }
-    
-    .battle-tab {
-        padding: 12px;
-    }
-    
-    .upgrade-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
-    
-    .upgrade-cost {
-        margin: 0;
-    }
-}
     </style>
 </head>
 <body>
@@ -1677,38 +1648,35 @@
             </button>
             <div id="errorMessage"></div>
         </div>
-// top bar menu
-        <div class="top-bar">
-            <div class="wallet-info">
-                <div class="connection-status">
-                    <div class="status-dot"></div>
-                    <span>Connected</span>
-                </div>
-                <div class="balance-display" id="balanceDisplay">
-                    <span>💎</span>
-                    <span id="polygonBalance">0.00 POL</span>
-                </div>
-                <div class="wallet-address" id="walletAddress">0x0000...0000</div>
-            </div>
-            <div class="resources-bar" id="resourcesBar" style="display: flex; gap: 16px; margin-top: 10px; justify-content: flex-start;">
-                <div class="resource-item" id="goldResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
-                    <span>🪙</span>
-                    <span id="gold">0</span>
-                    <span style="opacity:0.7;">Gold</span>
-                </div>
-                <!-- In your top-bar resources section, add this after the gold resource: -->
-            <div class="resource-item" id="shardsResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
-                <span>💎</span>
-                <span id="shards">0</span>
-                <span style="opacity:0.7;">Shards</span>
-            </div>               
-            </div>
-            <button class="settings-btn" onclick="openSettings()">⚙️</button>
-        </div>
 
         <!-- Game Menu -->
         <div class="game-menu" id="gameMenu">
-           
+            <div class="top-bar">
+                <div class="wallet-info">
+                    <div class="connection-status">
+                        <div class="status-dot"></div>
+                        <span>Connected</span>
+                    </div>
+                    <div class="balance-display" id="balanceDisplay">
+                        <span>💎</span>
+                        <span id="polygonBalance">0.00 POL</span>
+                    </div>
+                    <div class="wallet-address" id="walletAddress">0x0000...0000</div>
+                </div>
+                <div class="resources-bar" id="resourcesBar" style="display: flex; gap: 16px; margin-top: 10px; justify-content: flex-start;">
+                    <div class="resource-item" id="goldResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
+                        <span>🪙</span>
+                        <span id="gold">0</span>
+                        <span style="opacity:0.7;">Gold</span>
+                    </div>
+                    <div class="resource-item" id="shardsResource" style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 18px; display: flex; align-items: center; gap: 6px;">
+                        <span>💎</span>
+                        <span id="shards">0</span>
+                        <span style="opacity:0.7;">Shards</span>
+                      </div>
+                </div>
+                <button class="settings-btn" onclick="openSettings()">⚙️</button>
+            </div>
 
             <div class="main-menu">
                 <div class="menu-container">
@@ -1940,7 +1908,7 @@
                 <label>Speed up by:</label>
                 <input type="range" id="speedUpSlider" min="0" max="0" value="0" oninput="updateSpeedUp()">
                 <div class="slider-labels">
-                    <span id="speedUpHours">0</span> hours
+                    <span>0 hours</span>
                     <span id="maxSpeedUp">0 hours</span>
                 </div>
             </div>
@@ -1971,155 +1939,132 @@
     </div>
 </div>
 
-<!-- Battle Menu -->
 <div id="battleMenu" class="modal hidden">
     <div class="menu-container">
-        <!-- Content area that takes most space -->
-        <div class="battle-content">
-            <!-- Battle Tabs -->
-            <div class="battle-tabs">
-                <button class="battle-tab active" onclick="switchBattleTab('battle')">⚔️ Battle</button>
-                <button class="battle-tab" onclick="switchBattleTab('upgrades')">�� Upgrades</button>
-                <button class="battle-tab" onclick="switchBattleTab('pet')">🐾 Pet</button>
-                <button class="battle-tab" onclick="switchBattleTab('stats')">📊 Stats</button>
-            </div>
-            
-            <!-- Battle Tab Content -->
-            <div id="battle" class="battle-tab-content active">
-                <div class="battle-arena">
-                    <div class="enemy">
-                        <div class="enemy-name" id="enemyName">No Enemy</div>
-                        <div class="health-bar">
-                            <div class="health-fill" id="enemyHealthFill" style="width: 100%"></div>
-                            <div class="health-text" id="enemyHealthText">100/100</div>
-                        </div>
-                        <div class="timer" id="battleTimer">Time: 30s</div>
-                    </div>
-                    
-                    <button class="tap-button" id="tapButton" onclick="tapAttack()" disabled>
-                        TAP!
-                    </button>
-                    
-                    <div class="health-bar" style="margin: 20px auto; max-width: 300px;">
-                        <div class="health-fill" id="playerHealthFill" style="width: 100%; background: linear-gradient(90deg, #00b894, #00a085);"></div>
-                        <div class="health-text" id="playerHealthText">100/100</div>
-                    </div>
-                    
-                    <button onclick="startBattle()" id="startBattleBtn" style="background: linear-gradient(135deg, #00b894, #00a085); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin: 10px;">
-                        🚀 Start Battle
-                    </button>
-                </div>
-                
-                <div id="battleResult"></div>
-                
-                <div class="battle-log">
-                    <h3>⚔️ Battle Log</h3>
-                    <div id="battleLogContent">
-                        <div class="log-entry" style="text-align: center; font-style: italic;">Battle log will appear here...</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Upgrades Tab Content -->
-            <div id="upgrades" class="battle-tab-content">
-                <div class="upgrade-section">
-                    <div class="upgrade-title">💪 Player Upgrades</div>
-                    
-                    <div class="upgrade-item">
-                        <div class="upgrade-info">
-                            <div class="upgrade-name">🔥 Damage (Level <span id="dmgLevel">1</span>)</div>
-                            <div class="upgrade-description">Current: <span id="currentDmg">2</span> damage per tap</div>
-                        </div>
-                        <div class="upgrade-cost" id="dmgCost">50🪙 + 2💎</div>
-                        <button class="upgrade-btn" onclick="upgradeStat('damage')" id="dmgUpgradeBtn">Upgrade</button>
-                    </div>
-                    
-                    <div class="upgrade-item">
-                        <div class="upgrade-info">
-                            <div class="upgrade-name">❤️ Max HP (Level <span id="hpLevel">1</span>)</div>
-                            <div class="upgrade-description">Current: <span id="currentHp">100</span> max health</div>
-                        </div>
-                        <div class="upgrade-cost" id="hpCost">30🪙 + 1💎</div>
-                        <button class="upgrade-btn" onclick="upgradeStat('hp')" id="hpUpgradeBtn">Upgrade</button>
-                    </div>
-                    
-                    <div class="upgrade-item">
-                        <div class="upgrade-info">
-                            <div class="upgrade-name">🔄 HP Regen (Level <span id="regenLevel">1</span>)</div>
-                            <div class="upgrade-description">Current: 1 HP every <span id="currentRegen">10</span> seconds</div>
-                        </div>
-                        <div class="upgrade-cost" id="regenCost">2💰</div>
-                        <button class="upgrade-btn" onclick="upgradeStat('regen')" id="regenUpgradeBtn">Upgrade</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pet Tab Content -->
-            <div id="pet" class="battle-tab-content">
-                <div class="pet-section">
-                    <div class="pet-status">
-                        <h2>🐲 Battle Pet</h2>
-                        <div id="petStatusText">No pet acquired</div>
-                        
-                        <div id="petStats" style="display: none;">
-                            <div>Pet Level: <span id="petLevel">1</span></div>
-                            <div>Pet Damage: <span id="petDamage">5</span></div>
-                            <div>Attack Speed: Every <span id="petSpeed">3</span> seconds</div>
-                            
-                            <div class="food-bar">
-                                <div class="food-fill" id="foodFill" style="width: 100%"></div>
-                            </div>
-                            <div>Food: <span id="foodAmount">100</span>/100</div>
-                        </div>
-                    </div>
-                    
-                    <div class="upgrade-item" style="background: rgba(255,255,255,0.1);">
-                        <div class="upgrade-info">
-                            <div class="upgrade-name" style="color: white;">�� Acquire Pet</div>
-                            <div class="upgrade-description" style="color: rgba(255,255,255,0.8);">Get a battle companion that auto-attacks</div>
-                        </div>
-                        <div class="upgrade-cost" style="color: white;" id="petAcquireCost">200🪙 + 10💎</div>
-                        <button class="upgrade-btn" onclick="acquirePet()" id="acquirePetBtn">Buy Pet</button>
-                    </div>
-                    
-                    <div id="petUpgrades" style="display: none;">
-                        <div class="upgrade-item" style="background: rgba(255,255,255,0.1); margin-top: 15px;">
-                            <div class="upgrade-info">
-                                <div class="upgrade-name" style="color: white;">🔥 Pet Damage</div>
-                                <div class="upgrade-description" style="color: rgba(255,255,255,0.8);">Increase pet attack damage</div>
-                            </div>
-                            <div class="upgrade-cost" style="color: white;" id="petDmgCost">100🪙 + 3💎</div>
-                            <button class="upgrade-btn" onclick="upgradePet('damage')" id="petDmgBtn">Upgrade</button>
-                        </div>
-                        
-                        <button onclick="feedPet()" id="feedPetBtn" style="background: linear-gradient(135deg, #fdcb6e, #e84393); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 10px;">
-                            🍖 Feed Pet (1💰 = 100 Food)
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Stats Tab Content -->
-            <div id="stats" class="battle-tab-content">
-                <div class="upgrade-section">
-                    <div class="upgrade-title">📊 Battle Statistics</div>
-                    <div class="status-message">
-                        <div>Battles Won: <span id="battlesWon">0</span></div>
-                        <div>Battles Lost: <span id="battlesLost">0</span></div>
-                        <div>Total Damage Dealt: <span id="totalDamage">0</span></div>
-                        <div>Enemies Defeated: <span id="enemiesDefeated">0</span></div>
-                    </div>
-                </div>
-            </div>
+      <div class="battle-content">
+        <div class="battle-tabs">
+          <button class="battle-tab active" onclick="switchBattleTab('battle', event)">⚔️ Battle</button>
+          <button class="battle-tab" onclick="switchBattleTab('upgrades', event)">📈 Upgrades</button>
+          <button class="battle-tab" onclick="switchBattleTab('pet', event)">🐾 Pet</button>
+          <button class="battle-tab" onclick="switchBattleTab('stats', event)">📊 Stats</button>
         </div>
-        
-        <!-- Centered Home Button at Bottom -->
-        <div class="menu-footer">
-            <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
+        <!-- Battle Tab -->
+        <div id="battle" class="battle-tab-content active">
+          <div class="battle-arena">
+            <div class="enemy">
+              <div class="enemy-name" id="enemyName">No Enemy</div>
+              <div class="health-bar">
+                <div class="health-fill" id="enemyHealthFill" style="width: 100%"></div>
+                <div class="health-text" id="enemyHealthText">100/100</div>
+              </div>
+              <div class="timer" id="battleTimer">Time: 30s</div>
+            </div>
+            <button class="tap-button" id="tapButton" onclick="tapAttack()" disabled>
+              TAP!
+            </button>
+            <div class="health-bar" style="margin: 20px auto; max-width: 300px;">
+              <div class="health-fill" id="playerHealthFill" style="width: 100%; background: linear-gradient(90deg, #00b894, #00a085);"></div>
+              <div class="health-text" id="playerHealthText">100/100</div>
+            </div>
+            <button onclick="startBattle()" id="startBattleBtn" style="background: linear-gradient(135deg, #00b894, #00a085); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin: 10px;">
+              🚀 Start Battle
+            </button>
+          </div>
+          <div id="battleResult"></div>
+          <div class="battle-log">
+            <h3>⚔️ Battle Log</h3>
+            <div id="battleLogContent">
+              <div class="log-entry" style="text-align: center; font-style: italic;">Battle log will appear here...</div>
+            </div>
+          </div>
         </div>
+        <!-- Upgrades Tab -->
+        <div id="upgrades" class="battle-tab-content">
+          <div class="upgrade-section">
+            <div class="upgrade-title">💪 Player Upgrades</div>
+            <div class="upgrade-item">
+              <div class="upgrade-info">
+                <div class="upgrade-name">🔥 Damage (Level <span id="dmgLevel">1</span>)</div>
+                <div class="upgrade-description">Current: <span id="currentDmg">2</span> damage per tap</div>
+              </div>
+              <div class="upgrade-cost" id="dmgCost">50🪙 + 2💎</div>
+              <button class="upgrade-btn" onclick="upgradeStat('damage')" id="dmgUpgradeBtn">Upgrade</button>
+            </div>
+            <div class="upgrade-item">
+              <div class="upgrade-info">
+                <div class="upgrade-name">❤️ Max HP (Level <span id="hpLevel">1</span>)</div>
+                <div class="upgrade-description">Current: <span id="currentHp">100</span> max health</div>
+              </div>
+              <div class="upgrade-cost" id="hpCost">30🪙 + 1💎</div>
+              <button class="upgrade-btn" onclick="upgradeStat('hp')" id="hpUpgradeBtn">Upgrade</button>
+            </div>
+            <div class="upgrade-item">
+              <div class="upgrade-info">
+                <div class="upgrade-name">🔄 HP Regen (Level <span id="regenLevel">1</span>)</div>
+                <div class="upgrade-description">Current: 1 HP every <span id="currentRegen">10</span> seconds</div>
+              </div>
+              <div class="upgrade-cost" id="regenCost">2💰</div>
+              <button class="upgrade-btn" onclick="upgradeStat('regen')" id="regenUpgradeBtn">Upgrade</button>
+            </div>
+          </div>
+        </div>
+        <!-- Pet Tab -->
+        <div id="pet" class="battle-tab-content">
+          <div class="pet-section">
+            <div class="pet-status">
+              <h2>🐲 Battle Pet</h2>
+              <div id="petStatusText">No pet acquired</div>
+              <div id="petStats" style="display: none;">
+                <div>Pet Level: <span id="petLevel">1</span></div>
+                <div>Pet Damage: <span id="petDamage">5</span></div>
+                <div>Attack Speed: Every <span id="petSpeed">3</span> seconds</div>
+                <div class="food-bar">
+                  <div class="food-fill" id="foodFill" style="width: 100%"></div>
+                </div>
+                <div>Food: <span id="foodAmount">100</span>/100</div>
+              </div>
+            </div>
+            <div class="upgrade-item" style="background: rgba(255,255,255,0.1);">
+              <div class="upgrade-info">
+                <div class="upgrade-name" style="color: white;">🐾 Acquire Pet</div>
+                <div class="upgrade-description" style="color: rgba(255,255,255,0.8);">Get a battle companion that auto-attacks</div>
+              </div>
+              <div class="upgrade-cost" style="color: white;" id="petAcquireCost">200🪙 + 10💎</div>
+              <button class="upgrade-btn" onclick="acquirePet()" id="acquirePetBtn">Buy Pet</button>
+            </div>
+            <div id="petUpgrades" style="display: none;">
+              <div class="upgrade-item" style="background: rgba(255,255,255,0.1); margin-top: 15px;">
+                <div class="upgrade-info">
+                  <div class="upgrade-name" style="color: white;">🔥 Pet Damage</div>
+                  <div class="upgrade-description" style="color: rgba(255,255,255,0.8);">Increase pet attack damage</div>
+                </div>
+                <div class="upgrade-cost" style="color: white;" id="petDmgCost">100🪙 + 3💎</div>
+                <button class="upgrade-btn" onclick="upgradePet('damage')" id="petDmgBtn">Upgrade</button>
+              </div>
+              <button onclick="feedPet()" id="feedPetBtn" style="background: linear-gradient(135deg, #fdcb6e, #e84393); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 10px;">
+                🍖 Feed Pet (1💰 = 100 Food)
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Stats Tab -->
+        <div id="stats" class="battle-tab-content">
+          <div class="upgrade-section">
+            <div class="upgrade-title">📊 Battle Statistics</div>
+            <div class="status-message">
+              <div>Battles Won: <span id="battlesWon">0</span></div>
+              <div>Battles Lost: <span id="battlesLost">0</span></div>
+              <div>Total Damage Dealt: <span id="totalDamage">0</span></div>
+              <div>Enemies Defeated: <span id="enemiesDefeated">0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-footer">
+        <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
+      </div>
     </div>
-</div>
-
+  </div>
         <!-- Settings Modal -->
         <div class="settings-modal" id="settingsModal">
             <div class="settings-content">
@@ -2130,9 +2075,32 @@
         </div>
     </div>
 
-
     <script>
 
+const defaultGameData = {
+  gold: 0,
+  cgiTokens: 0,
+  activeMission: null,
+  missionProgress: 0,
+  missionComplete: false,
+  missionStartTime: null,
+  swapAmount: 0,
+  isSwapping: false,
+  swapProgress: 0,
+  swapTimeRemaining: 0,
+  swapStartTime: null,
+  swapHistory: [],
+  walletAddress: null,
+  shards: 0,
+  battle: {
+    playerLevel: { damage: 1, hp: 1, regen: 1 },
+    playerStats: { damage: 2, maxHp: 100, currentHp: 100, regenRate: 10000 },
+    pet: { owned: false, level: 1, damage: 5, speed: 3000, food: 100, maxFood: 100 },
+    battle: { active: false, enemy: null, timeLeft: 0, timer: null },
+    stats: { battlesWon: 0, battlesLost: 0, totalDamage: 0, enemiesDefeated: 0 },
+    battleLog: []
+  }
+};
         // Centralized game data object
         let gameData = {
             gold: 0,
@@ -2147,43 +2115,16 @@
             swapTimeRemaining: 0,
             swapStartTime: null,
             swapHistory: [],
-            walletAddress: null,
-            shards:0,
+            walletAddress: null
         };
-gameData.battle = {
-    playerLevel: {
-        damage: 1,
-        hp: 1,
-        regen: 1
-    },
-    playerStats: {
-        damage: 2,
-        maxHp: 100,
-        currentHp: 100,
-        regenRate: 10000 // milliseconds
-    },
-    pet: {
-        owned: false,
-        level: 1,
-        damage: 5,
-        speed: 3000, // milliseconds
-        food: 100,
-        maxFood: 100
-    },
-    battle: {
-        active: false,
-        enemy: null,
-        timeLeft: 0,
-        timer: null
-    },
-    stats: {
-        battlesWon: 0,
-        battlesLost: 0,
-        totalDamage: 0,
-        enemiesDefeated: 0
-    },
+        gameData.battle = {
+    playerLevel: { damage: 1, hp: 1, regen: 1 },
+    playerStats: { damage: 2, maxHp: 100, currentHp: 100, regenRate: 10000 },
+    pet: { owned: false, level: 1, damage: 5, speed: 3000, food: 100, maxFood: 100 },
+    battle: { active: false, enemy: null, timeLeft: 0, timer: null },
+    stats: { battlesWon: 0, battlesLost: 0, totalDamage: 0, enemiesDefeated: 0 },
     battleLog: []
-};
+    };
         // Initialize userAccount with stored wallet address
 let userAccount = gameData.walletAddress || null;
         function isWalletConnected() {
@@ -2229,45 +2170,22 @@ let userAccount = gameData.walletAddress || null;
         // Load from localStorage if available
         
         function loadGameData() {
-    const defaultData = {
-        gold: 0,
-            cgiTokens: 0,
-            activeMission: null,
-            missionProgress: 0,
-            missionComplete: false,
-            missionStartTime: null,
-            swapAmount: 0,
-            isSwapping: false,
-            swapProgress: 0,
-            swapTimeRemaining: 0,
-            swapStartTime: null,
-            swapHistory: [],
-            walletAddress: null,
-            shards:0,
-        battle: {
-            playerLevel: { damage: 1, hp: 1, regen: 1 },
-            playerStats: { damage: 2, maxHp: 100, currentHp: 100, regenRate: 10000 },
-            pet: { owned: false, level: 1, damage: 5, speed: 3000, food: 100, maxFood: 100 },
-            battle: { active: false, enemy: null, timeLeft: 0, timer: null },
-            stats: { battlesWon: 0, battlesLost: 0, totalDamage: 0, enemiesDefeated: 0 },
-            battleLog: []
-        }
-    };
-    const data = localStorage.getItem('gameData');
-    if (data) {
-        try {
-            const loaded = JSON.parse(data);
-            // Merge loaded data with defaults (shallow merge)
-            gameData = Object.assign({}, defaultData, loaded);
-            // For nested objects like battle, merge as well
-            gameData.battle = Object.assign({}, defaultData.battle, loaded.battle || {});
-            userAccount = gameData.walletAddress || null;
-        } catch (e) {
-            console.error('Error loading game data:', e);
-        }
-    } else {
-        gameData = defaultData;
+  const data = localStorage.getItem('gameData');
+  if (data) {
+    try {
+      const loaded = JSON.parse(data);
+      // Merge loaded data with defaults
+      gameData = Object.assign({}, defaultGameData, loaded);
+      // For nested objects like battle, merge as well
+      gameData.battle = Object.assign({}, defaultGameData.battle, loaded.battle || {});
+      userAccount = gameData.walletAddress || null;
+    } catch (e) {
+      console.error('Error loading game data:', e);
+      gameData = defaultGameData;
     }
+  } else {
+    gameData = defaultGameData;
+  }
 }
 
 function saveGameData() {
@@ -2730,6 +2648,7 @@ function continueSwap() {
 
         function updateGoldDisplay() {
             document.getElementById('gold').textContent = gameData.gold;
+            document.getElementById('shards').textContent = gameData.shards;
         }
 
         function updateUI() {
@@ -3112,502 +3031,375 @@ function limitSwapHistory() {
             });
         }
 
-        
+        // --- Battle System Integration ---
+
 // Enemy types
 const enemyTypes = [
-    { name: '🐺 Forest Wolf', hpRange: [30, 60], reward: { gold: [15, 25], shards: [1, 3] } },
-    { name: '🧟 Undead Warrior', hpRange: [50, 90], reward: { gold: [25, 40], shards: [2, 4] } },
-    { name: '🐉 Young Dragon', hpRange: [80, 150], reward: { gold: [40, 70], shards: [3, 6] } },
-    { name: '👹 Demon Scout', hpRange: [60, 120], reward: { gold: [30, 50], shards: [2, 5] } },
-    { name: '🗿 Stone Golem', hpRange: [100, 200], reward: { gold: [50, 80], shards: [4, 7] } }
+  { name: '🐺 Forest Wolf', hpRange: [30, 60], reward: { gold: [15, 25], shards: [1, 3] } },
+  { name: '🧟 Undead Warrior', hpRange: [50, 90], reward: { gold: [25, 40], shards: [2, 4] } },
+  { name: '🐉 Young Dragon', hpRange: [80, 150], reward: { gold: [40, 70], shards: [3, 6] } },
+  { name: '👹 Demon Scout', hpRange: [60, 120], reward: { gold: [30, 50], shards: [2, 5] } },
+  { name: '🗿 Stone Golem', hpRange: [100, 200], reward: { gold: [50, 80], shards: [4, 7] } }
 ];
 
-// Battle system variables
-let battleInterval;
-let petAttackInterval;
-
-// Update the showMenu function to include battle menu
-function showMenu(menuId) {
-    // Hide all menus
-    document.getElementById("gameMenu").style.display = "none";
-    document.getElementById("missionsMenu").classList.add("hidden");
-    document.getElementById("craftingMenu").classList.add("hidden");
-    document.getElementById("battleMenu").classList.add("hidden");
-
-    // Show requested menu
-    if (menuId === "mainMenu") {
-        document.getElementById("gameMenu").style.display = "block";
-        updateUI();
-    } else if (menuId === "missionsMenu") {
-        document.getElementById("missionsMenu").classList.remove("hidden");
-        updateUI();
-    } else if (menuId === "craftingMenu") {
-        document.getElementById("craftingMenu").classList.remove("hidden");
-        updateUI();
-    } else if (menuId === "battleMenu") {
-        document.getElementById("battleMenu").classList.remove("hidden");
-        updateBattleUI();
-    }
+// Tab switching for battle menu
+function switchBattleTab(tabName, event) {
+  document.querySelectorAll('.battle-tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.battle-tab-content').forEach(content => content.classList.remove('active'));
+  if (event) event.target.classList.add('active');
+  document.getElementById(tabName).classList.add('active');
 }
 
-// Update UI function to include shards
-function updateUI() {
-    updateGoldDisplay();
-    updateShardsDisplay();
-    updateSwapSlider();
-}
-
-// Add shards display function
-function updateShardsDisplay() {
-    document.getElementById('shards').textContent = gameData.shards;
-}
-
-// Battle UI update function
+// Update battle UI
 function updateBattleUI() {
-    // Player stats
-    document.getElementById('dmgLevel').textContent = gameData.battle.playerLevel.damage;
-    document.getElementById('currentDmg').textContent = gameData.battle.playerStats.damage;
-    document.getElementById('hpLevel').textContent = gameData.battle.playerLevel.hp;
-    document.getElementById('currentHp').textContent = gameData.battle.playerStats.maxHp;
-    document.getElementById('regenLevel').textContent = gameData.battle.playerLevel.regen;
-    document.getElementById('currentRegen').textContent = gameData.battle.playerStats.regenRate / 1000;
-    
-    // Player health
-    const healthPercent = (gameData.battle.playerStats.currentHp / gameData.battle.playerStats.maxHp) * 100;
-    document.getElementById('playerHealthFill').style.width = healthPercent + '%';
-    document.getElementById('playerHealthText').textContent = `${gameData.battle.playerStats.currentHp}/${gameData.battle.playerStats.maxHp}`;
-    
-    // Update upgrade costs and buttons
-    updateBattleUpgradeCosts();
-    
-    // Pet display
-    updateBattlePetDisplay();
-    
-    // Stats
-    document.getElementById('battlesWon').textContent = gameData.battle.stats.battlesWon;
-    document.getElementById('battlesLost').textContent = gameData.battle.stats.battlesLost;
-    document.getElementById('totalDamage').textContent = gameData.battle.stats.totalDamage;
-    document.getElementById('enemiesDefeated').textContent = gameData.battle.stats.enemiesDefeated;
+  // Player stats
+  document.getElementById('dmgLevel').textContent = gameData.battle.playerLevel.damage;
+  document.getElementById('currentDmg').textContent = gameData.battle.playerStats.damage;
+  document.getElementById('hpLevel').textContent = gameData.battle.playerLevel.hp;
+  document.getElementById('currentHp').textContent = gameData.battle.playerStats.maxHp;
+  document.getElementById('regenLevel').textContent = gameData.battle.playerLevel.regen;
+  document.getElementById('currentRegen').textContent = gameData.battle.playerStats.regenRate / 1000;
+
+  // Player health
+  const healthPercent = (gameData.battle.playerStats.currentHp / gameData.battle.playerStats.maxHp) * 100;
+  document.getElementById('playerHealthFill').style.width = healthPercent + '%';
+  document.getElementById('playerHealthText').textContent = `${gameData.battle.playerStats.currentHp}/${gameData.battle.playerStats.maxHp}`;
+
+  // Upgrade costs and buttons
+  updateBattleUpgradeCosts();
+
+  // Pet display
+  updateBattlePetDisplay();
+
+  // Stats
+  document.getElementById('battlesWon').textContent = gameData.battle.stats.battlesWon;
+  document.getElementById('battlesLost').textContent = gameData.battle.stats.battlesLost;
+  document.getElementById('totalDamage').textContent = gameData.battle.stats.totalDamage;
+  document.getElementById('enemiesDefeated').textContent = gameData.battle.stats.enemiesDefeated;
 }
 
-// Battle upgrade costs
+// Upgrade costs
 function updateBattleUpgradeCosts() {
-    // Damage upgrade
-    const dmgGoldCost = 50 + (gameData.battle.playerLevel.damage - 1) * 25;
-    const dmgShardCost = 2 + (gameData.battle.playerLevel.damage - 1);
-    document.getElementById('dmgCost').textContent = `${dmgGoldCost}🪙 + ${dmgShardCost}💎`;
-    document.getElementById('dmgUpgradeBtn').disabled = 
-        gameData.gold < dmgGoldCost || gameData.shards < dmgShardCost || gameData.battle.playerLevel.damage >= 50;
-    
-    // HP upgrade
-    const hpGoldCost = 30 + (gameData.battle.playerLevel.hp - 1) * 20;
-    const hpShardCost = 1 + (gameData.battle.playerLevel.hp - 1);
-    document.getElementById('hpCost').textContent = `${hpGoldCost}�� + ${hpShardCost}💎`;
-    document.getElementById('hpUpgradeBtn').disabled = 
-        gameData.gold < hpGoldCost || gameData.shards < hpShardCost || gameData.battle.playerLevel.hp >= 50;
-    
-    // Regen upgrade - uses POL from wallet
-    const regenPolCost = gameData.battle.playerLevel.regen + 1;
-    document.getElementById('regenCost').textContent = `${regenPolCost}💰`;
-    document.getElementById('regenUpgradeBtn').disabled = 
-        gameData.battle.playerLevel.regen >= 5;
+  // Damage upgrade
+  const dmgGoldCost = 50 + (gameData.battle.playerLevel.damage - 1) * 25;
+  const dmgShardCost = 2 + (gameData.battle.playerLevel.damage - 1);
+  document.getElementById('dmgCost').textContent = `${dmgGoldCost}🪙 + ${dmgShardCost}💎`;
+  document.getElementById('dmgUpgradeBtn').disabled =
+    gameData.gold < dmgGoldCost || gameData.shards < dmgShardCost || gameData.battle.playerLevel.damage >= 50;
+
+  // HP upgrade
+  const hpGoldCost = 30 + (gameData.battle.playerLevel.hp - 1) * 20;
+  const hpShardCost = 1 + (gameData.battle.playerLevel.hp - 1);
+  document.getElementById('hpCost').textContent = `${hpGoldCost}🪙 + ${hpShardCost}💎`;
+  document.getElementById('hpUpgradeBtn').disabled =
+    gameData.gold < hpGoldCost || gameData.shards < hpShardCost || gameData.battle.playerLevel.hp >= 50;
+
+  // Regen upgrade (POL from wallet)
+  const regenPolCost = gameData.battle.playerLevel.regen + 1;
+  document.getElementById('regenCost').textContent = `${regenPolCost}💰`;
+  document.getElementById('regenUpgradeBtn').disabled =
+    gameData.battle.playerLevel.regen >= 5;
 }
 
-// Battle pet display
+// Pet display
 function updateBattlePetDisplay() {
-    if (gameData.battle.pet.owned) {
-        document.getElementById('petStatusText').textContent = 'Pet Active';
-        document.getElementById('petStats').style.display = 'block';
-        document.getElementById('acquirePetBtn').style.display = 'none';
-        document.getElementById('petUpgrades').style.display = 'block';
-        
-        document.getElementById('petLevel').textContent = gameData.battle.pet.level;
-        document.getElementById('petDamage').textContent = gameData.battle.pet.damage;
-        document.getElementById('petSpeed').textContent = gameData.battle.pet.speed / 1000;
-        
-        const foodPercent = (gameData.battle.pet.food / gameData.battle.pet.maxFood) * 100;
-        document.getElementById('foodFill').style.width = foodPercent + '%';
-        document.getElementById('foodAmount').textContent = Math.floor(gameData.battle.pet.food);
-        
-        // Pet upgrade costs
-        const petDmgGoldCost = 100 + (gameData.battle.pet.level - 1) * 30;
-        const petDmgShardCost = 3 + (gameData.battle.pet.level - 1);
-        document.getElementById('petDmgCost').textContent = `${petDmgGoldCost}🪙 + ${petDmgShardCost}��`;
-        document.getElementById('petDmgBtn').disabled = 
-            gameData.gold < petDmgGoldCost || gameData.shards < petDmgShardCost;
-        
-        document.getElementById('feedPetBtn').disabled = false;
-    } else {
-        document.getElementById('acquirePetBtn').disabled = gameData.gold < 200 || gameData.shards < 10;
-    }
+  if (gameData.battle.pet.owned) {
+    document.getElementById('petStatusText').textContent = 'Pet Active';
+    document.getElementById('petStats').style.display = 'block';
+    document.getElementById('acquirePetBtn').style.display = 'none';
+    document.getElementById('petUpgrades').style.display = 'block';
+
+    document.getElementById('petLevel').textContent = gameData.battle.pet.level;
+    document.getElementById('petDamage').textContent = gameData.battle.pet.damage;
+    document.getElementById('petSpeed').textContent = gameData.battle.pet.speed / 1000;
+
+    const foodPercent = (gameData.battle.pet.food / gameData.battle.pet.maxFood) * 100;
+    document.getElementById('foodFill').style.width = foodPercent + '%';
+    document.getElementById('foodAmount').textContent = Math.floor(gameData.battle.pet.food);
+
+    // Pet upgrade costs
+    const petDmgGoldCost = 100 + (gameData.battle.pet.level - 1) * 30;
+    const petDmgShardCost = 3 + (gameData.battle.pet.level - 1);
+    document.getElementById('petDmgCost').textContent = `${petDmgGoldCost}🪙 + ${petDmgShardCost}💎`;
+    document.getElementById('petDmgBtn').disabled =
+      gameData.gold < petDmgGoldCost || gameData.shards < petDmgShardCost;
+
+    document.getElementById('feedPetBtn').disabled = false;
+  } else {
+    document.getElementById('acquirePetBtn').disabled = gameData.gold < 200 || gameData.shards < 10;
+  }
 }
 
-// Switch battle tabs
-function switchBattleTab(tabName) {
-    document.querySelectorAll('.battle-tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.battle-tab-content').forEach(content => content.classList.remove('active'));
-    
-    event.target.classList.add('active');
-    document.getElementById(tabName).classList.add('active');
-}
-
-// Battle log functions
+// Battle log
 function addToBattleLog(message, type) {
-    gameData.battle.battleLog.push({ message, type, timestamp: Date.now() });
-    
-    // Keep only last 10 entries
-    if (gameData.battle.battleLog.length > 10) {
-        gameData.battle.battleLog.shift();
-    }
-    
-    updateBattleLogDisplay();
+  gameData.battle.battleLog.push({ message, type, timestamp: Date.now() });
+  if (gameData.battle.battleLog.length > 10) gameData.battle.battleLog.shift();
+  updateBattleLogDisplay();
 }
-
 function updateBattleLogDisplay() {
-    const logContent = document.getElementById('battleLogContent');
-    if (gameData.battle.battleLog.length === 0) {
-        logContent.innerHTML = '<div class="log-entry" style="text-align: center; font-style: italic; color: #666;">Battle log will appear here...</div>';
-        return;
-    }
-    
-    logContent.innerHTML = gameData.battle.battleLog.map(entry => {
-        let className = 'log-entry';
-        if (entry.type === 'player') className += ' log-player';
-        else if (entry.type === 'pet') className += ' log-pet';
-        else if (entry.type === 'enemy') className += ' log-enemy';
-        
-        return `<div class="${className}">${entry.message}</div>`;
-    }).join('');
-    
-    // Auto-scroll to bottom
-    logContent.scrollTop = logContent.scrollHeight;
+  const logContent = document.getElementById('battleLogContent');
+  if (gameData.battle.battleLog.length === 0) {
+    logContent.innerHTML = '<div class="log-entry" style="text-align: center; font-style: italic; color: #666;">Battle log will appear here...</div>';
+    return;
+  }
+  logContent.innerHTML = gameData.battle.battleLog.map(entry => {
+    let className = 'log-entry';
+    if (entry.type === 'player') className += ' log-player';
+    else if (entry.type === 'pet') className += ' log-pet';
+    else if (entry.type === 'enemy') className += ' log-enemy';
+    return `<div class="${className}">${entry.message}</div>`;
+  }).join('');
+  logContent.scrollTop = logContent.scrollHeight;
 }
 
 // Start battle
 function startBattle() {
-    if (gameData.battle.playerStats.currentHp <= 0) {
-        showNotification('You need to heal before battling!', 'error');
-        return;
-    }
-    
-    gameData.battle.battle.active = true;
-    gameData.battle.battle.timeLeft = 30;
-    gameData.battle.battleLog = []; // Clear battle log
-    
-    // Generate random enemy
-    const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
-    const enemyHp = Math.floor(Math.random() * (enemyType.hpRange[1] - enemyType.hpRange[0] + 1)) + enemyType.hpRange[0];
-    
-    gameData.battle.battle.enemy = {
-        name: enemyType.name,
-        maxHp: enemyHp,
-        currentHp: enemyHp,
-        reward: enemyType.reward,
-        lastAttack: Date.now()
-    };
-    
-    document.getElementById('enemyName').textContent = gameData.battle.battle.enemy.name;
-    document.getElementById('tapButton').disabled = false;
-    document.getElementById('startBattleBtn').style.display = 'none';
-    document.getElementById('battleResult').innerHTML = '';
-    
-    // Add battle start to log
-    addToBattleLog(`🚀 Battle begins against ${gameData.battle.battle.enemy.name}!`, 'system');
-    
-    // Start battle timer
-    gameData.battle.battle.timer = setInterval(updateBattle, 100);
-    
-    // Start pet attacks if owned
-    if (gameData.battle.pet.owned && gameData.battle.pet.food > 0) {
-        gameData.battle.pet.attackTimer = setInterval(petAttack, gameData.battle.pet.speed);
-    }
-    
-    saveGameData();
+  if (gameData.battle.playerStats.currentHp <= 0) {
+    showNotification('You need to heal before battling!', 'error');
+    return;
+  }
+  gameData.battle.battle.active = true;
+  gameData.battle.battle.timeLeft = 30;
+  gameData.battle.battleLog = [];
+  // Generate random enemy
+  const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+  const enemyHp = Math.floor(Math.random() * (enemyType.hpRange[1] - enemyType.hpRange[0] + 1)) + enemyType.hpRange[0];
+  gameData.battle.battle.enemy = {
+    name: enemyType.name,
+    maxHp: enemyHp,
+    currentHp: enemyHp,
+    reward: enemyType.reward,
+    lastAttack: Date.now()
+  };
+  document.getElementById('enemyName').textContent = gameData.battle.battle.enemy.name;
+  document.getElementById('tapButton').disabled = false;
+  document.getElementById('startBattleBtn').style.display = 'none';
+  document.getElementById('battleResult').innerHTML = '';
+  addToBattleLog(`🚀 Battle begins against ${gameData.battle.battle.enemy.name}!`, 'system');
+  gameData.battle.battle.timer = setInterval(updateBattle, 100);
+  if (gameData.battle.pet.owned && gameData.battle.pet.food > 0) {
+    gameData.battle.pet.attackTimer = setInterval(petAttack, gameData.battle.pet.speed);
+  }
+  saveGameData();
 }
 
 // Update battle
 function updateBattle() {
-    if (!gameData.battle.battle.active) return;
-    
-    gameData.battle.battle.timeLeft -= 0.1;
-    
-    // Update timer display
-    document.getElementById('battleTimer').textContent = `Time: ${Math.max(0, gameData.battle.battle.timeLeft).toFixed(1)}s`;
-    
-    // Update enemy health display
-    const enemyHealthPercent = (gameData.battle.battle.enemy.currentHp / gameData.battle.battle.enemy.maxHp) * 100;
-    document.getElementById('enemyHealthFill').style.width = enemyHealthPercent + '%';
-    document.getElementById('enemyHealthText').textContent = `${Math.max(0, gameData.battle.battle.enemy.currentHp)}/${gameData.battle.battle.enemy.maxHp}`;
-    
-    // Check win condition
-    if (gameData.battle.battle.enemy.currentHp <= 0) {
-        endBattle(true);
-    }
-    
-    // Check lose conditions
-    if (gameData.battle.battle.timeLeft <= 0) {
-        endBattle(false, 'time');
-    } else if (gameData.battle.playerStats.currentHp <= 0) {
-        endBattle(false, 'death');
-    }
+  if (!gameData.battle.battle.active) return;
+  gameData.battle.battle.timeLeft -= 0.1;
+  document.getElementById('battleTimer').textContent = `Time: ${Math.max(0, gameData.battle.battle.timeLeft).toFixed(1)}s`;
+  const enemyHealthPercent = (gameData.battle.battle.enemy.currentHp / gameData.battle.battle.enemy.maxHp) * 100;
+  document.getElementById('enemyHealthFill').style.width = enemyHealthPercent + '%';
+  document.getElementById('enemyHealthText').textContent = `${Math.max(0, gameData.battle.battle.enemy.currentHp)}/${gameData.battle.battle.enemy.maxHp}`;
+  if (gameData.battle.battle.enemy.currentHp <= 0) endBattle(true);
+  if (gameData.battle.battle.timeLeft <= 0) endBattle(false, 'time');
+  else if (gameData.battle.playerStats.currentHp <= 0) endBattle(false, 'death');
 }
 
-// Player tap attack
+// Tap attack
 function tapAttack() {
-    if (!gameData.battle.battle.active) return;
-    
-    const damage = gameData.battle.playerStats.damage;
-    gameData.battle.battle.enemy.currentHp -= damage;
-    gameData.battle.stats.totalDamage += damage;
-    
-    // Add to battle log
-    addToBattleLog(`⚔️ You attack for ${damage} damage!`, 'player');
-    
-    // Show damage popup
-    showDamagePopup(damage, event.target);
-    
-    // 70% chance for enemy counter-attack when player attacks
-    if (Math.random() < 0.7) {
-        setTimeout(() => enemyCounterAttack(), 300);
-    }
-    
-    // Add tap animation
-    event.target.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        event.target.style.transform = 'scale(1)';
-    }, 100);
-    
-    saveGameData();
+  if (!gameData.battle.battle.active) return;
+  const damage = gameData.battle.playerStats.damage;
+  gameData.battle.battle.enemy.currentHp -= damage;
+  gameData.battle.stats.totalDamage += damage;
+  addToBattleLog(`⚔️ You attack for ${damage} damage!`, 'player');
+  showDamagePopup(damage, event.target);
+  if (Math.random() < 0.7) setTimeout(() => enemyCounterAttack(), 300);
+  event.target.style.transform = 'scale(0.95)';
+  setTimeout(() => { event.target.style.transform = 'scale(1)'; }, 100);
+  saveGameData();
 }
 
 // Pet attack
 function petAttack() {
-    if (!gameData.battle.battle.active || gameData.battle.pet.food <= 0) return;
-    
-    const damage = gameData.battle.pet.damage;
-    gameData.battle.battle.enemy.currentHp -= damage;
-    gameData.battle.stats.totalDamage += damage;
-    gameData.battle.pet.food -= 1;
-    
-    // Add to battle log
-    addToBattleLog(`🐲 Your pet attacks for ${damage} damage!`, 'pet');
-    
-    // Show pet damage popup
-    showDamagePopup(damage, document.getElementById('enemyName'), '🐲');
-    
-    saveGameData();
+  if (!gameData.battle.battle.active || gameData.battle.pet.food <= 0) return;
+  const damage = gameData.battle.pet.damage;
+  gameData.battle.battle.enemy.currentHp -= damage;
+  gameData.battle.stats.totalDamage += damage;
+  gameData.battle.pet.food -= 1;
+  addToBattleLog(`🐲 Your pet attacks for ${damage} damage!`, 'pet');
+  showDamagePopup(damage, document.getElementById('enemyName'), '🐲');
+  saveGameData();
 }
 
 // Enemy counter attack
 function enemyCounterAttack() {
-    const damage = Math.floor(Math.random() * 15) + 10; // 10-24 damage
-    gameData.battle.playerStats.currentHp -= damage;
-    gameData.battle.playerStats.currentHp = Math.max(0, gameData.battle.playerStats.currentHp);
-    
-    // Add to battle log
-    addToBattleLog(`💥 ${gameData.battle.battle.enemy.name} counter-attacks for ${damage} damage!`, 'enemy');
-    
-    // Show damage to player
-    showDamagePopup(damage, document.getElementById('playerHealthText'), '💥');
-    
-    saveGameData();
+  const damage = Math.floor(Math.random() * 15) + 10;
+  gameData.battle.playerStats.currentHp -= damage;
+  gameData.battle.playerStats.currentHp = Math.max(0, gameData.battle.playerStats.currentHp);
+  addToBattleLog(`💥 ${gameData.battle.battle.enemy.name} counter-attacks for ${damage} damage!`, 'enemy');
+  showDamagePopup(damage, document.getElementById('playerHealthText'), '💥');
+  saveGameData();
 }
 
 // End battle
 function endBattle(victory, reason = '') {
-    gameData.battle.battle.active = false;
-    clearInterval(gameData.battle.battle.timer);
-    if (gameData.battle.pet.attackTimer) {
-        clearInterval(gameData.battle.pet.attackTimer);
+  gameData.battle.battle.active = false;
+  clearInterval(gameData.battle.battle.timer);
+  if (gameData.battle.pet.attackTimer) clearInterval(gameData.battle.pet.attackTimer);
+  document.getElementById('tapButton').disabled = true;
+  document.getElementById('startBattleBtn').style.display = 'block';
+  let message = '';
+  if (victory) {
+    gameData.battle.stats.battlesWon++;
+    gameData.battle.stats.enemiesDefeated++;
+    const enemy = gameData.battle.battle.enemy;
+    const goldReward = Math.floor(Math.random() * (enemy.reward.gold[1] - enemy.reward.gold[0] + 1)) + enemy.reward.gold[0];
+    const shardReward = Math.floor(Math.random() * (enemy.reward.shards[1] - enemy.reward.shards[0] + 1)) + enemy.reward.shards[0];
+    gameData.gold += goldReward;
+    gameData.shards += shardReward;
+    addToBattleLog(`🎉 Victory! Earned ${goldReward}🪙 + ${shardReward}💎`, 'system');
+    message = `<div class="victory-message">
+      🎉 Victory! You defeated ${enemy.name}!<br>
+      Rewards: ${goldReward}🪙 Gold, ${shardReward}💎 Shards
+    </div>`;
+    showNotification(`Victory! +${goldReward} Gold, +${shardReward} Shards`, 'success');
+  } else {
+    gameData.battle.stats.battlesLost++;
+    if (reason === 'time') {
+      addToBattleLog('⏰ Time ran out! Enemy escaped.', 'system');
+      message = `<div class="defeat-message">
+        ⏰ Time's up! The enemy escaped!
+      </div>`;
+    } else if (reason === 'death') {
+      addToBattleLog('💀 You were defeated!', 'system');
+      message = `<div class="defeat-message">
+        💀 You were defeated! Rest and try again.
+      </div>`;
     }
-    
-    document.getElementById('tapButton').disabled = true;
-    document.getElementById('startBattleBtn').style.display = 'block';
-    
-    let message = '';
-    
-    if (victory) {
-        gameData.battle.stats.battlesWon++;
-        gameData.battle.stats.enemiesDefeated++;
-        
-        // Calculate rewards
-        const enemy = gameData.battle.battle.enemy;
-        const goldReward = Math.floor(Math.random() * (enemy.reward.gold[1] - enemy.reward.gold[0] + 1)) + enemy.reward.gold[0];
-        const shardReward = Math.floor(Math.random() * (enemy.reward.shards[1] - enemy.reward.shards[0] + 1)) + enemy.reward.shards[0];
-        
-        gameData.gold += goldReward;
-        gameData.shards += shardReward;
-        
-        addToBattleLog(`�� Victory! Earned ${goldReward}�� + ${shardReward}💎`, 'system');
-        
-        message = `<div class="victory-message">
-            🎉 Victory! You defeated ${enemy.name}!<br>
-            Rewards: ${goldReward}🪙 Gold, ${shardReward}💎 Shards
-        </div>`;
-        
-        showNotification(`Victory! +${goldReward} Gold, +${shardReward} Shards`, 'success');
-    } else {
-        gameData.battle.stats.battlesLost++;
-        
-        if (reason === 'time') {
-            addToBattleLog('⏰ Time ran out! Enemy escaped.', 'system');
-            message = `<div class="defeat-message">
-                ⏰ Time's up! The enemy escaped!
-            </div>`;
-        } else if (reason === 'death') {
-            addToBattleLog('�� You were defeated!', 'system');
-            message = `<div class="defeat-message">
-                �� You were defeated! Rest and try again.
-            </div>`;
-        }
-    }
-    
-    document.getElementById('battleResult').innerHTML = message;
-    updateUI();
-    saveGameData();
+  }
+  document.getElementById('battleResult').innerHTML = message;
+  updateUI();
+  saveGameData();
 }
 
 // Show damage popup
 function showDamagePopup(damage, element, prefix = '-') {
-    const popup = document.createElement('div');
-    popup.className = 'damage-popup';
-    popup.textContent = `${prefix}${damage}`;
-    
-    const rect = element.getBoundingClientRect();
-    popup.style.left = (rect.left + Math.random() * rect.width) + 'px';
-    popup.style.top = (rect.top + rect.height / 2) + 'px';
-    
-    document.body.appendChild(popup);
-    
-    setTimeout(() => {
-        if (popup.parentNode) {
-            document.body.removeChild(popup);
-        }
-    }, 1000);
+  const popup = document.createElement('div');
+  popup.className = 'damage-popup';
+  popup.textContent = `${prefix}${damage}`;
+  const rect = element.getBoundingClientRect();
+  popup.style.left = (rect.left + Math.random() * rect.width) + 'px';
+  popup.style.top = (rect.top + rect.height / 2) + 'px';
+  document.body.appendChild(popup);
+  setTimeout(() => { if (popup.parentNode) document.body.removeChild(popup); }, 1000);
 }
 
 // Upgrade stats
 async function upgradeStat(type) {
-    let goldCost, shardCost, polCost;
-    
-    switch (type) {
-        case 'damage':
-            if (gameData.battle.playerLevel.damage >= 50) return;
-            goldCost = 50 + (gameData.battle.playerLevel.damage - 1) * 25;
-            shardCost = 2 + (gameData.battle.playerLevel.damage - 1);
-            
-            if (gameData.gold >= goldCost && gameData.shards >= shardCost) {
-                gameData.gold -= goldCost;
-                gameData.shards -= shardCost;
-                gameData.battle.playerLevel.damage++;
-                gameData.battle.playerStats.damage += 2;
-                showNotification(`Damage upgraded! Now deals ${gameData.battle.playerStats.damage} damage per tap.`, 'success');
-                updateUI();
-                updateBattleUI();
-                saveGameData();
-            }
-            break;
-            
-        case 'hp':
-            if (gameData.battle.playerLevel.hp >= 50) return;
-            goldCost = 30 + (gameData.battle.playerLevel.hp - 1) * 20;
-            shardCost = 1 + (gameData.battle.playerLevel.hp - 1);
-            
-            if (gameData.gold >= goldCost && gameData.shards >= shardCost) {
-                gameData.gold -= goldCost;
-                gameData.shards -= shardCost;
-                gameData.battle.playerLevel.hp++;
-                gameData.battle.playerStats.maxHp += 10;
-                gameData.battle.playerStats.currentHp += 10;
-                showNotification(`Max HP upgraded! Now have ${gameData.battle.playerStats.maxHp} max HP.`, 'success');
-                updateUI();
-                updateBattleUI();
-                saveGameData();
-            }
-            break;
-            
-        case 'regen':
-            if (gameData.battle.playerLevel.regen >= 5) return;
-            polCost = gameData.battle.playerLevel.regen + 1;
-            
-            try {
-                await spendPOL(polCost, "Battle Regen Upgrade");
-                gameData.battle.playerLevel.regen++;
-                gameData.battle.playerStats.regenRate = Math.max(5000, 10000 - (gameData.battle.playerLevel.regen - 1) * 1250);
-                showNotification(`Regeneration upgraded! Now heals every ${gameData.battle.playerStats.regenRate / 1000} seconds.`, 'success');
-                updateBattleUI();
-                saveGameData();
-            } catch (error) {
-                // Transaction failed, user notified by spendPOL
-            }
-            break;
-    }
+  let goldCost, shardCost, polCost;
+  switch (type) {
+    case 'damage':
+      if (gameData.battle.playerLevel.damage >= 50) return;
+      goldCost = 50 + (gameData.battle.playerLevel.damage - 1) * 25;
+      shardCost = 2 + (gameData.battle.playerLevel.damage - 1);
+      if (gameData.gold >= goldCost && gameData.shards >= shardCost) {
+        gameData.gold -= goldCost;
+        gameData.shards -= shardCost;
+        gameData.battle.playerLevel.damage++;
+        gameData.battle.playerStats.damage += 2;
+        showNotification(`Damage upgraded! Now deals ${gameData.battle.playerStats.damage} damage per tap.`, 'success');
+        updateUI();
+        updateBattleUI();
+        saveGameData();
+      }
+      break;
+    case 'hp':
+      if (gameData.battle.playerLevel.hp >= 50) return;
+      goldCost = 30 + (gameData.battle.playerLevel.hp - 1) * 20;
+      shardCost = 1 + (gameData.battle.playerLevel.hp - 1);
+      if (gameData.gold >= goldCost && gameData.shards >= shardCost) {
+        gameData.gold -= goldCost;
+        gameData.shards -= shardCost;
+        gameData.battle.playerLevel.hp++;
+        gameData.battle.playerStats.maxHp += 10;
+        gameData.battle.playerStats.currentHp += 10;
+        showNotification(`Max HP upgraded! Now have ${gameData.battle.playerStats.maxHp} max HP.`, 'success');
+        updateUI();
+        updateBattleUI();
+        saveGameData();
+      }
+      break;
+    case 'regen':
+      if (gameData.battle.playerLevel.regen >= 5) return;
+      polCost = gameData.battle.playerLevel.regen + 1;
+      try {
+        await spendPOL(polCost, "Battle Regen Upgrade");
+        gameData.battle.playerLevel.regen++;
+        gameData.battle.playerStats.regenRate = Math.max(5000, 10000 - (gameData.battle.playerLevel.regen - 1) * 1250);
+        showNotification(`Regeneration upgraded! Now heals every ${gameData.battle.playerStats.regenRate / 1000} seconds.`, 'success');
+        updateBattleUI();
+        saveGameData();
+      } catch (error) {}
+      break;
+  }
 }
 
 // Acquire pet
 function acquirePet() {
-    if (gameData.gold >= 200 && gameData.shards >= 10) {
-        gameData.gold -= 200;
-        gameData.shards -= 10;
-        gameData.battle.pet.owned = true;
-        showNotification('Pet acquired! Your battle companion will help you fight!', 'success');
-        updateUI();
-        updateBattleUI();
-        saveGameData();
-    }
+  if (gameData.gold >= 200 && gameData.shards >= 10) {
+    gameData.gold -= 200;
+    gameData.shards -= 10;
+    gameData.battle.pet.owned = true;
+    showNotification('Pet acquired! Your battle companion will help you fight!', 'success');
+    updateUI();
+    updateBattleUI();
+    saveGameData();
+  }
 }
 
 // Upgrade pet
 function upgradePet(type) {
-    if (!gameData.battle.pet.owned) return;
-    
-    switch (type) {
-        case 'damage':
-            const goldCost = 100 + (gameData.battle.pet.level - 1) * 30;
-            const shardCost = 3 + (gameData.battle.pet.level - 1);
-            
-            if (gameData.gold >= goldCost && gameData.shards >= shardCost) {
-                gameData.gold -= goldCost;
-                gameData.shards -= shardCost;
-                gameData.battle.pet.level++;
-                gameData.battle.pet.damage += 2;
-                showNotification(`Pet upgraded! Now deals ${gameData.battle.pet.damage} damage per attack.`, 'success');
-                updateUI();
-                updateBattleUI();
-                saveGameData();
-            }
-            break;
-    }
+  if (!gameData.battle.pet.owned) return;
+  switch (type) {
+    case 'damage':
+      const goldCost = 100 + (gameData.battle.pet.level - 1) * 30;
+      const shardCost = 3 + (gameData.battle.pet.level - 1);
+      if (gameData.gold >= goldCost && gameData.shards >= shardCost) {
+        gameData.gold -= goldCost;
+        gameData.shards -= shardCost;
+        gameData.battle.pet.level++;
+        gameData.battle.pet.damage += 2;
+        showNotification(`Pet upgraded! Now deals ${gameData.battle.pet.damage} damage per attack.`, 'success');
+        updateUI();
+        updateBattleUI();
+        saveGameData();
+      }
+      break;
+  }
 }
 
 // Feed pet
 async function feedPet() {
-    try {
-        await spendPOL(1, "Pet Food");
-        gameData.battle.pet.food = Math.min(gameData.battle.pet.maxFood, gameData.battle.pet.food + 100);
-        showNotification('Pet fed! Food restored.', 'success');
-        updateBattleUI();
-        saveGameData();
-    } catch (error) {
-        // Transaction failed, user notified by spendPOL
-    }
+  try {
+    await spendPOL(1, "Pet Food");
+    gameData.battle.pet.food = Math.min(gameData.battle.pet.maxFood, gameData.battle.pet.food + 100);
+    showNotification('Pet fed! Food restored.', 'success');
+    updateBattleUI();
+    saveGameData();
+  } catch (error) {}
 }
 
 // Start HP regeneration
 function startBattleRegeneration() {
-    setInterval(() => {
-        if (gameData.battle.playerStats.currentHp < gameData.battle.playerStats.maxHp && !gameData.battle.battle.active) {
-            gameData.battle.playerStats.currentHp = Math.min(gameData.battle.playerStats.maxHp, gameData.battle.playerStats.currentHp + 1);
-            updateBattleUI();
-        }
-    }, gameData.battle.playerStats.regenRate);
+  setInterval(() => {
+    if (gameData.battle.playerStats.currentHp < gameData.battle.playerStats.maxHp && !gameData.battle.battle.active) {
+      gameData.battle.playerStats.currentHp = Math.min(gameData.battle.playerStats.maxHp, gameData.battle.playerStats.currentHp + 1);
+      updateBattleUI();
+    }
+  }, gameData.battle.playerStats.regenRate);
 }
 
 // Initialize battle system
 function initBattleSystem() {
-    startBattleRegeneration();
-    updateBattleUI();
+  startBattleRegeneration();
+  updateBattleUI();
 }
+
+// --- End Battle System Integration ---
+
+
+
         // Initialize UI on load
         loadGameData();
         updateUI();
