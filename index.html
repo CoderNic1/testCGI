@@ -2750,8 +2750,12 @@ function continueSwap() {
         updateUI();
     } else if (menuId === "battleMenu") { // ADD THIS BLOCK
         document.getElementById("battleMenu").classList.remove("hidden");
-        updateBattleUI();
-        updateUI();
+    document.querySelectorAll('#battleMenu .battle-tab-content').forEach(tab => tab.classList.remove('active'));
+    document.getElementById('battle').classList.add('active');
+    document.querySelectorAll('#battleMenu .battle-tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('#battleMenu .battle-tab[onclick*="battle"]').classList.add('active');
+    updateBattleUI();
+    updateUI();
     }
 }
 
