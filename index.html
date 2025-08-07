@@ -1022,6 +1022,11 @@
             border-radius: 15px;
             color: white;
             margin-bottom: 20px;
+            margin: 0 auto;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .enemy {
@@ -1311,18 +1316,6 @@
         z-index: 1;
         }
 
-        #startBattleBtn {
-    background: linear-gradient(135deg, #00b894, #00a085);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px auto; /* Changed from "margin: 10px" to "margin: 10px auto" */
-    display: block; /* Add this line to make it a block element so margin auto works */
-}
 
 /* Battle Menu Container - Add this before the media queries */
 #battleMenu .menu-container {
@@ -2290,8 +2283,8 @@
             </div>
           </div>
         </div>
+        <button onclick="showMenu('mainMenu')" class="menu-btn home-btn" style="position: center;">🏠 Home</button>
       </div>
-      <button onclick="showMenu('mainMenu')" class="menu-btn home-btn" style="position: center;">🏠 Home</button>
     </div>
   </div>
         <!-- Settings Modal -->
