@@ -1310,6 +1310,20 @@
         position: relative;
         z-index: 1;
         }
+
+        #startBattleBtn {
+    background: linear-gradient(135deg, #00b894, #00a085);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px auto; /* Changed from "margin: 10px" to "margin: 10px auto" */
+    display: block; /* Add this line to make it a block element so margin auto works */
+}
+
 /* Battle Menu Container - Add this before the media queries */
 #battleMenu .menu-container {
     width: 100%;
@@ -2277,10 +2291,11 @@
           </div>
         </div>
       </div>
-      <div class="menu-footer">
+      
+    </div>
+    <div class="menu-footer">
         <button onclick="showMenu('mainMenu')" class="menu-btn home-btn">🏠 Home</button>
       </div>
-    </div>
   </div>
         <!-- Settings Modal -->
         <div class="settings-modal" id="settingsModal">
