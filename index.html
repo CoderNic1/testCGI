@@ -1258,6 +1258,7 @@
             margin-top: 20px;
             max-height: 200px;
             overflow-y: auto;
+            color: white;
         }
         
         .battle-log h3 {
@@ -1267,12 +1268,12 @@
         }
         
         .log-entry {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.1);
             padding: 8px;
             margin: 3px 0;
             border-radius: 5px;
             font-size: 0.9em;
-            color: #333;
+            color: white;
             border-left: 3px solid;
             font-weight: 500;
         }
@@ -1312,6 +1313,8 @@
 /* Battle Menu Container - Add this before the media queries */
 #battleMenu .menu-container {
     width: 100%;
+    max-width: 1000px; /* Add this line to limit width */
+    margin: 0 auto; /* Add this to center it */
     height: 100vh;
     background: rgba(30, 41, 59, 0.95);
     backdrop-filter: blur(10px);
@@ -1320,14 +1323,10 @@
     justify-content: flex-start;
     padding: 120px 20px 20px 20px;
     box-sizing: border-box;
-    max-width: none;
     border-radius: 0;
-    margin: 0;
     position: relative;
     z-index: 1;
     overflow-y: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 .battle-content {
@@ -2918,7 +2917,7 @@ function continueSwap() {
         document.getElementById("craftingMenu").classList.remove("hidden");
         updateUI();
     } else if (menuId === "battleMenu") { // ADD THIS BLOCK
-        document.getElementById("battleMenu").classList.remove("hidden");
+    document.getElementById("battleMenu").classList.remove("hidden");
     document.querySelectorAll('#battleMenu .battle-tab-content').forEach(tab => tab.classList.remove('active'));
     document.getElementById('battle').classList.add('active');
     document.querySelectorAll('#battleMenu .battle-tab').forEach(btn => btn.classList.remove('active'));
