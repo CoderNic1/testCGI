@@ -893,7 +893,23 @@
     }
     
     #battleMenu .menu-container {
-        padding-top: 120px;
+        padding: 120px 15px 15px 15px;
+        overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    }
+
+    .battle-content {
+        padding: 10px 0;
+    }
+    
+    .battle-tabs {
+        padding: 8px;
+        gap: 4px;
+    }
+    
+    .battle-tab {
+        padding: 6px;
+        font-size: 0.9em;
     }
     
     .top-bar {
@@ -1293,7 +1309,35 @@
         position: relative;
         z-index: 1;
         }
+/* Battle Menu Container - Add this before the media queries */
+#battleMenu .menu-container {
+    width: 100%;
+    height: 100vh;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 120px 20px 20px 20px;
+    box-sizing: border-box;
+    max-width: none;
+    border-radius: 0;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    overflow-y: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
+
+.battle-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
 
 /* Content area that takes most space */
 .crafting-content {
